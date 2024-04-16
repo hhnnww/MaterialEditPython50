@@ -1,0 +1,8 @@
+colorama==0.4.6
+peewee==3.16.3
+pyperclip==1.8.2
+pywin32==305.1
+pywin32==306
+pyzbar==0.1.9
+requests_html==0.10.0
+win10toast==0.9
