@@ -318,4 +318,5 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
     )
+
     return dict(msg="ok")

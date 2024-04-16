@@ -7,6 +7,7 @@ from uuid import uuid1
 from colorama import Back, Fore, Style
 from win32com.client import CDispatch, Dispatch
 
+from .fun_PS基础操作 import fun_选择图层
 from .fun_对比所有导出的图片 import fun_打开图片, run_对比所有图片
 from .fun_导出PNG import com_psd导出png
 from .fun_导出图层PNG import run_导出所有图层
@@ -108,6 +109,9 @@ class PSFile:
                 com_普通图层广告(
                     self.app, in_layer, include_names, is_names, photo_names
                 )
+
+                if in_layer.Kind == 17:
+                    in_layer.Rasterize(5)
 
             # 文字图层
             else:

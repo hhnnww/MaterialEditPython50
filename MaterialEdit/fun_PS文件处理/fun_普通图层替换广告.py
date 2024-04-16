@@ -1,13 +1,9 @@
 from typing import List
 
-from colorama import Back
-from colorama import Fore
-from colorama import Style
+from colorama import Back, Fore, Style
 from win32com.client import CDispatch
 
-from .model import IncludeName
-from .model import IsName
-from .model import IsPhoto
+from .model import IncludeName, IsName, IsPhoto
 
 
 def com_普通图层广告(
@@ -26,7 +22,13 @@ def com_普通图层广告(
     if layer_state == 1:
         for in_name in include_names:
             if str(in_name.name).lower() in layer_name:
-                print("\n" + Back.RED + Fore.BLACK + f"普通图层发现广告：\t{art_layer.Name}" + Style.RESET_ALL)
+                print(
+                    "\n"
+                    + Back.RED
+                    + Fore.BLACK
+                    + f"普通图层发现广告：\t{art_layer.Name}"
+                    + Style.RESET_ALL
+                )
                 art_layer.Delete()
                 layer_state = 0
                 break
@@ -35,7 +37,13 @@ def com_普通图层广告(
     if layer_state == 1:
         for in_name in is_names:
             if str(in_name.name).lower() == layer_name:
-                print("\n" + Back.RED + Fore.BLACK + f"普通图层发现广告：\t{art_layer.Name}" + Style.RESET_ALL)
+                print(
+                    "\n"
+                    + Back.RED
+                    + Fore.BLACK
+                    + f"普通图层发现广告：\t{art_layer.Name}"
+                    + Style.RESET_ALL
+                )
                 art_layer.Delete()
                 layer_state = 0
                 break
