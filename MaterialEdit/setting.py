@@ -1,6 +1,15 @@
 from pathlib import Path
 
-MATERIAL_SOURCE_SUFFIX = [".psd", ".ai", ".otf", ".ttf", ".psb", ".eps", ".ppt", ".pptx"]
+MATERIAL_SOURCE_SUFFIX = [
+    ".psd",
+    ".ai",
+    ".otf",
+    ".ttf",
+    ".psb",
+    ".eps",
+    ".ppt",
+    ".pptx",
+]
 
 IMAGE_SUFFIX = [".jpg", ".png", ".jpeg"]
 
@@ -11,7 +20,20 @@ HOME_UPDATE_FOLDER = Path.home() / "Desktop" / "UPLOAD"
 FIRST_IMAGE_RATIO = 10
 FIRST_IMAGE_BORDER_COLOR = (240, 240, 240, 255)
 
-AD_SUFFIX = [".html", ".exe", ".url", ".doc", ".txt", ".mp4", ".pdf", ".htm", ".ntim", ".otf", ".ttf"]
+AD_SUFFIX = [
+    ".html",
+    ".exe",
+    ".url",
+    ".doc",
+    ".txt",
+    ".mp4",
+    ".pdf",
+    ".htm",
+    ".ntim",
+    ".otf",
+    ".ttf",
+    ".ttc",
+]
 
 
 OUT_PATH = Path().home() / "desktop" / "OUT_PATH"
