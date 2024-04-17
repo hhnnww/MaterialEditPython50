@@ -35,7 +35,7 @@ def com_普通图层广告(
 
     # 删除等于字符
     if layer_state == 1:
-        for in_name in is_names:
+        for in_name in is_names:  # type:ignore
             if str(in_name.name).lower() == layer_name:
                 print(
                     "\n"
