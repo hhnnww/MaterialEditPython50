@@ -51,7 +51,7 @@ class LayoutRandomLayoug:
 
     @staticmethod
     def _fun_构建布局(layout: str) -> List[str]:
-        return re.findall("\d", layout)
+        return re.findall(r"\d", layout)
 
     def _fun_阴影图片(self) -> Image.Image:
         """
