@@ -1,12 +1,18 @@
+from pathlib import Path
+
 from bson import ObjectId
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
-from requests_html import HTMLSession
-from MaterialEdit.fun_素材下载 import fun_获取素材, fun_获取集合, fun_采集, fun_插入素材, fun_envato_图片下载
-from pathlib import Path
 from tqdm import tqdm
-from bson import ObjectId
+
+from MaterialEdit.fun_素材下载 import (
+    fun_envato_图片下载,
+    fun_插入素材,
+    fun_获取素材,
+    fun_获取集合,
+    fun_采集,
+)
 
 router = APIRouter(prefix="/MaterialDown")
 
@@ -46,7 +52,9 @@ def fun_down_path_merge(item: MaterialDownModel):
 
             num = 1
             while in_file_new_path.exists() is True:
-                in_file_new_path = in_file_new_path.with_stem(f"{in_file_new_path.stem}_({num})")
+                in_file_new_path = in_file_new_path.with_stem(
+                    f"{in_file_new_path.stem}_({num})"
+                )
                 num += 1
 
             in_file.rename(in_file_new_path)
@@ -76,9 +84,16 @@ def cut_material_list(item: CutMaterialModel):
 @router.post("/scrapy_material")
 def scrapy_material(item: MaterialDownModel):
     for obj in fun_采集(
-        base_url=item.scrapy_url, material_site=item.material_site, cookie=item.cookie, num=item.scrapy_num
+        base_url=item.scrapy_url,
+        material_site=item.material_site,
+        cookie=item.cookie,
+        num=item.scrapy_num,
     ):
-        fun_插入素材(shop_name=item.shop_name, material_site=item.material_site, material_model=obj)
+        fun_插入素材(
+            shop_name=item.shop_name,
+            material_site=item.material_site,
+            material_model=obj,
+        )
 
 
 # ---------------- 清空未下载素材 ----------------
@@ -95,7 +110,9 @@ def clear_un_down_material(item: MaterialDownModel):
 
 
 @router.get("/get_material_down_link")
-def get_material_down_link(shop_name: str, material_site: str, material_id: str, down_path: str):
+def get_material_down_link(
+    shop_name: str, material_site: str, material_id: str, down_path: str
+):
     collect = fun_获取集合(shop_name=shop_name, material_site=material_site)
     obj = collect.find_one({"_id": ObjectId(oid=material_id)})
 
@@ -111,6 +128,8 @@ def get_material_down_link(shop_name: str, material_site: str, material_id: str,
 
 @router.post("/get_material_list")
 def get_material_list(item: MaterialDownModel):
-    res = fun_获取素材(shop_name=item.shop_name, material_site=item.material_site, page=item.page)
+    res = fun_获取素材(
+        shop_name=item.shop_name, material_site=item.material_site, page=item.page
+    )
     ma_list = list(res[0])
     return dict(material_list=ma_list, count=res[1])
