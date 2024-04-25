@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from win32com.client import Dispatch, CDispatch
+from win32com.client import CDispatch, Dispatch
 
 
 def fun_导出PNG(doc: CDispatch, ai_path: Path):
@@ -23,5 +23,5 @@ def fun_导出PNG(doc: CDispatch, ai_path: Path):
         ExportFormat=7,
         Options=option,
         ItemToExport=item_option,
-        FileNamePrefix="",
+        FileNamePrefix="export_",
     )
