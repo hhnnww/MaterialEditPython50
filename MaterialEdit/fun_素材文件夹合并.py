@@ -23,10 +23,14 @@ def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str):
     num += 1
 
     # 遍历 ori_path 文件夹
-    for in_file in tqdm(list(Path(ori_obj.ma_path).rglob("*")), ncols=100, desc="素材合并\t"):
+    for in_file in tqdm(
+        list(Path(ori_obj.ma_path).rglob("*")), ncols=100, desc="素材合并\t"
+    ):
         if in_file.is_file() and in_file.suffix.lower() in MATERIAL_SOURCE_SUFFIX:
             source_file_new_path = Path(
-                in_file.as_posix().replace(Path(ori_obj.ma_path).as_posix(), Path(dst_obj.ma_path).as_posix())
+                in_file.as_posix().replace(
+                    Path(ori_obj.ma_path).as_posix(), Path(dst_obj.ma_path).as_posix()
+                )
             ).with_stem(f"{shop_name}({num})")
             # print(f"{in_file}\t->\t{source_file_new_path}")
             shutil.move(in_file.as_posix(), source_file_new_path.as_posix())
@@ -36,7 +40,8 @@ def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str):
                 if image_path.exists() is True:
                     image_path_new = Path(
                         image_path.as_posix().replace(
-                            Path(ori_obj.ma_path).as_posix(), Path(dst_obj.ma_path).as_posix()
+                            Path(ori_obj.ma_path).as_posix(),
+                            Path(dst_obj.ma_path).as_posix(),
                         )
                     ).with_stem(f"{shop_name}({num})")
                     # print(f"{image_path}\t->\t{image_path_new}")
@@ -47,12 +52,16 @@ def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str):
                 preview_path = Path(
                     in_file.with_suffix(image_suffix)
                     .as_posix()
-                    .replace(Path(ori_obj.ma_path).as_posix(), Path(ori_obj.preview_path).as_posix())
+                    .replace(
+                        Path(ori_obj.ma_path).as_posix(),
+                        Path(ori_obj.preview_path).as_posix(),
+                    )
                 )
                 if preview_path.exists() is True:
                     preview_path_new = Path(
                         preview_path.as_posix().replace(
-                            Path(ori_obj.preview_path).as_posix(), Path(dst_obj.preview_path).as_posix()
+                            Path(ori_obj.preview_path).as_posix(),
+                            Path(dst_obj.preview_path).as_posix(),
                         )
                     ).with_stem(f"{shop_name}({num})")
                     # print(f"{preview_path}\t->\t{preview_path_new}")

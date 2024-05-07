@@ -2,7 +2,10 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from Router.router_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
+from Router.router_文件夹操作 import (
+    RequestMaterialPathActionModel,
+    fun_material_path_action,
+)
 from ..fun_获取路径数字 import fun_获取路径数字
 
 
@@ -27,8 +30,14 @@ class AutoMaterialFileEdit:
             "复制图片到预览图",
             "素材图水印",
         ]:
-            item = RequestMaterialPathActionModel(action=action_list, shop_name=self.shop_name, root_path=root_path)
-            fun_material_path_action(item=item)
+            action_item = RequestMaterialPathActionModel(
+                action=action_list,
+                shop_name=self.shop_name,
+                root_path=root_path,
+                file_start_stem="1",
+                path_start_stem="1",
+            )
+            fun_material_path_action(item=action_item)
 
     def fun_获取所有需要处理的文件夹(self):
         all_file = list(Path(self.parent_path).iterdir())
@@ -43,6 +52,8 @@ class AutoMaterialFileEdit:
         return used_folder
 
     def run(self):
-        for in_file in tqdm(self.fun_获取所有需要处理的文件夹(), ncols=100, desc="处理文件夹\t"):
+        for in_file in tqdm(
+            self.fun_获取所有需要处理的文件夹(), ncols=100, desc="处理文件夹\t"
+        ):
             print(in_file)
             self.fun_处理单个文件(root_path=in_file)

@@ -6,7 +6,12 @@ def get_window_pos(hwnd):
     try:
         f = ctypes.windll.dwmapi.DwmGetWindowAttribute
         rect = ctypes.wintypes.RECT()
-        f(ctypes.wintypes.HWND(hwnd), ctypes.wintypes.DWORD(9), ctypes.byref(rect), ctypes.sizeof(rect))
+        f(
+            ctypes.wintypes.HWND(hwnd),
+            ctypes.wintypes.DWORD(9),
+            ctypes.byref(rect),
+            ctypes.sizeof(rect),
+        )
         return rect.left, rect.top, rect.right, rect.bottom
     except WindowsError as e:
         raise e

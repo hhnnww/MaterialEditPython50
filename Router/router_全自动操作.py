@@ -26,7 +26,9 @@ class GetBaiduLink(BaseModel):
 
 @router.post("/get_baidu_link")
 def get_baidu_link(item: GetBaiduLink):
-    AutoGetBaiDuShareLink(start_stem=item.start_stem, end_stem=item.end_stem, parent_path=item.parent_path).run()
+    AutoGetBaiDuShareLink(
+        start_stem=item.start_stem, end_stem=item.end_stem, parent_path=item.parent_path
+    ).run()
 
 
 # ---------------- 上传到淘宝 ----------------
@@ -53,7 +55,9 @@ class MakeXQ(BaseModel):
 @router.post("/make_all_xq")
 def make_all_xq(item: MakeXQ):
     AutoMakeProductImage(
-        material_parent_path=item.material_parent_path, start_stem=item.start_item, shop_name=item.shop_name
+        material_parent_path=item.material_parent_path,
+        start_stem=item.start_item,
+        shop_name=item.shop_name,
     ).run()
 
 
@@ -67,7 +71,9 @@ class BaiduItem(BaseModel):
 
 @router.post("/auto_upload_baidu")
 def auto_upload_baidu(item: BaiduItem):
-    AutoUploadMaterialToBaiduYun(parent_path=item.parent_path, start_stem=item.start_stem).run()
+    AutoUploadMaterialToBaiduYun(
+        parent_path=item.parent_path, start_stem=item.start_stem
+    ).run()
 
 
 # ---------------- 下载目录移动到素材目录 ----------------
@@ -80,10 +86,12 @@ class DownItem(BaseModel):
 
 @router.post("/down_path_move_to_material_path")
 def down_path_move_to_material_path(item: DownItem):
-    DownPathMoveToMaterialPath(down_path=item.ori_path, material_parent_path=item.dst_path).main()
+    DownPathMoveToMaterialPath(
+        down_path=item.ori_path, material_parent_path=item.dst_path
+    ).main()
 
 
-# ---------------- 编辑素材 ----------------
+# ---------------- 素材编辑 ----------------
 
 
 class EditItem(BaseModel):
@@ -119,11 +127,11 @@ def auto_edit_material(item: EditItem):
             "复制图片到预览图",
             "素材图水印",
         ]:
-            item = RequestMaterialPathActionModel(
+            action_item = RequestMaterialPathActionModel(
                 action=action_list,
                 shop_name=item.shop_name,
                 root_path=root_path,
                 file_start_stem="1",
                 path_start_stem="1",
             )
-            fun_material_path_action(item=item)
+            fun_material_path_action(item=action_item)

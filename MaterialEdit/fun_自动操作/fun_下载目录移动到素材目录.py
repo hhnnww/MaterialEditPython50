@@ -9,28 +9,35 @@ class DownPathMoveToMaterialPath:
         self.material_parent_path = Path(material_parent_path)
 
     def fun_获取最大目录数字(self) -> int:
-        all_path = [in_path for in_path in self.material_parent_path.iterdir() if in_path.is_dir()]
+        """
+        自动获取素材文件夹的最大文件夹数字
+        """
+        all_path = [
+            in_path
+            for in_path in self.material_parent_path.iterdir()
+            if in_path.is_dir()
+        ]
         all_path.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=True)
         return int(all_path[0].stem) + 1
 
+    def fun_构建素材文件夹(self, in_num: int) -> Path:
+        """
+        给出数字,转换为str,然后构建成path
+        """
+        in_stem = str(in_num).rjust(4, "0")
+        return self.material_parent_path / in_stem
+
     def main(self):
         current_num = self.fun_获取最大目录数字()
-
-        current_stem = str(current_num)
-        if len(current_stem) < 4:
-            current_stem = "0" + current_stem
-
-        current_path = self.material_parent_path / current_stem
+        current_path = self.fun_构建素材文件夹(current_num)
 
         print(current_num, current_path)
         for in_path in self.down_path.iterdir():
             if in_path.is_dir():
+                if current_path.exists() is True:
+                    raise IndexError("素材目标文件夹存在")
                 in_path.rename(current_path)
+
                 print(in_path, "->", current_path)
                 current_num += 1
-
-                current_stem = str(current_num)
-                if len(current_stem) < 4:
-                    current_stem = "0" + current_stem
-
-                current_path = self.material_parent_path / str(current_stem)
+                current_path = self.fun_构建素材文件夹(in_num=current_num)

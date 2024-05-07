@@ -2,7 +2,7 @@ import os
 import shutil
 from pathlib import Path
 from pprint import pprint
-from typing import List
+from typing import List,Optional
 
 import pythoncom
 from pydantic import BaseModel

@@ -3,7 +3,10 @@ from pathlib import Path
 from tqdm import tqdm
 
 from MaterialEdit import fun_获取素材信息
-from Router.fun_制作详情 import MakeProductImageRequestModel, fun_make_material_product_image
+from Router.fun_制作详情 import (
+    MakeProductImageRequestModel,
+    fun_make_material_product_image,
+)
 from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 from ..fun_获取路径数字 import fun_获取路径数字
 
@@ -23,7 +26,9 @@ class AutoMakeProductImage:
         return path_list
 
     def fun_生成单个详情(self, root_path: Path):
-        ma_info = fun_获取素材信息(root_path=root_path.as_posix(), used_image=0, image_sort=True)
+        ma_info = fun_获取素材信息(
+            root_path=root_path.as_posix(), used_image=0, image_sort=True
+        )
 
         oneline_number = 2
         oneline_ratio = 2.5
