@@ -2,7 +2,7 @@ import os
 import shutil
 from pathlib import Path
 from pprint import pprint
-from typing import List,Optional
+from typing import List, Optional
 
 import pythoncom
 from pydantic import BaseModel
@@ -172,16 +172,24 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             for in_file in tqdm(all_file, ncols=100, desc="删除广告导出图片\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
+
+                    # 如果是4KB的PSD不处理
+                    if in_file.stat().st_size == 4096:
+                        print("错误PSD文件", in_file)
+                        continue
+
                     # 大小判断，超大的不处理
                     size = in_file.stat().st_size / 1024 / 1024
-                    if size > 500:
+                    if size > 700:
                         print(f"{in_file}:\t文件尺寸:\t{size},太大，不处理。")
-                    else:
-                        PSFile(
-                            ps_path=in_file.as_posix(),
-                            tb_name=item.shop_name,
-                            ad_pic_list=ad_pic_list,
-                        ).run_删除广告导出PNG()
+                        continue
+
+                    PSFile(
+                        ps_path=in_file.as_posix(),
+                        tb_name=item.shop_name,
+                        ad_pic_list=ad_pic_list,
+                    ).run_删除广告导出PNG()
+
             pythoncom.CoUninitialize()
 
         case "PSD-导出图片-添加广告":
@@ -197,6 +205,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
+                    if in_file.stat().st_size == 4096:
+                        print("错误PSD文件", in_file)
+                        continue
+
                     PSFile(
                         ps_path=in_file.as_posix(),
                         tb_name=item.shop_name,
@@ -217,6 +229,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
+                    if in_file.stat().st_size == 4096:
+                        print("错误PSD文件", in_file)
+                        continue
                     PSFile(
                         ps_path=in_file.as_posix(),
                         tb_name=item.shop_name,
@@ -237,6 +252,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
+                    if in_file.stat().st_size == 4096:
+                        print("错误PSD文件", in_file)
+                        continue
                     PSFile(
                         ps_path=in_file.as_posix(),
                         tb_name=item.shop_name,
