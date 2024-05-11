@@ -3,6 +3,8 @@ from pathlib import Path
 import pythoncom
 from win32com.client import DispatchEx
 
+from .fun_图片组合 import PPTPICMerge
+
 
 class PPTFile:
     def __init__(self, ppt_file: Path, ppt_export_path: Path):
@@ -23,6 +25,11 @@ class PPTFile:
                 # if self.ppt_dir.exists() is False:
                 #     self.ppt_dir.mkdir(parents=True)
                 ppt.SaveAs(self.ppt_dir, 17)
+                pm = PPTPICMerge(pic_path=self.ppt_dir)
+                bg = pm.main()
+
+                ppt_png = self.ppt_path.with_suffix(".png")
+                bg.save(ppt_png.as_posix())
             except:
                 print(f"错误文件，无法导出：{self.ppt_file.as_posix()}")
                 ppt.Close()
@@ -36,7 +43,3 @@ class PPTFile:
             pythoncom.CoUninitialize()
 
             return "ok"
-
-
-if __name__ == "__main__":
-    PPTFile(Path(r"X:\H000-H999\H0257\H0257\小夕素材(1).pptx")).fun_导出PNG()

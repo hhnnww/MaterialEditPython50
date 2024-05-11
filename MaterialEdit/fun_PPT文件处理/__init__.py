@@ -14,11 +14,11 @@ class PPTEdit:
         ppt_export = PPTFile(self.ppt_path, self.ppt_export_path)
         if ppt_export.fun_导出PNG() == "ok":
             ppt_dir = ppt_export.ppt_dir
-            bg = PPTPICMerge(ppt_dir)
-            bg = bg.main()
+            # bg = PPTPICMerge(ppt_dir)
+            # bg = bg.main()
 
-            ppt_png = self.ppt_path.with_suffix(".png")
-            bg.save(ppt_png.as_posix())
+            # ppt_png = self.ppt_path.with_suffix(".png")
+            # bg.save(ppt_png.as_posix())
 
             for in_file in ppt_dir.iterdir():
                 if in_file.is_file():
