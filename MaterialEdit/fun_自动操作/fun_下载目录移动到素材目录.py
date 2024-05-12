@@ -17,8 +17,12 @@ class DownPathMoveToMaterialPath:
             for in_path in self.material_parent_path.iterdir()
             if in_path.is_dir()
         ]
-        all_path.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=True)
-        return int(all_path[0].stem) + 1
+
+        if len(all_path) > 0:
+            all_path.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=True)
+            return int(all_path[0].stem) + 1
+
+        return 0
 
     def fun_构建素材文件夹(self, in_num: int) -> Path:
         """

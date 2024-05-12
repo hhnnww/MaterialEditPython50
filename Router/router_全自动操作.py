@@ -4,14 +4,15 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from MaterialEdit.fun_自动操作 import (
+    AutoGetBaiDuShareLink,
+    AutoMakeProductImage,
     AutoUploadMaterialToBaiduYun,
     AutoUploadProductToTaobao,
-    AutoMakeProductImage,
     DownPathMoveToMaterialPath,
-    AutoGetBaiDuShareLink,
 )
 from MaterialEdit.fun_获取路径数字 import fun_获取路径数字
-from .fun_文件夹操作 import fun_material_path_action, RequestMaterialPathActionModel
+
+from .fun_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
 
 router = APIRouter(prefix="/AutoAction")
 
@@ -102,31 +103,47 @@ class EditItem(BaseModel):
 
 @router.post("/auto_edit_material")
 def auto_edit_material(item: EditItem):
+
+    # 构建所有需要处理的文件夹
     all_file = list(Path(item.parent_path).iterdir())
     used_folder = []
-
     for in_file in all_file:
         if in_file.is_dir() and fun_获取路径数字(in_file.stem) >= item.start_stem:
             used_folder.append(in_file.as_posix())
-
     used_folder.sort(key=lambda k: fun_获取路径数字(Path(k).stem))
 
     for root_path in used_folder:
-        for action_list in [
-            # "解压ZIP",
-            # "删除EPS文件",
-            # "移动到效果图",
-            "删除广告文件",
-            "删除素材文件夹内所有图片",
-            "删除ZIP文件",
-            "文件重命名",
-            "移动到根目录",
-            # "AI-导出图片",
-            # "PSD-导出图片-添加广告",
-            "PSD-图层改名-导出图片-添加广告",
-            "复制图片到预览图",
-            "素材图水印",
-        ]:
+        if item.shop_name == "饭桶设计":
+            actions = [
+                "解压ZIP",
+                "移动到效果图",
+                "删除素材文件夹内所有图片",
+                "文件重命名",
+                "移动到根目录",
+                "删除广告文件",
+                "PSD-导出图片-添加广告",
+                "复制图片到预览图",
+                "素材图水印",
+            ]
+
+        elif item.shop_name == "泡泡素材":
+            actions = [
+                # "解压ZIP",
+                # "删除EPS文件",
+                # "移动到效果图",
+                "删除广告文件",
+                "删除素材文件夹内所有图片",
+                "删除ZIP文件",
+                "文件重命名",
+                "移动到根目录",
+                # "AI-导出图片",
+                # "PSD-导出图片-添加广告",
+                "PSD-图层改名-导出图片-添加广告",
+                "复制图片到预览图",
+                "素材图水印",
+            ]
+
+        for action_list in actions:
             action_item = RequestMaterialPathActionModel(
                 action=action_list,
                 shop_name=item.shop_name,
