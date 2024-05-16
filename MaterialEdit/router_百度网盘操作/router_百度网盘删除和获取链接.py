@@ -1,6 +1,7 @@
 import json
 import re
 
+import pyperclip
 from fastapi import APIRouter
 from pydantic import BaseModel
 from requests_html import HTMLSession
@@ -68,6 +69,9 @@ class GetBaiduShareLinkItem(BaseModel):
     maid_list: str  # 需要获取分享链接的商品ID列表
 
 
+from .fun_获取自动发货中的商家编码 import fun_获取自动发货中的商家编码
+
+
 @router.post("/get_baidu_share_link")
 def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
     """
@@ -76,6 +80,8 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
     2 获取分享文件夹的接口和HEADER
     3 从自动发货后台获取需要获取的产品ID
     """
+    print(item_in)
+
     session = HTMLSession()
 
     # 从百度网盘请求中获取返回的JSON文件
@@ -84,13 +90,17 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
     # 构建HEADER请求
     header = fun_构建header(header=item_in.header)
 
+    # 自动发货中的商家编码
+    ma_id_list = fun_获取自动发货中的商家编码(item_in.maid_list)
+
+    content_text = ""
     # 发出请求
-    for ma_id in item_in.maid_list:
+    for ma_id in ma_id_list:
         fs_id = [item.id for item in out_list if item.filename == ma_id]
 
         if len(fs_id) > 0:
             with session.post(
-                url=item_in.header.split("\n")[0].split(" ")[1],
+                url=f'https://pan.baidu.com{item_in.header.split("\n")[0].split(" ")[1]}',
                 data={
                     "period": 0,
                     "pwd": "8888",
@@ -103,7 +113,10 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
             ) as res:
                 res_json = res.json()
                 share_link = f'{ma_id}\t"链接: {res_json.get("shorturl")}?pwd=8888"'
-                print(share_link)
+                content_text = content_text + share_link + "\n\n"
 
         else:
             print(f"{ma_id} 不存在")
+
+    print(f"已经自动复制，可直接去粘贴。")
+    pyperclip.copy(content_text)

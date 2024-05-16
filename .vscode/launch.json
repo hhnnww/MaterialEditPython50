@@ -5,12 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "FastAPI",
-      "type": "debugpy",
+      "command": "uvicorn main:app --reload",
+      "name": "fastapi",
       "request": "launch",
-      "module": "uvicorn",
-      "args": ["main:app"],
-      "jinja": false
+      "type": "node-terminal"
     }
   ]
 }
