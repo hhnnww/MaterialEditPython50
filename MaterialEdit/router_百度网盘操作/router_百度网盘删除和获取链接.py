@@ -80,8 +80,6 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
     2 获取分享文件夹的接口和HEADER
     3 从自动发货后台获取需要获取的产品ID
     """
-    print(item_in)
-
     session = HTMLSession()
 
     # 从百度网盘请求中获取返回的JSON文件
@@ -113,6 +111,7 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
             ) as res:
                 res_json = res.json()
                 share_link = f'{ma_id}\t"链接: {res_json.get("shorturl")}?pwd=8888"'
+                print(share_link)
                 content_text = content_text + share_link + "\n\n"
 
         else:
