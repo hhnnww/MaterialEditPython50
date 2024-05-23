@@ -28,9 +28,14 @@ def fun_小图增加信息(im: Image.Image, title: str, desc: str):
     )
 
     bg = ImageEdit.fun_图片竖向拼接(
-        [title_pil, desc_pil], spacing=20, align_item="center", background_color=(255, 255, 255, 255)
+        [title_pil, desc_pil],
+        spacing=20,
+        align_item="center",
+        background_color=(255, 255, 255, 255),
     )
     bg.thumbnail((int(im.width * 0.8), 999), resample=Image.LANCZOS, reducing_gap=3)
-    bg = ImageEdit.fun_图片竖向拼接([im, bg], spacing=50, align_item="center", background_color=(255, 255, 255, 255))
+    bg = ImageEdit.fun_图片竖向拼接(
+        [im, bg], spacing=50, align_item="center", background_color=(255, 255, 255, 255)
+    )
 
     return bg

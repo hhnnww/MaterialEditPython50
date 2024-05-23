@@ -37,8 +37,12 @@ def _fun_制作单行数据图(title: str, desc: str, background_color: _COLOR):
         align_item="start",
     )
 
-    im = ImageEdit.fun_图片扩大粘贴(im, im.width + 180, im.height + 150, "center", "center", background_color)
-    im = ImageEdit.fun_图片扩大粘贴(im, 1420, im.height, "left", "center", background_color)
+    im = ImageEdit.fun_图片扩大粘贴(
+        im, im.width + 180, im.height + 150, "center", "center", background_color
+    )
+    im = ImageEdit.fun_图片扩大粘贴(
+        im, 1420, im.height, "start", "center", background_color
+    )
     return im
 
 
@@ -50,7 +54,11 @@ def fun_制作数据图(data_text: list[tuple[str, str]]):
         else:
             background_color = (250, 250, 250, 255)
         image_list.append(
-            _fun_制作单行数据图(title=data_line_text[0], desc=data_line_text[1], background_color=background_color)
+            _fun_制作单行数据图(
+                title=data_line_text[0],
+                desc=data_line_text[1],
+                background_color=background_color,
+            )
         )
 
     im = ImageEdit.fun_图片竖向拼接(image_list, 0, "start", (255, 255, 255, 255))

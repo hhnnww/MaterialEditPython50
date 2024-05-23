@@ -1,14 +1,15 @@
 from ..type import _ImageItem
 
 
-def fun_图片编组(image_list: list[_ImageItem], line_number: int, max_line_ratio: float) -> list[list[_ImageItem]]:
+def fun_图片编组(
+    image_list: list[_ImageItem], line_number: int, max_line_ratio: float
+) -> list[list[_ImageItem]]:
     new_list = []
     in_list = []
-    online_ratio = 0
+    online_ratio = 0.0
     break_num = 0
 
     for num, image in enumerate(image_list):
-        image: _ImageItem
         in_list.append(image)
         online_ratio += image.ratio
 
