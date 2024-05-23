@@ -17,9 +17,9 @@ def fun_layout_固定裁剪2(
     image_list = fun_重新构建所有图片(image_list)
 
     # 计算所有图片的平均比例
-    all_image_average_ratio = sum([image.ratio for image in image_list]) / len(
-        image_list
-    )
+    all_image_average_ratio = sum(
+        [image.ratio for image in image_list if image.ratio is not None]
+    ) / len(image_list)
 
     # 计算单行各种图片的比例
     oneline_num_ratio_list = list(
@@ -66,16 +66,16 @@ def fun_layout_固定裁剪2(
 
 
 def fun_列表分段(image_list: list[ImageModel], row: int, col: int):
-    l = []
+    left = []
     inline = []
     for in_image in image_list:
         inline.append(in_image)
         if len(inline) == row:
-            l.append(inline.copy())
+            left.append(inline.copy())
             inline = []
 
-        if len(l) == col:
-            return l
+        if len(left) == col:
+            return left
 
 
 def fun_计算单行所有图片数量的比例(

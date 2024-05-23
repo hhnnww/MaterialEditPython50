@@ -28,7 +28,7 @@ def fun_单行图片制作(
                 large_pic = True
                 break
 
-    l = []
+    left = []
     for image in image_list:
         if large_pic:
             image_width = image_used_width / len(image_list)
@@ -81,7 +81,7 @@ def fun_单行图片制作(
                 if source_file.suffix.lower() in [".psd", ".psb"]:
                     desc = f"{image.width} × {image.height} (px)"
                 elif source_file.suffix.lower() in [".ai", ".eps"]:
-                    desc = f"矢量设计素材"
+                    desc = "矢量设计素材"
                 elif source_file.suffix.lower() in [".otf", ".ttf"]:
                     desc = f"{source_file.suffix.lower()} 字体文件素材"
                 else:
@@ -89,10 +89,10 @@ def fun_单行图片制作(
 
             im = fun_小图增加信息(im, title, desc)
 
-        l.append(im)
+        left.append(im)
 
     im = ImageEdit.fun_图片横向拼接(
-        l, spacing=spacing, align_item="start", background_color=(255, 255, 255, 255)
+        left, spacing=spacing, align_item="start", background_color=(255, 255, 255, 255)
     )
 
     return im

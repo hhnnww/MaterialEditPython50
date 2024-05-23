@@ -38,7 +38,7 @@ def fun_down_path_merge(item: MaterialDownModel):
 
     # 确定新文件夹
     num = 1
-    new_path = down_path / f"新建文件夹"
+    new_path = down_path / "新建文件夹"
     while new_path.exists() is True:
         num += 1
         new_path = down_path / f"新建文件夹({num})"

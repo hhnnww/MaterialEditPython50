@@ -1,7 +1,6 @@
 from typing import List
 
-from colorama import Back, Fore
-from colorama import Style
+from colorama import Back, Fore, Style
 from win32com.client import CDispatch
 
 from .model import TextReplaceName
@@ -10,19 +9,25 @@ from .model import TextReplaceName
 def com_文字图层广告(text_layer: CDispatch, re_contents: List[TextReplaceName]):
     visible = text_layer.Visible
     text_item = text_layer.TextItem
-    content: str = text_item.Contents
+    content = text_item.Contents
     content = content.lower()
     new_name = content.replace("\r", "")
 
     for tr in re_contents:
         ori_name = str(tr.ori_name).lower()
         text_item = text_layer.TextItem
-        content: str = text_item.Contents
+        content = text_item.Contents
         content = content.lower()
 
         if ori_name in content:
             try:
-                print("\n" + Back.RED + Fore.BLACK + f"文字图层发现广告：\t{text_layer.Name}" + Style.RESET_ALL)
+                print(
+                    "\n"
+                    + Back.RED
+                    + Fore.BLACK
+                    + f"文字图层发现广告：\t{text_layer.Name}"
+                    + Style.RESET_ALL
+                )
             except:
                 pass
 

@@ -79,7 +79,7 @@ class LayoutRandomLayoug:
 
         pil_list = []
         inline_list = []
-        for in_file in tqdm(self.image_list, ncols=100, desc=f"制作首图"):
+        for in_file in tqdm(self.image_list, ncols=100, desc="制作首图"):
             im = Image.open(in_file).convert("RGBA")
             im = fun_图片裁剪(
                 im=im,

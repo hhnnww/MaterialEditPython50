@@ -1,5 +1,6 @@
-from win32com.client import CDispatch
 from pathlib import Path
+
+from win32com.client import CDispatch
 
 
 def fun_添加广告(doc: CDispatch):

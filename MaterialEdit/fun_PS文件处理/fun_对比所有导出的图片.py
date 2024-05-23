@@ -1,8 +1,10 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 from PIL import Image
 from pyzbar import pyzbar
-from pathlib import Path
+
 from ..fun_图片编辑 import ImageEdit
 
 
@@ -84,7 +86,10 @@ def fun_叠加差异(img_1, img_2):
     im_1_white = fun_获取所有白色像素(im_1)
     im_2_white = fun_获取所有白色像素(im_2)
 
-    if diff_white < min([im_1_white, im_2_white]) * 0.8 and abs(im_1_white - im_2_white) < 200:
+    if (
+        diff_white < min([im_1_white, im_2_white]) * 0.8
+        and abs(im_1_white - im_2_white) < 200
+    ):
         return True
 
     return False

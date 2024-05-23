@@ -10,7 +10,7 @@ def fun_享设计文件夹重构(material_path: str):
 
 def fun_单个文件夹重构(in_material_path: Path):
     links_path = in_material_path / "Links"
-    font_path = in_material_path / "Fonts"
+    # font_path = in_material_path / "Fonts"
 
     for in_file in in_material_path.rglob("*"):
         if in_file.is_file() and in_file.suffix.lower() not in [".ai", ".eps"]:

@@ -2,7 +2,9 @@ import shutil
 from pathlib import Path
 
 from .fun_PPT导出图片 import PPTFile
-from .fun_图片组合 import PPTPICMerge
+
+
+# from .fun_图片组合 import PPTPICMerge
 
 
 class PPTEdit:

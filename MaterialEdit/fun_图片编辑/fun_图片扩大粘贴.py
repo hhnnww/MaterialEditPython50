@@ -24,14 +24,14 @@ def fun_图片扩大粘贴(
         bg = Image.new("RGBA", (width, height), background_color)
     else:
         bg = background_pil
-    l, t = 0, 0
+    left_position, t = 0, 0
 
     if left == "start":
-        l = 0
+        left_position = 0
     elif left == "center":
-        l = int((bg.width - im.width) / 2)
+        left_position = int((bg.width - im.width) / 2)
     elif left == "end":
-        l = bg.width - im.width
+        left_position = bg.width - im.width
 
     if top == "start":
         t = 0
@@ -40,7 +40,7 @@ def fun_图片扩大粘贴(
     elif top == "end":
         t = bg.height - im.height
 
-    bg.paste(im, (l, t), im)
+    bg.paste(im, (left_position, t), im)
 
     im.close()
 

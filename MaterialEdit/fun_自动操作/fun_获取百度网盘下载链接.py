@@ -3,7 +3,7 @@ from pathlib import Path
 import pyautogui
 import pyperclip
 
-from .fun_窗口操作 import fun_获取窗口坐标, fun_窗口置顶
+from .fun_窗口操作 import fun_获取窗口坐标
 from .fun_获取图片 import fun_获取图片
 
 pyautogui.PAUSE = 0.1
@@ -20,11 +20,16 @@ class AutoGetBaiDuShareLink:
 
     def fun_获取所有STEM(self):
         for in_file in self.parent_path.iterdir():
-            if in_file.is_dir() and self.start_stem <= int(in_file.stem) <= self.end_stem:
+            if (
+                in_file.is_dir()
+                and self.start_stem <= int(in_file.stem) <= self.end_stem
+            ):
                 yield in_file.stem
 
     def fun_获取单个素材(self, material_id: str):
-        pyautogui.click(fun_获取图片("wodewangpan", self.path_name, self.baidu_position))
+        pyautogui.click(
+            fun_获取图片("wodewangpan", self.path_name, self.baidu_position)
+        )
 
         search_text = fun_获取图片("search_input", self.path_name, self.baidu_position)
         pyautogui.click(search_text)
@@ -34,10 +39,18 @@ class AutoGetBaiDuShareLink:
         folder_xy = fun_获取图片("folder", self.path_name, self.baidu_position)
 
         if folder_xy is not None:
-            pyautogui.rightClick(fun_获取图片("folder", self.path_name, self.baidu_position))
-            pyautogui.click(fun_获取图片("share_button", self.path_name, self.baidu_position))
-            pyautogui.click(fun_获取图片("yongjiuyouxiao", self.path_name, self.baidu_position))
-            pyautogui.click(fun_获取图片("chuangjian", self.path_name, self.baidu_position))
+            pyautogui.rightClick(
+                fun_获取图片("folder", self.path_name, self.baidu_position)
+            )
+            pyautogui.click(
+                fun_获取图片("share_button", self.path_name, self.baidu_position)
+            )
+            pyautogui.click(
+                fun_获取图片("yongjiuyouxiao", self.path_name, self.baidu_position)
+            )
+            pyautogui.click(
+                fun_获取图片("chuangjian", self.path_name, self.baidu_position)
+            )
             pyautogui.click(fun_获取图片("guanbi", self.path_name, self.baidu_position))
 
             return pyperclip.paste()

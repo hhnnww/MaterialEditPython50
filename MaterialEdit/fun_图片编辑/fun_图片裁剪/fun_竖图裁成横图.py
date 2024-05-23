@@ -3,11 +3,13 @@ from PIL import Image
 from ...type import ALIGNITEM
 
 
-def fun_竖图裁成横图(im: Image.Image, width: int, height: int, position: ALIGNITEM) -> Image.Image:
+def fun_竖图裁成横图(
+    im: Image.Image, width: int, height: int, position: ALIGNITEM
+) -> Image.Image:
     ratio = im.width / width
     im_height = height * ratio
 
-    top, bottom = 0, 0
+    top, _bottom = 0, 0
     if position == "start":
         top = 0
 
@@ -16,7 +18,12 @@ def fun_竖图裁成横图(im: Image.Image, width: int, height: int, position: A
         im_height += top
 
     elif position == "end":
-        top = im.height - im_height
+        top = int(im.height - im_height)
         im_height = im.height
 
-    return im.resize(size=(width, height), resample=Image.LANCZOS, box=(0, top, im.width, im_height), reducing_gap=3)
+    return im.resize(
+        size=(width, height),
+        resample=Image.LANCZOS,
+        box=(0, top, im.width, im_height),
+        reducing_gap=3,
+    )

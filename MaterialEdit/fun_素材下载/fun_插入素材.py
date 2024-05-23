@@ -18,5 +18,5 @@ def fun_插入素材(shop_name: str, material_site: str, material_model: Materia
         time.sleep(0.01)
 
     else:
-        print(f"素材已经存在")
+        print("素材已经存在")
         return None

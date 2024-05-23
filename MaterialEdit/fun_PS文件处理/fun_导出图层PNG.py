@@ -22,7 +22,9 @@ def fun_清空OUT_PATH():
             shutil.rmtree(in_file)
 
 
-def fun_导出单个图层(app: CDispatch, in_layer: CDispatch, file: Path, ref_doc: CDispatch) -> Path:
+def fun_导出单个图层(
+    app: CDispatch, in_layer: CDispatch, file: Path, ref_doc: CDispatch
+) -> Path:
     """
     传入单个图层，并且导出到桌面PNG
     :param app:
@@ -120,13 +122,13 @@ def is_export_layer(item, doc_bounds):
         return False
 
     # 如果在文档之外
-    l, t, r, b = item.Bounds
+    left, t, r, b = item.Bounds
     if (
         r <= 0
         or b <= 0
-        or l >= doc_bounds[0]
+        or left >= doc_bounds[0]
         or t >= doc_bounds[1]
-        or l <= 0
+        or left <= 0
         or r >= doc_bounds[0]
         or t <= 0
         or b >= doc_bounds[1]
@@ -134,7 +136,9 @@ def is_export_layer(item, doc_bounds):
         return False
 
     # 如果大于宽高三分之一
-    if int(abs(r - l)) > int(doc_bounds[0] / 3) or int(abs(b - t)) > int(doc_bounds[1] / 3):
+    if int(abs(r - left)) > int(doc_bounds[0] / 3) or int(abs(b - t)) > int(
+        doc_bounds[1] / 3
+    ):
         return False
 
     # 如果是隐藏图层
@@ -149,7 +153,9 @@ class LayerItem(BaseModel):
     img_path: Path
 
 
-def run_导出所有图层(app: CDispatch, in_doc: CDispatch, file: Path, layer_list: List[CDispatch]) -> List[LayerItem]:
+def run_导出所有图层(
+    app: CDispatch, in_doc: CDispatch, file: Path, layer_list: List[CDispatch]
+) -> List[LayerItem]:
     export_layer_list = []
 
     # fun_清空OUT_PATH()

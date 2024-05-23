@@ -1,4 +1,6 @@
 import ctypes
+from typing import Any
+
 import win32gui
 
 
@@ -18,19 +20,19 @@ def get_window_pos(hwnd):
 
 
 def fun_获取窗口坐标(windows_name: str):
-    win_list = []
+    win_list: list[Any] = []
     win32gui.EnumWindows(lambda hwnd, param: param.append(hwnd), win_list)
 
     for win in win_list:
         title = win32gui.GetWindowText(win)
 
         if windows_name in title:
-            l, t, r, b = get_window_pos(win)
-            return l, t, r, b
+            left, t, r, b = get_window_pos(win)
+            return left, t, r, b
 
 
 def fun_窗口置顶(windows_name: str):
-    win_list = []
+    win_list: list[Any] = []
     win32gui.EnumWindows(lambda hwnd, param: param.append(hwnd), win_list)
 
     for win in win_list:

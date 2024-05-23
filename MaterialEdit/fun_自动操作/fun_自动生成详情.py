@@ -7,8 +7,9 @@ from Router.fun_制作详情 import (
     MakeProductImageRequestModel,
     fun_make_material_product_image,
 )
-from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
+
 from ..fun_获取路径数字 import fun_获取路径数字
+from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 
 
 class AutoMakeProductImage:
@@ -69,7 +70,7 @@ class AutoMakeProductImage:
 
     def run(self):
         path_list = self.fun_生成文件夹列表()
-        for root_path in tqdm(path_list, ncols=100, desc=f"生成详情\t"):
+        for root_path in tqdm(path_list, ncols=100, desc="生成详情\t"):
             if fun_判断是否为空文件夹(root_path) is True:
                 print(root_path)
                 self.fun_生成单个详情(root_path)

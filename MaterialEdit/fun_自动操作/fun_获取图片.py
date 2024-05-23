@@ -22,7 +22,12 @@ def fun_获取图片(img_name: str, path_name: str, position: Any):
 
     num = 1
     with Image.open(img_path.as_posix()) as im:
-        while pyautogui.locateCenterOnScreen(image=im, minSearchTime=15, grayscale=True, region=position) is None:
+        while (
+            pyautogui.locateCenterOnScreen(
+                image=im, minSearchTime=15, grayscale=True, region=position
+            )
+            is None
+        ):
             print("找不到图片")
             pyautogui.sleep(1)
             num += 1
@@ -30,4 +35,6 @@ def fun_获取图片(img_name: str, path_name: str, position: Any):
             if num == 5:
                 return None
 
-        return pyautogui.locateCenterOnScreen(image=im, minSearchTime=15, grayscale=True, region=position)
+        return pyautogui.locateCenterOnScreen(
+            image=im, minSearchTime=15, grayscale=True, region=position
+        )

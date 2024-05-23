@@ -2,7 +2,6 @@ from pathlib import Path
 from tqdm import tqdm
 from MaterialEdit.fun_获取路径数字 import fun_获取路径数字
 from Router.router_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
-from pprint import pprint
 
 
 def fun_处理单个文件(shop_name: str, root_path: str):

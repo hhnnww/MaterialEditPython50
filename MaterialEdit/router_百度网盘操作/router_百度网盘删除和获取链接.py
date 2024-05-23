@@ -1,4 +1,3 @@
-import json
 import re
 
 import pyperclip
@@ -8,6 +7,7 @@ from requests_html import HTMLSession
 
 from .fun_从百度网盘文件列表JSON中构建列表 import fun_构建网盘文件列表
 from .fun_构建HEADER import fun_构建header
+from .fun_获取自动发货中的商家编码 import fun_获取自动发货中的商家编码
 
 router = APIRouter()
 
@@ -69,9 +69,6 @@ class GetBaiduShareLinkItem(BaseModel):
     maid_list: str  # 需要获取分享链接的商品ID列表
 
 
-from .fun_获取自动发货中的商家编码 import fun_获取自动发货中的商家编码
-
-
 @router.post("/get_baidu_share_link")
 def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
     """
@@ -117,5 +114,5 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
         else:
             print(f"{ma_id} 不存在")
 
-    print(f"已经自动复制，可直接去粘贴。")
+    print("已经自动复制，可直接去粘贴。")
     pyperclip.copy(content_text)
