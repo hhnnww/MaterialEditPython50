@@ -1,7 +1,7 @@
 import uuid
 from pathlib import Path
 
-from ..setting import MATERIAL_SOURCE_SUFFIX, IMAGE_SUFFIX
+from ..setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
 
 
 def fun_文件重命名(folder: str, preview_path: str, shop_name: str, num: int = 1):
@@ -25,7 +25,10 @@ def fun_文件重命名(folder: str, preview_path: str, shop_name: str, num: int
             if image_path.exists() is True:
                 image_file_new_name = image_path.with_stem(new_stem)
 
-                while image_file_new_name.exists() is True or material_file_new_name.exists() is True:
+                while (
+                    image_file_new_name.exists() is True
+                    or material_file_new_name.exists() is True
+                ):
                     new_stem = str(uuid.uuid1())
                     material_file_new_name = in_file.with_stem(new_stem)
                     image_file_new_name = image_path.with_stem(new_stem)

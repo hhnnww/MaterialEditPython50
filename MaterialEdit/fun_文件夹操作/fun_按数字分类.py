@@ -13,7 +13,9 @@ def fun_按数字分类(material_path: str):
             if path_stem_num is None:
                 continue
 
-            num_parent_path = material_path_obj / fun_根据数字计算对应文件夹(path_stem_num)
+            num_parent_path = material_path_obj / fun_根据数字计算对应文件夹(
+                path_stem_num
+            )
 
             if in_file.parent != num_parent_path:
                 new_path = num_parent_path / in_file.name

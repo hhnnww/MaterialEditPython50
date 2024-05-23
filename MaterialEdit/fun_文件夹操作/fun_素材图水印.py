@@ -30,14 +30,20 @@ def fun_素材图水印(material_path: str, shop_name: str):
         fill_color=(255, 255, 255, 255),
         background_color=(255, 255, 255, 0),
     )
-    shop_name_pil = fun_图片竖向拼接([shop_name_pil, shop_name_pinyin], 5, "center", (255, 255, 255, 0))
-    water_pil = fun_获取单个水印(60, (water_pix_color, water_pix_color, water_pix_color, water_pix_color))
-    water_pil = fun_图片竖向拼接([water_pil, shop_name_pil], 10, "center", (255, 255, 255, 0))
+    shop_name_pil = fun_图片竖向拼接(
+        [shop_name_pil, shop_name_pinyin], 5, "center", (255, 255, 255, 0)
+    )
+    water_pil = fun_获取单个水印(
+        60, (water_pix_color, water_pix_color, water_pix_color, water_pix_color)
+    )
+    water_pil = fun_图片竖向拼接(
+        [water_pil, shop_name_pil], 10, "center", (255, 255, 255, 0)
+    )
 
     all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)
 
-    for in_file in tqdm(all_image, ncols=100, desc="素材图水印\t"):
-        in_file = Path(in_file)
+    for in_file_stem in tqdm(all_image, ncols=100, desc="素材图水印\t"):
+        in_file: Path = Path(in_file_stem)
 
         if shop_name in in_file.stem:
             try:
@@ -45,7 +51,9 @@ def fun_素材图水印(material_path: str, shop_name: str):
 
                 im.thumbnail((1200, 1200), Image.LANCZOS, 3)
                 try:
-                    im.paste(water_pil, (20, im.height - water_pil.height - 20), water_pil)
+                    im.paste(
+                        water_pil, (20, im.height - water_pil.height - 20), water_pil
+                    )
                 except OSError:
                     print(in_file.as_posix())
                 else:

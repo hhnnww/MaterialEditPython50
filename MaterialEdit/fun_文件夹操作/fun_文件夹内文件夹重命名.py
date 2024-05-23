@@ -3,7 +3,9 @@ from typing import Union
 from uuid import uuid1
 
 
-def fun_文件夹内文件夹重命名(material_path: Union[str, Path], shop_name: str, num: int = 1):
+def fun_文件夹内文件夹重命名(
+    material_path: Union[str, Path], shop_name: str, num: int = 1
+):
     if isinstance(material_path, str):
         material_path = Path(material_path)
 
@@ -19,7 +21,3 @@ def fun_文件夹内文件夹重命名(material_path: Union[str, Path], shop_nam
 
             in_path.rename(in_path.with_name(shop_name + "(" + num_str + ")"))
             num += 1
-
-
-if __name__ == "__main__":
-    fun_文件夹内文件夹重命名(r"F:\小夕素材\10000-10999\10111")

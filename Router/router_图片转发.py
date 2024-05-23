@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from requests_html import HTMLSession
 from fastapi.responses import Response
+from requests_html import HTMLSession
 
 router = APIRouter(prefix="/img")
 

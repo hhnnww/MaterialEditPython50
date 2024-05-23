@@ -10,7 +10,7 @@ def fun_移动到效果图(material_path: str, effect_path: str):
     material_path_obj = Path(material_path)
     effect_path_obj = Path(effect_path)
 
-    pic_list = []
+    pic_list: list[Path] = []
     for in_file in material_path_obj.rglob("*"):
         if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
             pic_list.append(in_file)
@@ -21,7 +21,6 @@ def fun_移动到效果图(material_path: str, effect_path: str):
 
     num = 1
     for in_file in tqdm(pic_list, ncols=100, desc="移动到效果图\t"):
-        in_file: Path
         effect_image_path = effect_path_obj / f"{num}{in_file.suffix}"
         while effect_image_path.exists() is True:
             num += 1

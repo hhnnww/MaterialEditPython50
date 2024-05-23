@@ -11,6 +11,7 @@ from .fun_制作享设计大图 import fun_享设计制作预览图
 from .fun_制作日历图片 import MakeCalenderPic
 from .fun_图片添加白色背景 import fun_图片添加白色背景
 from .fun_复制到预览图 import fun_复制到预览图
+from .fun_打开所有子文件夹 import fun_打开所有子文件夹
 from .fun_按数字分类 import fun_按数字分类
 from .fun_文件夹内文件夹重命名 import fun_文件夹内文件夹重命名
 from .fun_文件夹初始化 import fun_文件夹初始化
@@ -20,7 +21,6 @@ from .fun_移动到根目录 import fun_移动到根目录
 from .fun_素材图水印 import fun_素材图水印
 from .fun_解压ZIP import fun_解压ZIP
 from .fun_遍历指定文件 import fun_遍历指定文件
-from .fun_打开所有子文件夹 import fun_打开所有子文件夹
 
 
 class MaterialPathAction:

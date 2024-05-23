@@ -1,10 +1,1 @@
-{
-  "editor.defaultFormatter": "ms-python.black-formatter",
-  "editor.formatOnSave": true,
-  "jupyter.notebookFileRoot": "C:\\Users\\wuweihua\\codeProject\\MaterialEditPython5.0",
-  "notebook.formatOnCellExecution": true,
-  "notebook.formatOnSave.enabled": true,
-  "python.analysis.autoImportCompletions": false,
-  "python.analysis.typeCheckingMode": "off",
-  "python.REPL.enableREPLSmartSend": false
-}
+{}

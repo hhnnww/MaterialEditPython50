@@ -56,7 +56,7 @@ class AutoMakeProductImage:
                 # 制作详情
                 oneline_number=oneline_number,
                 oneline_ratio=oneline_ratio,
-                has_preview_image=True,
+                has_preview_image=False,
                 has_effect_image=True,
                 preview_image_sort=True,
                 preview_used_number=0,

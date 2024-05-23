@@ -16,7 +16,11 @@ def fun_文件夹初始化(root_path: str):
         material_path_obj.mkdir()
 
     for in_file in root_path_obj.iterdir():
-        if in_file.is_dir() and in_file not in [material_path_obj, preview_path_obj, effect_path_obj]:
+        if in_file.is_dir() and in_file not in [
+            material_path_obj,
+            preview_path_obj,
+            effect_path_obj,
+        ]:
             new_path = material_path_obj / in_file.name
 
             num = 1

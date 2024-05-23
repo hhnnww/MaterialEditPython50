@@ -1,6 +1,6 @@
 from PIL import Image
 
-from ...type import ALIGNITEM, _COLOR
+from ...type import _COLOR, ALIGNITEM
 
 
 def fun_图片竖向拼接(
@@ -10,7 +10,9 @@ def fun_图片竖向拼接(
     background_color: _COLOR,
 ) -> Image.Image:
     width = max([image.width for image in image_list])
-    height = sum([image.height for image in image_list]) + int((len(image_list) - 1) * spacing)
+    height = sum([image.height for image in image_list]) + int(
+        (len(image_list) - 1) * spacing
+    )
 
     bg = Image.new("RGBA", (width, height), background_color)
 

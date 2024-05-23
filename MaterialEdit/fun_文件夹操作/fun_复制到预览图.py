@@ -20,12 +20,14 @@ def fun_复制到预览图(folder: str, preview_path: str):
                 pic_list.append(in_file)
 
     for in_file in tqdm(pic_list, ncols=100, desc="复制到预览图\t"):
-        preview_path = in_file.as_posix().replace(folder_obj.as_posix(), preview_path_obj.as_posix())
-        preview_path = Path(preview_path)
+        preview_path_text = in_file.as_posix().replace(
+            folder_obj.as_posix(), preview_path_obj.as_posix()
+        )
+        preview_path_obj = Path(preview_path_text)
 
-        if preview_path.exists() is False:
-            if preview_path.parent.exists() is False:
-                print(preview_path.parent)
-                preview_path.parent.mkdir(parents=True)
+        if preview_path_obj.exists() is False:
+            if preview_path_obj.parent.exists() is False:
+                print(preview_path_obj.parent)
+                preview_path_obj.parent.mkdir(parents=True)
 
-            shutil.copy(in_file.as_posix(), preview_path)
+            shutil.copy(in_file.as_posix(), preview_path_obj)

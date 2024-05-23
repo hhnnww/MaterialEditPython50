@@ -14,4 +14,6 @@ class MaterialMergeModel(BaseModel):
 
 @router.post("")
 def material_merge(item: MaterialMergeModel):
-    fun_素材文件夹合并(ori_path=item.ori_path, dst_path=item.dst_path, shop_name=item.shop_name)
+    fun_素材文件夹合并(
+        ori_path=item.ori_path, dst_path=item.dst_path, shop_name=item.shop_name
+    )

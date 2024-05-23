@@ -1,5 +1,6 @@
-from ..type import _COLOR
 from PIL import Image, ImageDraw
+
+from ..type import _COLOR
 
 
 def fun_画一个圆(

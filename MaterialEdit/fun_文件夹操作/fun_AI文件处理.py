@@ -26,7 +26,9 @@ class AIFile:
 
         for item in ad_layer.GroupItems:
             if 70 < item.Height < 80:
-                if (float(item.Height) + abs(float(item.Top))) - float(self.doc.Height) < 10:
+                if (float(item.Height) + abs(float(item.Top))) - float(
+                    self.doc.Height
+                ) < 10:
                     if abs(int(item.Left)) == 0:
                         print("success")
                         item.Locked = False
@@ -63,15 +65,21 @@ class AIFile:
 
         # 初始化文字框
         new_layer.Name = self.tb_name
-        text_frame = self.doc.PathItems.Rectangle(0, 0, int(self.doc.Width), int(self.doc.Height))
+        text_frame = self.doc.PathItems.Rectangle(
+            0, 0, int(self.doc.Width), int(self.doc.Height)
+        )
 
         # 放内容
         area_text_ref = self.doc.TextFrames.AreaText(text_frame)
 
         if self.tb_name == "小夕素材":
-            area_text_ref.Contents = "淘宝店铺：小夕素材\nxiaoxisc.com\n购买时请认准官方店铺。"
+            area_text_ref.Contents = (
+                "淘宝店铺：小夕素材\nxiaoxisc.com\n购买时请认准官方店铺。"
+            )
         elif self.tb_name == "饭桶设计":
-            area_text_ref.Contents = "淘宝店铺：饭桶设计\nfantongdesign.com\n购买时请认准官方店铺。"
+            area_text_ref.Contents = (
+                "淘宝店铺：饭桶设计\nfantongdesign.com\n购买时请认准官方店铺。"
+            )
 
         for art_frame in new_layer.TextFrames:
             for art_range in art_frame.Characters:

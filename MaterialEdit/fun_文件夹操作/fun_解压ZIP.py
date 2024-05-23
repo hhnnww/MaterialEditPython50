@@ -1,5 +1,5 @@
 from pathlib import Path
-from zipfile import ZipFile, BadZipfile
+from zipfile import BadZipfile, ZipFile
 
 
 def fun_解压ZIP(file_path: Path):

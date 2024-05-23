@@ -45,7 +45,13 @@ class MakeFirstImageModel(BaseModel):
 
 @router.post("")
 def make_first_image(item: MakeFirstImageModel):
-    print("制作首图", item.shop_name, item.material_id, item.select_image_list, item.first_image_layout)
+    print(
+        "制作首图",
+        item.shop_name,
+        item.material_id,
+        item.select_image_list,
+        item.first_image_layout,
+    )
     fun_清空桌面上传文件夹图片("st_" + item.first_image_num)
 
     # 制作首图背景

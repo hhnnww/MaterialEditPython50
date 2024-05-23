@@ -103,7 +103,6 @@ class EditItem(BaseModel):
 
 @router.post("/auto_edit_material")
 def auto_edit_material(item: EditItem):
-
     # 构建所有需要处理的文件夹
     all_file = list(Path(item.parent_path).iterdir())
     used_folder = []

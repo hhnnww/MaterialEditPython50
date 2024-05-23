@@ -6,8 +6,8 @@ from tqdm import tqdm
 from .fun_遍历指定文件 import fun_遍历指定文件
 
 
-def fun_图片添加白色背景(material_path: str):
-    material_path = Path(material_path)
+def fun_图片添加白色背景(material_path_text: str):
+    material_path = Path(material_path_text)
     png_file_list = fun_遍历指定文件(material_path.as_posix(), [".png"])
     for in_png in tqdm(png_file_list, ncols=100, desc="图片添加白色背景"):
         print(in_png)

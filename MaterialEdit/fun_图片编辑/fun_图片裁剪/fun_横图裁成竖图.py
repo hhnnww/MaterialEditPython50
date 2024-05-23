@@ -3,7 +3,9 @@ from PIL import Image
 from ...type import ALIGNITEM
 
 
-def fun_横图裁成竖图(im: Image.Image, width: int, height: int, position: ALIGNITEM) -> Image.Image:
+def fun_横图裁成竖图(
+    im: Image.Image, width: int, height: int, position: ALIGNITEM
+) -> Image.Image:
     ratio = im.height / height
     im_width = width * ratio
 
@@ -16,7 +18,12 @@ def fun_横图裁成竖图(im: Image.Image, width: int, height: int, position: A
         im_width += left
 
     elif position == "end":
-        left = im.width - im_width
+        left = int(im.width - im_width)
         im_width = im.width
 
-    return im.resize(size=(width, height), resample=Image.LANCZOS, box=(left, top, im_width, im.height), reducing_gap=3)
+    return im.resize(
+        size=(width, height),
+        resample=Image.LANCZOS,
+        box=(left, top, im_width, im.height),
+        reducing_gap=3,
+    )

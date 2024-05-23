@@ -20,21 +20,15 @@ def fun_图片打满水印(
             in_line_number += 1
         else:
             in_line_number = singe_line_number
-        water_list.append(
-            fun_单排水印(im.width, size, in_line_number, water_color)
-        )
+        water_list.append(fun_单排水印(im.width, size, in_line_number, water_color))
 
     coly_spacing = int(
         ((im.height - 100) - sum([obj.height for obj in water_list]))
         / (len(water_list) - 1)
     )
 
-    bg = fun_图片竖向拼接(
-        water_list, coly_spacing, "center", (255, 255, 255, 0)
-    )
-    bg = fun_图片扩大粘贴(
-        bg, 9999, 9999, "center", "center", (255, 255, 255, 255), im
-    )
+    bg = fun_图片竖向拼接(water_list, coly_spacing, "center", (255, 255, 255, 0))
+    bg = fun_图片扩大粘贴(bg, 9999, 9999, "center", "center", (255, 255, 255, 255), im)
     return bg
 
 
