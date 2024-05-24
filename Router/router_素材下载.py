@@ -3,9 +3,6 @@ from pathlib import Path
 from bson import ObjectId
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
-from tqdm import tqdm
-
 from MaterialEdit.fun_素材下载 import (
     fun_envato_图片下载,
     fun_插入素材,
@@ -13,6 +10,8 @@ from MaterialEdit.fun_素材下载 import (
     fun_获取集合,
     fun_采集,
 )
+from pydantic import BaseModel
+from tqdm import tqdm
 
 router = APIRouter(prefix="/MaterialDown")
 
