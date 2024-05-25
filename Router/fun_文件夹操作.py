@@ -4,15 +4,15 @@ from pathlib import Path
 from pprint import pprint
 
 import pythoncom
+from MaterialEdit import AIFile, MaterialPathAction, PPTEdit, PSFile
+from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
+from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
+from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
+from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
 from pydantic import BaseModel
 from tqdm import tqdm
 from win10toast import ToastNotifier  # type: ignore
 from win32com.client import Dispatch
-
-from MaterialEdit import AIFile, MaterialPathAction, PPTEdit, PSFile
-from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
-from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
-from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
 
 toaster = ToastNotifier()
 
@@ -92,10 +92,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             )
 
         case "复制图片到预览图":
-            MaterialPathAction.fun_复制到预览图(
-                folder=material_structure.material_path,
+            ac = ImageCopyToPreview(
+                folder_path=material_structure.material_path,
                 preview_path=material_structure.preview_path,
             )
+            ac.main()
 
         case "移动到效果图":
             MaterialPathAction.fun_移动到效果图(
@@ -171,7 +172,6 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             for in_file in tqdm(all_file, ncols=100, desc="删除广告导出图片\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-
                     # 如果是4KB的PSD不处理
                     if in_file.stat().st_size == 4096:
                         print("错误PSD文件", in_file)

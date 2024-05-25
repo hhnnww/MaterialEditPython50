@@ -10,7 +10,7 @@ from .fun_删除素材文件夹所有图片 import fun_删除素材文件夹所�
 from .fun_制作享设计大图 import fun_享设计制作预览图
 from .fun_制作日历图片 import MakeCalenderPic
 from .fun_图片添加白色背景 import fun_图片添加白色背景
-from .fun_复制到预览图 import fun_复制到预览图
+from .fun_复制到预览图 import ImageCopyToPreview
 from .fun_打开所有子文件夹 import fun_打开所有子文件夹
 from .fun_按数字分类 import fun_按数字分类
 from .fun_文件夹内文件夹重命名 import fun_文件夹内文件夹重命名
@@ -36,7 +36,7 @@ class MaterialPathAction:
     fun_删除广告文件 = fun_删除广告文件
     fun_文件重命名 = fun_文件重命名
     fun_删除素材文件夹所有图片 = fun_删除素材文件夹所有图片
-    fun_复制到预览图 = fun_复制到预览图
+    fun_复制到预览图 = ImageCopyToPreview
     fun_移动到效果图 = fun_移动到效果图
     AIFile = AIFile
     fun_删除EPS文件 = fun_删除EPS文件

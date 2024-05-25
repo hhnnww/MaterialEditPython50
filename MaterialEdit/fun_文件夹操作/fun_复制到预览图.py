@@ -6,34 +6,57 @@ from tqdm import tqdm
 from ..setting import IMAGE_SUFFIX
 
 
-def fun_复制到预览图(folder: str, preview_path: str):
-    folder_obj = Path(folder)
-    preview_path_obj = Path(preview_path)
+class ImageCopyToPreview:
+    def __init__(self, folder_path: str, preview_path: str) -> None:
+        self.folder_path_obj = Path(folder_path)
+        self.preview_path_obj = Path(preview_path)
 
-    if preview_path_obj.exists() is False:
-        preview_path_obj.mkdir()
+    def all_image(self) -> list[Path]:
+        """
+        遍历所有图片
 
-    # 构建图片列表
-    pic_list = []
-    for in_file in folder_obj.rglob("*"):
-        if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
-            if in_file.parent.stem != "Links":
+        Returns:
+            list[Path]: _description_
+        """
+        pic_list = []
+        for in_file in self.folder_path_obj.rglob("*"):
+            if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
                 pic_list.append(in_file)
+        return pic_list
 
-    # 遍历图片
-    for in_file in tqdm(pic_list, ncols=100, desc="复制到预览图\t"):
-        in_file: Path
+    def image_to_preview_image(self, image_path: Path) -> Path:
+        """单个图片转换成预览图图片路径
 
-        # 转换成预览图路径
-        preview_path_text = in_file.as_posix().replace(
-            folder_obj.as_posix(), preview_path_obj.as_posix()
+        Args:
+            image_path (Path): 素材文件夹内的图片
+
+        Returns:
+            Path: 预览图文件夹内的图片路径
+        """
+        return Path(
+            image_path.as_posix().replace(
+                self.folder_path_obj.as_posix(), self.preview_path_obj.as_posix()
+            )
         )
-        preview_img_path_obj = Path(preview_path_text)
 
-        # 如果预览图在子文件夹内，创建子文件夹
-        if preview_img_path_obj.exists() is False:
-            if preview_img_path_obj.parent.exists() is False:
-                preview_img_path_obj.parent.mkdir(parents=True)
+    def main(self):
+        for image_file in tqdm(self.all_image(), desc="复制图片到预览图", ncols=100):
+            preview_file = self.image_to_preview_image(image_file)
 
-            # 开始复制
-            shutil.copy(in_file.as_posix(), preview_img_path_obj)
+            # AI 文件中的 link 文件
+            if image_file.parent.stem.lower() == "links":
+                print(f"图片是AI文件夹内的link图片,不复制:{image_file}")
+                continue
+
+            # 图片已经存在
+            if preview_file.exists() is True:
+                print(f"图片纯在不复制:{image_file}")
+                continue
+
+            # 图片在子文件夹内
+            if preview_file.parent.exists() is False:
+                print(f"预览图需要创建父文件夹:{preview_file.parent}")
+                preview_file.parent.mkdir(parents=True)
+
+            print(f"复制到预览图:{image_file}\t->\t{preview_file}")
+            shutil.copy(image_file, preview_file)
