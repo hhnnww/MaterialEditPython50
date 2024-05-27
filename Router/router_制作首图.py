@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
-
 from MaterialEdit import (
     ImageEdit,
     LayoutAdaptiveCrop,
@@ -21,6 +19,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
     LayoutRandomLayoug,
 )
 from MaterialEdit.type import ALIGNITEM, ImageModel
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/MakeFirstImage")
 
@@ -45,13 +44,6 @@ class MakeFirstImageModel(BaseModel):
 
 @router.post("")
 def make_first_image(item: MakeFirstImageModel):
-    print(
-        "制作首图",
-        item.shop_name,
-        item.material_id,
-        item.select_image_list,
-        item.first_image_layout,
-    )
     fun_清空桌面上传文件夹图片("st_" + item.first_image_num)
 
     # 制作首图背景
