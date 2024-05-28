@@ -4,6 +4,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from ..setting import IMAGE_SUFFIX
+from .fun_单个文件制作WEB预览图 import fun_单个文件制作WEB预览图
 
 
 class ImageCopyToPreview:
@@ -44,6 +45,7 @@ class ImageCopyToPreview:
             preview_file = self.image_to_preview_image(image_file)
 
             # AI 文件中的 link 文件
+            # 不复制
             if image_file.parent.stem.lower() == "links":
                 print(f"图片是AI文件夹内的link图片,不复制:{image_file}")
                 continue
@@ -54,9 +56,12 @@ class ImageCopyToPreview:
                 continue
 
             # 图片在子文件夹内
+            # 先创建父文件夹
             if preview_file.parent.exists() is False:
                 print(f"预览图需要创建父文件夹:{preview_file.parent}")
                 preview_file.parent.mkdir(parents=True)
 
             print(f"复制到预览图:{image_file}\t->\t{preview_file}")
+
             shutil.copy(image_file, preview_file)
+            fun_单个文件制作WEB预览图(image_path=preview_file)

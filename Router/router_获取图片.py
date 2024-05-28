@@ -1,7 +1,11 @@
 import io
+from pathlib import Path
 
 from fastapi import APIRouter
-from fastapi.responses import Response
+from fastapi.responses import FileResponse, Response
+from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
+    fun_单个文件制作WEB预览图,
+)
 from PIL import Image
 
 router = APIRouter(prefix="/blob")
@@ -28,3 +32,10 @@ def get_img(img: str):
     except ValueError as e:
         print(img, e)
         return None
+
+
+@router.get("/thumbnail")
+def get_thumbnail(img_path: str):
+    img_path_obj = Path(img_path)
+    new_path = fun_单个文件制作WEB预览图(image_path=img_path_obj)
+    return FileResponse(path=new_path)
