@@ -77,9 +77,13 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
     num += 1
 
     if item.has_effect_image == 1 and Path(item.effect_image_path).exists() is True:
-        image_list = fun_遍历图片(
-            folder=item.effect_image_path, used_image_number=0, image_sort=True
-        )
+        image_list = [
+            obj
+            for obj in fun_遍历图片(
+                folder=item.effect_image_path, used_image_number=0, image_sort=True
+            )
+            if "_thumb" not in Path(obj).stem
+        ]
 
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
@@ -110,11 +114,15 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
 
     # 制作预览图
     if item.has_preview_image == 1 and Path(item.preview_image_path).exists() is True:
-        image_list = fun_遍历图片(
-            folder=item.preview_image_path,
-            used_image_number=item.preview_used_number,
-            image_sort=item.preview_image_sort == 1,
-        )
+        image_list = [
+            obj
+            for obj in fun_遍历图片(
+                folder=item.preview_image_path,
+                used_image_number=item.preview_used_number,
+                image_sort=item.preview_image_sort == 1,
+            )
+            if "_thumb" not in Path(obj).stem
+        ]
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
                 title="素材预览图", desc="* 预览图与源文件对应"
