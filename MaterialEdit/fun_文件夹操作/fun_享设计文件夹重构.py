@@ -21,8 +21,8 @@ def fun_单个文件夹重构(in_material_path: Path):
 
                 if windows_font_path.exists() is False:
                     shutil.move(in_file, windows_font_path)
-
-                in_file.unlink()
+                else:
+                    in_file.unlink()
 
                 # if font_path.exists() is False:
                 #     font_path.mkdir()

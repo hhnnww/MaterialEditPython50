@@ -1,8 +1,6 @@
 from pathlib import Path
 
 from fastapi import APIRouter
-from pydantic import BaseModel
-
 from MaterialEdit.fun_自动操作 import (
     AutoGetBaiDuShareLink,
     AutoMakeProductImage,
@@ -11,6 +9,7 @@ from MaterialEdit.fun_自动操作 import (
     DownPathMoveToMaterialPath,
 )
 from MaterialEdit.fun_获取路径数字 import fun_获取路径数字
+from pydantic import BaseModel
 
 from .fun_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
 
@@ -117,10 +116,12 @@ def auto_edit_material(item: EditItem):
                 "解压ZIP",
                 "移动到效果图",
                 "删除素材文件夹内所有图片",
+                "删除EPS文件",
                 "文件重命名",
                 "移动到根目录",
                 "删除广告文件",
                 "PSD-导出图片-添加广告",
+                "AI-导出图片",
                 "复制图片到预览图",
                 "素材图水印",
             ]
