@@ -13,10 +13,17 @@ from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 
 
 class AutoMakeProductImage:
-    def __init__(self, material_parent_path: str, start_stem: int, shop_name: str):
+    def __init__(
+        self,
+        material_parent_path: str,
+        start_stem: int,
+        shop_name: str,
+        make_effect: bool,
+    ):
         self.parent_path = Path(material_parent_path)
         self.start_id = start_stem
         self.shop_name = shop_name
+        self.make_effect = make_effect
 
     def fun_生成文件夹列表(self):
         path_list = []
@@ -58,7 +65,7 @@ class AutoMakeProductImage:
                 oneline_ratio=oneline_ratio,
                 # 预览图和效果图
                 has_preview_image=True,
-                has_effect_image=True,
+                has_effect_image=self.make_effect,
                 preview_image_sort=True,
                 preview_used_number=0,
                 preview_has_material_info=True,

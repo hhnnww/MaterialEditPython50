@@ -15,6 +15,9 @@ def fun_创建文件夹结构(root_path: str):
     elif len(root_path_obj.parts) < 3:
         raise IndexError("素材根目录层级必须大于3")
 
+    elif "-" in root_path_obj.stem:
+        raise IndexError("素材目录不能包含 -")
+
     material_path = root_path_obj / root_path_obj.stem
     if material_path.exists() is False:
         material_path.mkdir(parents=True)

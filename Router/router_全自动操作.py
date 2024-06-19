@@ -50,6 +50,7 @@ class MakeXQ(BaseModel):
     material_parent_path: str
     start_item: int
     shop_name: str
+    make_effect: bool
 
 
 @router.post("/make_all_xq")
@@ -58,6 +59,7 @@ def make_all_xq(item: MakeXQ):
         material_parent_path=item.material_parent_path,
         start_stem=item.start_item,
         shop_name=item.shop_name,
+        make_effect=item.make_effect,
     ).run()
 
 
