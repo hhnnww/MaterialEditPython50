@@ -81,7 +81,7 @@ def fun_黑鲸首图(
     )
 
     format_pil = ImageEdit.fun_单行文字转图片(
-        text=material_format.upper(),
+        text=material_format.title(),
         chinese_font_name="opposans",
         english_font_name="montserrat",
         font_weight="heavy",

@@ -145,6 +145,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 if png_state is False:
                     AIFile(in_file.as_posix(), app).fun_导出PNG()
 
+            app.Quit()
+
             pythoncom.CoUninitialize()
 
             for in_file in Path(material_structure.material_path).rglob("*"):

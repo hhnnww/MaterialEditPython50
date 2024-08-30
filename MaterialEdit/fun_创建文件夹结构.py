@@ -1,9 +1,10 @@
 from pathlib import Path
+from typing import Union
 
 from .type import _FolderStructure
 
 
-def fun_创建文件夹结构(root_path: str):
+def fun_创建文件夹结构(root_path: Union[str, Path]):
     root_path_obj = Path(root_path)
 
     if root_path_obj.stem == root_path_obj.parent.stem:

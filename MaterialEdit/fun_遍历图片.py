@@ -13,6 +13,6 @@ def fun_遍历图片(folder: str, used_image_number: int, image_sort: bool) -> l
     image_list.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=not image_sort)
 
     if used_image_number > 0:
-        return [obj.as_posix() for obj in image_list][:used_image_number]
+        return [obj.as_posix() for obj in image_list][: used_image_number * 2]
 
     return [obj.as_posix() for obj in image_list]

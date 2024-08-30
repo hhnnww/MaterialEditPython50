@@ -1,10 +1,11 @@
 import shutil
 from pathlib import Path
+from typing import Union
 
 from ..fun_创建文件夹结构 import fun_创建文件夹结构
 
 
-def fun_文件夹初始化(root_path: str):
+def fun_文件夹初始化(root_path: Union[str, Path]):
     path_structures = fun_创建文件夹结构(root_path=root_path)
 
     root_path_obj = Path(path_structures.root_path)

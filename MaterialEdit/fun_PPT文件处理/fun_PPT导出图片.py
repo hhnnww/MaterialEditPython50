@@ -28,7 +28,7 @@ class PPTFile:
                 pm = PPTPICMerge(pic_path=self.ppt_dir)
                 bg = pm.main()
 
-                ppt_png = self.ppt_path.with_suffix(".png")
+                ppt_png = self.ppt_file.with_suffix(".png")
                 bg.save(ppt_png.as_posix())
             except:
                 print(f"错误文件，无法导出：{self.ppt_file.as_posix()}")
