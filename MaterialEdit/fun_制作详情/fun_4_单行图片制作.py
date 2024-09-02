@@ -49,21 +49,20 @@ def fun_单行图片制作(
         #     im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
         # )
 
-        water_piex_color = int(255 * 0.8)
-
         try:
-            im = ImageEdit.fun_图片打满水印(
-                im=im,
-                size=50,
-                line_number=3,
-                singe_line_number=2,
-                water_color=(
-                    water_piex_color,
-                    water_piex_color,
-                    water_piex_color,
-                    water_piex_color,
-                ),
-            )
+            for water_piex_color in [0, 255]:
+                im = ImageEdit.fun_图片打满水印(
+                    im=im,
+                    size=50,
+                    line_number=3,
+                    singe_line_number=2,
+                    water_color=(
+                        water_piex_color,
+                        water_piex_color,
+                        water_piex_color,
+                        int(255 * 0.8),
+                    ),
+                )
         except ValueError:
             pass
 
