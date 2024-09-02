@@ -36,7 +36,7 @@ def fun_黑鲸首图(
         chinese_font_name="opposans",
         english_font_name="montserrat",
         font_weight="bold",
-        font_size=85,
+        font_size=110,
         fill_color=(255, 255, 255, 255),
         background_color=(0, 0, 0, 255),
         en_size_expand_ratio=1,
@@ -80,17 +80,21 @@ def fun_黑鲸首图(
         format_fill_circle,
     )
 
+    format_title = material_format
+    if format_title.lower() == "psd":
+        format_title = "ps"
+
     format_pil = ImageEdit.fun_单行文字转图片(
-        text=material_format.title(),
+        text=format_title.title(),
         chinese_font_name="opposans",
-        english_font_name="montserrat",
-        font_weight="heavy",
-        font_size=60,
+        english_font_name="lato",
+        font_weight="bold",
+        font_size=90,
         fill_color=text_color,
         background_color=fill_color,
     )
     format_pil.thumbnail(
-        (int(format_bg_circle.width * 0.6), int(format_bg_circle.height * 0.6)),
+        (int(format_bg_circle.width * 0.5), int(format_bg_circle.height * 0.5)),
         Image.LANCZOS,
         3,
     )

@@ -12,6 +12,7 @@ from MaterialEdit import (
     fun_黑鲸首图,
     layout_s1_n,
 )
+from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -99,6 +100,13 @@ def make_first_image(item: MakeFirstImageModel):
 
     elif item.first_image_layout == "1-2-3-3":
         bg = fun_layout_1_2_3_3(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+        )
+    elif item.first_image_layout == "1-2-3-3-3":
+        bg = fun_layout_1_2_3_3_3(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,

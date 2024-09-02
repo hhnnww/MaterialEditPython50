@@ -181,7 +181,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
                     # 大小判断，超大的不处理
                     size = in_file.stat().st_size / 1024 / 1024
-                    if size > 700:
+                    if size > 300:
                         print(f"{in_file}:\t文件尺寸:\t{size},太大，不处理。")
                         continue
 

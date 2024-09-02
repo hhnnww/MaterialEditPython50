@@ -44,10 +44,10 @@ def fun_单行图片制作(
             im, width=int(image_width), height=int(image_height), position=crop_position
         )
 
-        pix_color = 240
-        im = ImageEdit.fun_图片画边框(
-            im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
-        )
+        # pix_color = 240
+        # im = ImageEdit.fun_图片画边框(
+        #     im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
+        # )
 
         water_piex_color = int(255 * 0.8)
 
@@ -66,9 +66,10 @@ def fun_单行图片制作(
             )
         except ValueError:
             pass
-        im = ImageEdit.fun_图片切换到圆角(
-            im=im, border_radius=15, background_color=(255, 255, 255, 255)
-        )
+
+        # im = ImageEdit.fun_图片切换到圆角(
+        #     im=im, border_radius=15, background_color=(255, 255, 255, 255)
+        # )
 
         if contains_info is True:
             source_file = fun_获取图片对应的源文件(image.path, material_file_list)
