@@ -159,12 +159,12 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     # 开始制作首图样式
-    water_pixel_color = int(255 * 0.5)
+    water_pixel_color = int(255 * 0.7)
     bg = ImageEdit.fun_图片打满水印(
         bg,
         60,
-        3,
-        3,
+        5,
+        5,
         (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
     )
 
