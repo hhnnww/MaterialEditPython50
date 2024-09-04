@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from MaterialEdit import (
-    ImageEdit,
     LayoutAdaptiveCrop,
     fun_layout_1_2_3,
     fun_layout_1_2_3_3,
@@ -13,12 +12,15 @@ from MaterialEdit import (
     layout_s1_n,
 )
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
+from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
+from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout import (
     LayoutRandomLayoug,
 )
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 from pydantic import BaseModel
 
@@ -52,6 +54,8 @@ def make_first_image(item: MakeFirstImageModel):
 
     if item.first_image_style == "黑鲸":
         xq_height = 1300
+    elif item.first_image_style == "泡泡":
+        xq_height = 1200
 
     if item.first_image_layout == "自适应裁剪":
         bg = LayoutAdaptiveCrop(
@@ -148,6 +152,20 @@ def make_first_image(item: MakeFirstImageModel):
             line_row=item.first_image_line,
         ).main()
 
+    elif "3列横竖错落" == item.first_image_layout:
+        bg = layout_3列横竖错落(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+        )
+    elif "3列1大横竖错落" == item.first_image_layout:
+        bg = layout_3列1大横竖错落(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+        )
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -160,7 +178,7 @@ def make_first_image(item: MakeFirstImageModel):
 
     # 开始制作首图样式
     water_pixel_color = int(0)
-    bg = ImageEdit.fun_图片打满水印(
+    bg = fun_图片打满水印(
         bg,
         60,
         5,
@@ -169,7 +187,7 @@ def make_first_image(item: MakeFirstImageModel):
     )
 
     water_pixel_color = int(255)
-    bg = ImageEdit.fun_图片打满水印(
+    bg = fun_图片打满水印(
         bg,
         60,
         5,
