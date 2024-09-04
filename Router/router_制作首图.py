@@ -11,6 +11,7 @@ from MaterialEdit import (
     fun_黑鲸首图,
     layout_s1_n,
 )
+from MaterialEdit.fun_制作首图 import style_paopao
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
@@ -43,6 +44,8 @@ class MakeFirstImageModel(BaseModel):
     material_id: str
     shop_name: str
     source_format: str
+
+    source_count: str
 
 
 @router.post("")
@@ -210,6 +213,15 @@ def make_first_image(item: MakeFirstImageModel):
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
+        )
+
+    elif item.first_image_style == "泡泡":
+        bg = style_paopao(
+            im=bg,
+            title=item.first_image_title,
+            material_format=item.source_format,
+            material_id=item.material_id,
+            num=int(item.source_count),
         )
 
     fun_保存图片(bg, "st_" + item.first_image_num)

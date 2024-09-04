@@ -9,6 +9,7 @@ from .layout_固定裁剪_2 import fun_layout_固定裁剪2
 from .layout_自适应裁剪 import LayoutAdaptiveCrop
 from .laytou_1_2_3_3 import fun_layout_1_2_3_3
 from .style_t500 import fun_T500首图
+from .style_泡泡 import style_paopao
 from .style_黑鲸 import fun_黑鲸首图
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "fun_layout_1_2_3_3_3",
     "layout_3列横竖错落",
     "layout_3列1大横竖错落",
+    "style_paopao",
 ]

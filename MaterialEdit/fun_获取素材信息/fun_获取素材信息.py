@@ -43,8 +43,13 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool):
     material_count_num_obj = fun_获取源文件数量(all_file)
     material_count_num_obj.sort(key=lambda obj: obj[0], reverse=True)
 
-    material_source_file_count = material_count_num_obj[0][0]
-    material_source_format = material_count_num_obj[0][1]
+    try:
+        material_source_file_count = material_count_num_obj[0][0]
+        material_source_format = material_count_num_obj[0][1]
+    except IndexError:
+        material_source_file_count = 0
+        material_source_format = "none"
+
     material_source_format_number = (
         f"{material_source_file_count}个 {material_source_format} 文件"
     )

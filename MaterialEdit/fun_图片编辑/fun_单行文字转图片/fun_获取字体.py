@@ -40,6 +40,18 @@ def fun_获取字体(
             "bold": "lato-latin-700-normal.ttf",
             "heavy": "lato-latin-900-normal.ttf",
         },
+        "noto": {
+            "light": "light.otf",
+            "normal": "regular.otf",
+            "bold": "bold.otf",
+            "heavy": "black.otf",
+        },
+        "sam": {
+            "light": "samsungsharpsans.otf",
+            "normal": "samsungsharpsans-medium.otf",
+            "bold": "samsungsharpsans-bold.otf",
+            "heavy": "samsungsharpsans-bold.otf",
+        },
     }
 
     font_name_obj = font_dict.get(font_name)
