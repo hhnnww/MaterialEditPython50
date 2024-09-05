@@ -6,6 +6,7 @@ from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
+from MaterialEdit.fun_图片编辑.fun_画一个圆形横框 import fun_画一个圆形横框
 
 
 def style_paopao(
@@ -13,9 +14,9 @@ def style_paopao(
 ):
     style_im = Image.new("RGBA", (1500, 300), (0, 0, 0, 255))
 
-    # 素材ID
-    material_id_im = fun_单行文字转图片2(
-        text=f"#{material_id}",
+    # 加入会员全店免费
+    huiyuan_ad_im = fun_单行文字转图片2(
+        text="# 9.9元加入会员，全店免费",
         font_weight="normal",
         size=30,
         fill=(255, 255, 255, 255),
@@ -26,7 +27,7 @@ def style_paopao(
     ad_im = fun_单行文字转图片2(
         text="泡泡素材 Paopaosucai.taobao.com",
         font_weight="normal",
-        size=25,
+        size=30,
         fill=(255, 255, 255, 255),
         background=(0, 0, 0, 255),
     )
@@ -34,7 +35,7 @@ def style_paopao(
     # 左上角图片合并
     left_im = fun_图片横向拼接(
         image_list=[
-            material_id_im,
+            huiyuan_ad_im,
             fun_图片横向拼接(
                 [fun_获取单个水印(40, (255, 255, 255, 255)), ad_im],
                 10,
@@ -97,4 +98,22 @@ def style_paopao(
         align_item="center",
         background_color=(255, 255, 255, 255),
     )
+
+    material_id_pil = fun_单行文字转图片2(
+        text="ID:" + material_id,
+        font_weight="heavy",
+        size=25,
+        fill=(255, 255, 255, 255),
+        background=(0, 0, 0, 255),
+    )
+    material_id_bg = fun_画一个圆形横框(
+        material_id_pil.width + 40,
+        material_id_pil.height + 20,
+        (0, 0, 0, 255),
+        (255, 255, 255, 0),
+    )
+    material_id_bg.paste(material_id_pil, (20, 10), material_id_pil)
+
+    bg.paste(material_id_bg, (30, 30), material_id_bg)
+
     return bg
