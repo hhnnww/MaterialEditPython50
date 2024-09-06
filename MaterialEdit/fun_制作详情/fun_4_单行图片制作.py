@@ -2,7 +2,12 @@ from pathlib import Path
 
 from PIL import Image
 
-from ..fun_图片编辑 import ImageEdit
+from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
+from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
+from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+
 from ..type import ALIGNITEM, _ImageItem
 from .fun_5_获取源文件 import fun_获取图片对应的源文件
 from .fun_6_小图增加信息 import fun_小图增加信息
@@ -40,18 +45,18 @@ def fun_单行图片制作(
         im = Image.open(image.path)
         if im.mode != "RGBA":
             im = im.convert("RGBA")
-        im = ImageEdit.fun_图片裁剪(
+        im = fun_图片裁剪(
             im, width=int(image_width), height=int(image_height), position=crop_position
         )
 
-        # pix_color = 240
-        # im = ImageEdit.fun_图片画边框(
-        #     im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
-        # )
+        pix_color = 240
+        im = fun_图片画边框(
+            im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
+        )
 
         try:
             for water_piex_color in [0, 255]:
-                im = ImageEdit.fun_图片打满水印(
+                im = fun_图片打满水印(
                     im=im,
                     size=50,
                     line_number=3,
@@ -66,9 +71,9 @@ def fun_单行图片制作(
         except ValueError:
             pass
 
-        # im = ImageEdit.fun_图片切换到圆角(
-        #     im=im, border_radius=15, background_color=(255, 255, 255, 255)
-        # )
+        im = fun_图片切换到圆角(
+            im=im, border_radius=15, background_color=(255, 255, 255, 255)
+        )
 
         if contains_info is True:
             source_file = fun_获取图片对应的源文件(image.path, material_file_list)
@@ -91,7 +96,7 @@ def fun_单行图片制作(
 
         left.append(im)
 
-    im = ImageEdit.fun_图片横向拼接(
+    im = fun_图片横向拼接(
         left, spacing=spacing, align_item="start", background_color=(255, 255, 255, 255)
     )
 

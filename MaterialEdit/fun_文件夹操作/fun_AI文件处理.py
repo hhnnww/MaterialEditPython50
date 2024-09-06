@@ -6,7 +6,7 @@ from win32com.client import Dispatch
 
 class AIFile:
     def __init__(self, file: Path, tb_name: str):
-        print("\n处理AI文件：", file.as_posix(), "\n")
+        print("\n处理AI文件:", file.as_posix(), "\n")
         self.file = file
         self.tb_name = tb_name
 

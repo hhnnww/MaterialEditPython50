@@ -49,7 +49,7 @@ def fun_素材图水印(material_path: str, shop_name: str):
             try:
                 im = Image.open(in_file.as_posix())
 
-                im.thumbnail((1200, 1200), Image.LANCZOS, 3)
+                im.thumbnail((1200, 1200), Image.Resampling.LANCZOS, 3)
                 try:
                     im.paste(
                         water_pil, (20, im.height - water_pil.height - 20), water_pil

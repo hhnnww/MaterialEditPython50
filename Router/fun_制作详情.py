@@ -1,7 +1,8 @@
 from pathlib import Path
 
+from pydantic import BaseModel
+
 from MaterialEdit import (
-    ImageEdit,
     fun_保存图片,
     fun_制作数据图,
     fun_制作详情,
@@ -10,8 +11,8 @@ from MaterialEdit import (
     fun_裁剪图片,
     fun_遍历图片,
 )
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.type import ALIGNITEM
-from pydantic import BaseModel
 
 
 class MakeProductImageRequestModel(BaseModel):
@@ -64,7 +65,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
             ("* 样机须知", "本店样机均为白膜样机，不包含样机内贴图，购买前请知晓。"),
         ]
     )
-    data_im = ImageEdit.fun_图片竖向拼接(
+    data_im = fun_图片竖向拼接(
         [data_header, data_pil],
         spacing=0,
         align_item="center",
@@ -98,7 +99,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
                 crop_position=item.crop_position,
                 xq_width=item.xq_width,
             )
-            data_im = ImageEdit.fun_图片竖向拼接(
+            data_im = fun_图片竖向拼接(
                 [header_pil, effect_image],
                 spacing=0,
                 align_item="center",
@@ -137,7 +138,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
                 crop_position=item.crop_position,
                 xq_width=item.xq_width,
             )
-            data_im = ImageEdit.fun_图片竖向拼接(
+            data_im = fun_图片竖向拼接(
                 [header_pil, preview_image],
                 spacing=0,
                 align_item="center",
