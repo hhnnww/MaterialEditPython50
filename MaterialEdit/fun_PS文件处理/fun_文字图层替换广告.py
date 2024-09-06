@@ -22,11 +22,7 @@ def com_文字图层广告(text_layer: CDispatch, re_contents: List[TextReplaceN
         if ori_name in content:
             try:
                 print(
-                    "\n"
-                    + Back.RED
-                    + Fore.BLACK
-                    + f"文字图层发现广告：\t{text_layer.Name}"
-                    + Style.RESET_ALL
+                    f"\n{str(Back.RED)}{Fore.BLACK}文字图层发现广告：\t{text_layer.Name}{Style.RESET_ALL}"
                 )
             except:
                 pass

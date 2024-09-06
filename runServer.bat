@@ -1,2 +1,2 @@
-call conda activate materialedit
+call conda activate base
 call uvicorn main:app
