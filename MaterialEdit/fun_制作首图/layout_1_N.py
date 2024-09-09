@@ -20,6 +20,7 @@ def fun_layout_1_n(
 
     # 计算小图的高度
     small_image_all_width = int(xq_width - (spacing * (small_line_num + 1)))
+
     small_image_all_height = small_image_all_width / sum(
         [obj.ratio for obj in comb_image_list[1]]
     )

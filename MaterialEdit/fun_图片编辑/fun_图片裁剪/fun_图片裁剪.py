@@ -15,7 +15,7 @@ def fun_图片裁剪(
     else:
         return im.resize(
             size=(width, height),
-            resample=Image.LANCZOS,
+            resample=Image.Resampling.LANCZOS,
             box=(0, 0, im.width, im.height),
             reducing_gap=3,
         )

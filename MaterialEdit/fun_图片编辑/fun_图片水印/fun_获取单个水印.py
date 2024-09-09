@@ -11,7 +11,9 @@ def fun_获取单个水印(size: int, fill_clor: _COLOR):
     with Image.new("RGBA", water_mark_pil.size, fill_clor) as fill_bg:
         water_mark_pil.paste(fill_bg, (0, 0), water_mark_pil)
 
-    water_mark_pil.thumbnail((size, size), resample=Image.LANCZOS, reducing_gap=3)
+    water_mark_pil.thumbnail(
+        (size, size), resample=Image.Resampling.LANCZOS, reducing_gap=3
+    )
     # text_pil = run_单行文字转图片(
     #     text="小夕素材",
     #     chinese_font_name="zihun",

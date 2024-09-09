@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
+
 from MaterialEdit import (
     LayoutAdaptiveCrop,
     fun_layout_1_2_3,
@@ -23,7 +25,6 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 )
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
-from pydantic import BaseModel
 
 router = APIRouter(prefix="/MakeFirstImage")
 
@@ -181,22 +182,41 @@ def make_first_image(item: MakeFirstImageModel):
 
     # 开始制作首图样式
     water_pixel_color = int(0)
-    bg = fun_图片打满水印(
-        bg,
-        60,
-        5,
-        5,
-        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
-    )
 
-    water_pixel_color = int(255)
-    bg = fun_图片打满水印(
-        bg,
-        60,
-        5,
-        5,
-        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
-    )
+    if item.first_image_style != "泡泡":
+        bg = fun_图片打满水印(
+            bg,
+            60,
+            5,
+            5,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+        )
+
+        water_pixel_color = int(255)
+        bg = fun_图片打满水印(
+            bg,
+            60,
+            5,
+            5,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+        )
+    else:
+        bg = fun_图片打满水印(
+            bg,
+            60,
+            2,
+            1,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+        )
+
+        water_pixel_color = int(255)
+        bg = fun_图片打满水印(
+            bg,
+            60,
+            2,
+            1,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+        )
 
     if item.first_image_style == "T500":
         bg = fun_T500首图(
@@ -221,7 +241,6 @@ def make_first_image(item: MakeFirstImageModel):
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
-            num=int(item.source_count),
         )
 
     fun_保存图片(bg, "st_" + item.first_image_num)

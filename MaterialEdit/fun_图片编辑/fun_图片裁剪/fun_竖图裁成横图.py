@@ -1,3 +1,5 @@
+import math
+
 from PIL import Image
 
 from ...type import ALIGNITEM
@@ -14,16 +16,16 @@ def fun_竖图裁成横图(
         top = 0
 
     elif position == "center":
-        top = int((im.height - im_height) / 2)
+        top = math.ceil((im.height - im_height) / 2)
         im_height += top
 
     elif position == "end":
-        top = int(im.height - im_height)
+        top = math.ceil(im.height - im_height)
         im_height = im.height
 
     return im.resize(
         size=(width, height),
-        resample=Image.LANCZOS,
+        resample=Image.Resampling.LANCZOS,
         box=(0, top, im.width, im_height),
         reducing_gap=3,
     )
