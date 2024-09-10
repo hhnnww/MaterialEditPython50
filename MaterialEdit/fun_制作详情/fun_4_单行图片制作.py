@@ -74,7 +74,7 @@ def fun_单行图片制作(
                 im = fun_图片打满水印(
                     im=im,
                     size=50,
-                    line_number=1,
+                    line_number=2,
                     singe_line_number=1,
                     water_color=(
                         water_piex_color,
