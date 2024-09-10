@@ -2,6 +2,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from MaterialEdit.fun_制作详情.fun_5_获取源文件 import fun_获取图片对应的源文件
+from MaterialEdit.fun_制作详情.fun_6_小图增加信息 import fun_小图增加信息
 from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
@@ -9,8 +11,6 @@ from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边�
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 from ..type import ALIGNITEM, _ImageItem
-from .fun_5_获取源文件 import fun_获取图片对应的源文件
-from .fun_6_小图增加信息 import fun_小图增加信息
 
 
 def fun_单行图片制作(
@@ -70,19 +70,19 @@ def fun_单行图片制作(
                     ),
                 )
         else:
-            for water_piex_color in [0, 255]:
-                im = fun_图片打满水印(
-                    im=im,
-                    size=50,
-                    line_number=2,
-                    singe_line_number=1,
-                    water_color=(
-                        water_piex_color,
-                        water_piex_color,
-                        water_piex_color,
-                        int(255 * 0.8),
-                    ),
-                )
+            water_piex_color = int(255 * 0.6)
+            im = fun_图片打满水印(
+                im=im,
+                size=50,
+                line_number=2,
+                singe_line_number=1,
+                water_color=(
+                    water_piex_color,
+                    water_piex_color,
+                    water_piex_color,
+                    int(255 * 0.8),
+                ),
+            )
 
         im = fun_图片切换到圆角(
             im=im, border_radius=15, background_color=(255, 255, 255, 255)
