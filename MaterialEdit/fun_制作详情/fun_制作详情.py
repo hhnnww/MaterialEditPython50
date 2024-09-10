@@ -18,6 +18,7 @@ def fun_制作详情(
     material_path: str,
     crop_position: ALIGNITEM,
     xq_width: int = 1500,
+    shop_name:str,
 ):
     image_list = fun_构建图片(image_list=image_path_list)
     comb_image_list = fun_图片编组(
@@ -41,6 +42,7 @@ def fun_制作详情(
             spacing=25,
             crop_position=crop_position,
             xq_width=xq_width,
+            shop_name=shop_name,
         )
         comb_pil_list.append(im)
 

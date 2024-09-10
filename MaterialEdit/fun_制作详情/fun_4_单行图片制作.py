@@ -20,6 +20,7 @@ def fun_单行图片制作(
     xq_width: int,
     spacing: int,
     crop_position: ALIGNITEM,
+    shop_name: str,
 ):
     image_used_width = int(xq_width - ((len(image_list) + 1) * spacing))
     single_col_width = int(
@@ -54,7 +55,7 @@ def fun_单行图片制作(
             im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
         )
 
-        try:
+        if shop_name != "泡泡素材":
             for water_piex_color in [0, 255]:
                 im = fun_图片打满水印(
                     im=im,
@@ -68,8 +69,20 @@ def fun_单行图片制作(
                         int(255 * 0.8),
                     ),
                 )
-        except ValueError:
-            pass
+        else:
+            for water_piex_color in [0, 255]:
+                im = fun_图片打满水印(
+                    im=im,
+                    size=50,
+                    line_number=1,
+                    singe_line_number=1,
+                    water_color=(
+                        water_piex_color,
+                        water_piex_color,
+                        water_piex_color,
+                        int(255 * 0.8),
+                    ),
+                )
 
         im = fun_图片切换到圆角(
             im=im, border_radius=15, background_color=(255, 255, 255, 255)

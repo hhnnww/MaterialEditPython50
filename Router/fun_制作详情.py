@@ -99,6 +99,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
                 material_path=item.material_path,
                 crop_position=item.crop_position,
                 xq_width=item.xq_width,
+                shop_name=item.shop_name,
             )
             data_im = fun_图片竖向拼接(
                 [header_pil, effect_image],
@@ -138,6 +139,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
                 material_path=item.material_path,
                 crop_position=item.crop_position,
                 xq_width=item.xq_width,
+                shop_name=item.shop_name,
             )
             data_im = fun_图片竖向拼接(
                 [header_pil, preview_image],
