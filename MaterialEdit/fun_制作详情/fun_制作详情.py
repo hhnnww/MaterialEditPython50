@@ -2,7 +2,9 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from ..fun_图片编辑 import ImageEdit
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+
 from ..setting import MATERIAL_SOURCE_SUFFIX
 from ..type import ALIGNITEM
 from .fun_2_构建图片 import fun_构建图片
@@ -17,8 +19,8 @@ def fun_制作详情(
     contains_info: bool,
     material_path: str,
     crop_position: ALIGNITEM,
+    shop_name: str,
     xq_width: int = 1500,
-    shop_name:str,
 ):
     image_list = fun_构建图片(image_list=image_path_list)
     comb_image_list = fun_图片编组(
@@ -50,13 +52,13 @@ def fun_制作详情(
     if contains_info:
         spacing = 180
 
-    im = ImageEdit.fun_图片竖向拼接(
+    im = fun_图片竖向拼接(
         image_list=comb_pil_list,
         spacing=spacing,
         align_item="center",
         background_color=(255, 255, 255, 255),
     )
-    im = ImageEdit.fun_图片扩大粘贴(
+    im = fun_图片扩大粘贴(
         background_color=(255, 255, 255, 255),
         height=im.height + 200,
         width=1500,
