@@ -51,20 +51,21 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
     data_header = fun_制作详情栏目标题(
         title="素材信息", desc="Material Info " + item.shop_name
     )
-    data_pil = fun_制作数据图(
-        [
-            ("素材ID", item.material_id),
-            ("素材大小", item.material_source_file_size),
-            ("素材格式", item.material_source_format_title),
-            ("素材数量", item.material_source_format_number),
-            ("* 发货方式", "本店仅限百度网盘链接发货，不支持其他任何发送方式。"),
-            (
-                "* 非图片",
-                "本店素材并非图片，为专业设计师使用的设计源文件，非设计师请勿购买。",
-            ),
-            ("* 样机须知", "本店样机均为白膜样机，不包含样机内贴图，购买前请知晓。"),
-        ]
-    )
+    data_list = [
+        ("素材ID", item.material_id),
+        ("素材大小", item.material_source_file_size),
+        ("素材格式", item.material_source_format_title),
+        ("素材数量", item.material_source_format_number),
+        ("* 发货方式", "本店仅限百度网盘链接发货，不支持其他任何发送方式。"),
+        (
+            "* 非图片",
+            "本店素材并非图片，为专业设计师使用的设计源文件，非设计师请勿购买。",
+        ),
+    ]
+    if item.shop_name == "泡泡素材":
+        data_list.append(("* 无模特图", "本店素材均不包含模特图效果图。"))
+
+    data_pil = fun_制作数据图(data_list)
     data_im = fun_图片竖向拼接(
         [data_header, data_pil],
         spacing=0,

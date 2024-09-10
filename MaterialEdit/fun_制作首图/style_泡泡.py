@@ -69,12 +69,10 @@ def style_paopao(im: Image.Image, title: str, material_format: str, material_id:
     style_im.paste(format_im, (1385, 40), format_im)
 
     # 素材数量和素材标题
-    title_size = 90
-
     title_im = fun_单行文字转图片2(
         text=title,
         font_weight="bold",
-        size=title_size,
+        size=100,
         fill=(255, 255, 255, 255),
         background=(0, 0, 0, 255),
     )
