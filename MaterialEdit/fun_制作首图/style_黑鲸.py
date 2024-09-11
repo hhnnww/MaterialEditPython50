@@ -40,7 +40,7 @@ def fun_黑鲸首图(
     )
     logo_bg = logo_bg.crop((0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height))
     logo_bg.paste(logo, (20, 15), logo)
-    im.paste(logo_bg, (30, 0), logo_bg)
+    im.paste(logo_bg, (50, 0), logo_bg)
 
     # 画边框和写标题
     circle = fun_画一个圆角矩形(1500, 400, 80, (0, 0, 0, 255), (255, 255, 255, 255))
