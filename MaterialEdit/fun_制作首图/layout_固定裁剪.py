@@ -1,13 +1,21 @@
 from PIL import Image
 from tqdm import tqdm
 
-from ..fun_图片编辑.ClassImageEdit import ImageEdit
-from ..setting import FIRST_IMAGE_RATIO, FIRST_IMAGE_BORDER_COLOR
-from ..type import ImageModel, ALIGNITEM
+from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
+from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
+from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+
+from ..setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
+from ..type import ALIGNITEM, ImageModel
 
 
 def fun_固定裁剪(
-    xq_width: int, xq_height: int, image_list: list[ImageModel], line: int, spacing: int, crop_position: ALIGNITEM
+    xq_width: int,
+    xq_height: int,
+    image_list: list[ImageModel],
+    line: int,
+    spacing: int,
+    crop_position: ALIGNITEM,
 ):
     one_line_height = int((xq_height - ((line + 1) * spacing)) / line)
 
@@ -19,7 +27,9 @@ def fun_固定裁剪(
 
     image_average_ratio = sum([obj.ratio for obj in image_list]) / len(image_list)
 
-    best_ratio_list = [(obj[0], abs(obj[1] - image_average_ratio)) for obj in line_ratio_list]
+    best_ratio_list = [
+        (obj[0], abs(obj[1] - image_average_ratio)) for obj in line_ratio_list
+    ]
     best_ratio_list.sort(key=lambda k: k[1], reverse=False)
 
     best_ratio_sort_list = best_ratio_list[0]
@@ -38,11 +48,11 @@ def fun_固定裁剪(
         if im.mode != "RGBA":
             im = im.convert("RGBA")
 
-        im = ImageEdit.fun_图片裁剪(im, small_im_width, one_line_height, crop_position)
+        im = fun_图片裁剪(im, small_im_width, one_line_height, crop_position)
 
         if spacing > 0:
-            im = ImageEdit.fun_图片画边框(im, FIRST_IMAGE_BORDER_COLOR)
-            im = ImageEdit.fun_图片切换到圆角(im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
+            im = fun_图片画边框(im, FIRST_IMAGE_BORDER_COLOR)
+            im = fun_图片切换到圆角(im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
 
         bg.paste(im, (left, top), im)
         left += im.width + spacing + 1
@@ -59,13 +69,13 @@ def fun_固定裁剪(
 
 
 def fun_列表分段(image_list: list[str], row: int, col: int):
-    l = []
+    img_list = []
     inline = []
     for in_image in image_list:
         inline.append(in_image)
         if len(inline) == row:
-            l.append(inline.copy())
+            img_list.append(inline.copy())
             inline = []
 
-        if len(l) == col:
-            return l
+        if len(img_list) == col:
+            return img_list

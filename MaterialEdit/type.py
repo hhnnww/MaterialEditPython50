@@ -15,8 +15,8 @@ class _FontSize(BaseModel):
 
 class ImageModel(BaseModel):
     path: str
-    ratio: Optional[float] = None
-    isSelected: Optional[bool] = None
+    ratio: float
+    isSelected: bool
 
 
 class _ImageItem(BaseModel):

@@ -31,7 +31,7 @@ def fun_黑鲸首图(
     im.paste(material_id_bg, (im.width - material_id_bg.width - 30, 30), material_id_bg)
 
     # 左边的logo
-    logo = fun_获取单个水印(60, fill_clor=(255, 255, 255, 255))
+    logo = fun_获取单个水印(80, fill_clor=(255, 255, 255, 255))
     logo_bg = fun_画一个圆角矩形(
         width=logo.width + 40,
         height=int((logo.height + 40) * 2),
