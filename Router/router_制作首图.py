@@ -183,7 +183,7 @@ def make_first_image(item: MakeFirstImageModel):
     # 开始制作首图样式
     water_pixel_color = int(0)
 
-    if item.first_image_style != "泡泡":
+    if item.shop_name != "泡泡素材":
         bg = fun_图片打满水印(
             bg,
             60,
