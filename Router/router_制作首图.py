@@ -17,6 +17,7 @@ from MaterialEdit.fun_制作首图 import style_paopao
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
+from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -70,7 +71,13 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             crop_position=item.crop_position,
         ).run_制作自适应布局图片()
-
+    elif item.first_image_layout == "竖橫竖竖":
+        bg = layout_竖横竖竖(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+        )
     elif item.first_image_layout == "1-2":
         bg = fun_layout_1_n(
             image_list=item.select_image_list,
@@ -242,6 +249,9 @@ def make_first_image(item: MakeFirstImageModel):
             material_format=item.source_format,
             material_id=item.material_id,
         )
+
+    elif item.first_image_style == "无样式":
+        pass
 
     fun_保存图片(bg, "st_" + item.first_image_num)
 

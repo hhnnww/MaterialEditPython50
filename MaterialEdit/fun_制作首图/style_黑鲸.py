@@ -47,7 +47,7 @@ def fun_黑鲸首图(
     circle = circle.crop((0, 200, circle.width, circle.height))
     title_pil = fun_单行文字转图片2(
         text=title,
-        font_weight="bold",
+        font_weight="normal",
         size=100,
         fill=(255, 255, 255, 255),
         background=(0, 0, 0, 255),
