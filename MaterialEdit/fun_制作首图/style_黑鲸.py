@@ -4,6 +4,7 @@ from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转
     fun_单行文字转图片2,
 )
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_画一个圆形 import fun_画一个圆
 from MaterialEdit.fun_图片编辑.fun_画一个圆形横框 import fun_画一个圆形横框
 from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一个圆角矩形
@@ -27,7 +28,19 @@ def fun_黑鲸首图(
         (255, 255, 255, 0),
     )
     material_id_bg.paste(material_id_pil, (20, 10), material_id_pil)
-    im.paste(material_id_bg, (30, 30), material_id_bg)
+    im.paste(material_id_bg, (im.width - material_id_bg.width - 30, 30), material_id_bg)
+
+    # 左边的logo
+    logo = fun_获取单个水印(60, fill_clor=(255, 255, 255, 255))
+    logo_bg = fun_画一个圆角矩形(
+        width=logo.width + 40,
+        height=int((logo.height + 40) * 2),
+        border_radius=60,
+        fill_color=(0, 0, 0, 255),
+    )
+    logo_bg = logo_bg.crop((0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height))
+    logo_bg.paste(logo, (20, 15), logo)
+    im.paste(logo_bg, (30, 0), logo_bg)
 
     # 画边框和写标题
     circle = fun_画一个圆角矩形(1500, 400, 80, (0, 0, 0, 255), (255, 255, 255, 255))
@@ -91,7 +104,7 @@ def fun_黑鲸首图(
     )
     format_pil.thumbnail(
         (int(format_bg_circle.width * 0.6), int(format_bg_circle.height * 0.6)),
-        Image.LANCZOS,
+        Image.Resampling.LANCZOS,
         3,
     )
     format_bg_circle.paste(
