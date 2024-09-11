@@ -1,4 +1,5 @@
 import os
+import time
 from pathlib import Path
 
 import pyautogui
@@ -42,9 +43,12 @@ class AutoUploadMaterialToBaiduYun:
         pyautogui.rightClick()
         pyautogui.keyUp("shift")
 
+        time.sleep(2)
         pyautogui.click(fun_获取图片("up_to_baidu_button", path_name, position))
         fun_窗口置顶(folder_path.name)
         pyautogui.hotkey("ctrl", "w")
+
+        time.sleep(1)
 
     def run(self):
         for in_path in tqdm(

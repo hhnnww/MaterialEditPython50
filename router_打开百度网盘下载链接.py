@@ -28,4 +28,5 @@ def open_baidu_link(item_in: ItemIn):
                     print(pwd)
                     link = f"{link}?pwd={pwd}"
 
+                link = re.sub("提取码.*", "", link)
                 os.startfile(link)
