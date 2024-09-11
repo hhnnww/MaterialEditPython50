@@ -22,13 +22,12 @@ def fun_蜘蛛水印(im: Image.Image):
 if __name__ == "__main__":
     from pathlib import Path
 
-    for in_file in Path(r"F:\小夕素材\10000-20000\10573\10573").rglob("*"):
+    for in_file in Path(r"\\HUANGSHUO\Users\materialedit\Desktop\UPLOAD").rglob("*"):
         if in_file.is_file() and in_file.suffix.lower() in [".png", ".jpg"]:
-            print(in_file)
-            im = Image.open(in_file.as_posix())
-            if im.width == 1500:
-                print("tiaoguo")
+            if in_file.stem == "0":
                 continue
 
+            print(in_file)
+            im = Image.open(in_file.as_posix())
             im = fun_蜘蛛水印(im=im)
             im.save(in_file.as_posix())
