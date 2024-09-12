@@ -47,7 +47,7 @@ def fun_黑鲸首图(
     circle = circle.crop((0, 200, circle.width, circle.height))
     title_pil = fun_单行文字转图片2(
         text=title,
-        font_weight="normal",
+        font_weight="bold",
         size=100,
         fill=(255, 255, 255, 255),
         background=(0, 0, 0, 255),
@@ -58,6 +58,7 @@ def fun_黑鲸首图(
 
     bg = fun_图片竖向拼接([im, circle], 0, "center", (255, 255, 255, 255))
 
+    # 格式圆圈背景
     if material_format.lower() in ["psd"]:
         background_color = (35, 200, 250, 255)
         fill_color = (5, 30, 35, 255)
@@ -95,6 +96,7 @@ def fun_黑鲸首图(
     if format_title.lower() == "psd":
         format_title = "ps"
 
+    # 格式文字
     format_pil = fun_单行文字转图片2(
         text=format_title.title(),
         font_weight="heavy",

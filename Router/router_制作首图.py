@@ -24,6 +24,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout 
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout import (
     LayoutRandomLayoug,
 )
+from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
@@ -59,6 +60,8 @@ def make_first_image(item: MakeFirstImageModel):
 
     if item.first_image_style == "黑鲸":
         xq_height = 1300
+    elif item.first_image_style == "黑鲸高":
+        xq_height = 1250
     elif item.first_image_style == "泡泡":
         xq_height = 1200
 
@@ -248,6 +251,15 @@ def make_first_image(item: MakeFirstImageModel):
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
+        )
+
+    elif item.first_image_style == "黑鲸高":
+        bg = style_黑鲸高(
+            im=bg,
+            title=item.first_image_title,
+            format=item.source_format,
+            material_id=item.material_id,
+            shop_name=item.shop_name,
         )
 
     elif item.first_image_style == "无样式":

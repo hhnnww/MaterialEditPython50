@@ -10,7 +10,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 class Selenium:
-
     @property
     def driver(self):
         options = EdgeOptions()
@@ -20,6 +19,13 @@ class Selenium:
 
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("--window-size=1292x1398")
+        options.add_argument(
+            "--disable-gpu"
+        )  # fix:DevToolsActivePort file doesn't exist
+        options.add_argument(
+            "--disable-dev-shm-usage"
+        )  # fix:DevToolsActivePort file doesn't exist
+        options.add_argument("--remote-debugging-port=9222")
 
         driver = Edge(options=options)
         driver.set_window_position(x=1292, y=0)
@@ -81,3 +87,8 @@ class Selenium:
         """
         self.driver.find_element(By.CSS_SELECTOR, seletor).click()
         time.sleep(1)
+
+
+if __name__ == "__main__":
+    se = Selenium()
+    se.driver.get("https://baidu.com")
