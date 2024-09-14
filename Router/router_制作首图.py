@@ -74,6 +74,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             crop_position=item.crop_position,
         ).run_制作自适应布局图片()
+
     elif item.first_image_layout == "竖橫竖竖":
         bg = layout_竖横竖竖(
             image_list=item.select_image_list,
@@ -81,6 +82,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
         )
+
     elif item.first_image_layout == "1-2":
         bg = fun_layout_1_n(
             image_list=item.select_image_list,
@@ -173,6 +175,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
         )
+
     elif "3列1大横竖错落" == item.first_image_layout:
         bg = layout_3列1大横竖错落(
             image_list=item.select_image_list,
@@ -180,6 +183,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
         )
+
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -199,7 +203,7 @@ def make_first_image(item: MakeFirstImageModel):
             60,
             5,
             5,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
         )
 
         water_pixel_color = int(255)
@@ -208,7 +212,7 @@ def make_first_image(item: MakeFirstImageModel):
             60,
             5,
             5,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
         )
     else:
         bg = fun_图片打满水印(

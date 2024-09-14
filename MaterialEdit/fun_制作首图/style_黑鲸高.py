@@ -1,9 +1,13 @@
 from PIL import Image
 
 from MaterialEdit.fun_制作首图.fun_制作格式 import fun_制作格式
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
+    fun_单行文字转图片,
+)
 from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片2 import (
     fun_单行文字转图片2,
 )
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一个圆角矩形
@@ -12,9 +16,12 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 def style_黑鲸高(
     im: Image.Image, title: str, format: str, material_id: str, shop_name: str
 ):
+    if im.width < 1500 or im.height < 1250:
+        im = fun_图片扩大粘贴(im, 1500, 1250, "center", "center", (255, 255, 255, 255))
+
     title_pil = fun_单行文字转图片2(
         text=title,
-        size=100,
+        size=80,
         fill=(255, 255, 255, 255),
         background=(255, 255, 255, 0),
         font_weight="bold",
@@ -23,12 +30,12 @@ def style_黑鲸高(
         text=f"{shop_name} - 9.9元加入会员，全店免费",
         size=30,
         fill=(255, 255, 255, 255),
-        background=(255, 255, 255, 0),
+        background=(0, 0, 0, 255),
         font_weight="bold",
     )
     title_ad = fun_图片竖向拼接(
         image_list=[title_pil, ad_pil],
-        spacing=30,
+        spacing=25,
         align_item="start",
         background_color=(255, 255, 255, 0),
     )
@@ -53,8 +60,8 @@ def style_黑鲸高(
     # LOGO
     water_pil = fun_获取单个水印(60, fill_clor=(255, 255, 255, 255))
     water_pil_bg = fun_画一个圆角矩形(
-        width=water_pil.width + 60,
-        height=int(water_pil.height * 2) + 100,
+        width=water_pil.width + 50,
+        height=int(water_pil.height * 2) + 80,
         border_radius=80,
         background_color=(255, 255, 255, 0),
         fill_color=(0, 0, 0, 255),
@@ -66,22 +73,32 @@ def style_黑鲸高(
         water_pil,
         (
             int((water_pil_bg.width - water_pil.width) / 2),
-            int((water_pil_bg.height - water_pil.height) / 2) - 5,
+            int((water_pil_bg.height - water_pil.height) / 2) - 10,
         ),
         water_pil,
     )
-    bg.paste(water_pil_bg, (50, 0), water_pil_bg)
+    bg.paste(water_pil_bg, (55, 0), water_pil_bg)
 
     # ID
-    id_pil = fun_单行文字转图片2(
+    # id_pil = fun_单行文字转图片2(
+    #     text=f"ID:{material_id}",
+    #     size=30,
+    #     fill=(255, 255, 255, 255),
+    #     background=(0, 0, 0, 255),
+    #     font_weight="heavy",
+    # )
+
+    id_pil = fun_单行文字转图片(
         text=f"ID:{material_id}",
-        size=20,
-        fill=(255, 255, 255, 255),
-        background=(0, 0, 0, 255),
+        font_size=20,
+        fill_color=(255, 255, 255, 255),
         font_weight="heavy",
+        english_font_name="montserrat",
+        chinese_font_name="noto",
+        background_color=(0, 0, 0, 255),
     )
     id_bg = fun_画一个圆角矩形(
-        width=id_pil.width + 30,
+        width=id_pil.width + 50,
         height=id_pil.height + 30,
         border_radius=30,
         fill_color=(0, 0, 0, 255),
@@ -95,5 +112,5 @@ def style_黑鲸高(
         ),
         id_pil,
     )
-    bg.paste(id_bg, (bg.width - id_bg.width - 40, 30), id_bg)
+    bg.paste(id_bg, (bg.width - id_bg.width - 30, 30), id_bg)
     return bg

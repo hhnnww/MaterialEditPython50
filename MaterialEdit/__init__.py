@@ -19,7 +19,6 @@ from .fun_制作首图 import (
     layout_s1_n,
 )
 from .fun_图片编辑 import ImageEdit
-from .fun_文件夹操作 import MaterialPathAction
 from .fun_桌面文件夹操作 import fun_保存图片, fun_清空桌面上传文件夹图片
 from .fun_素材文件夹合并 import fun_素材文件夹合并
 from .fun_获取素材信息.fun_获取素材信息 import fun_获取素材信息
@@ -52,6 +51,5 @@ __all__ = [
     "fun_素材文件夹合并",
     "fun_清空桌面上传文件夹图片",
     "fun_保存图片",
-    "MaterialPathAction",
     "ImageEdit",
 ]

@@ -51,6 +51,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
     data_header = fun_制作详情栏目标题(
         title="素材信息", desc="Material Info " + item.shop_name
     )
+
     data_list = [
         ("素材ID", item.material_id),
         ("素材大小", item.material_source_file_size),
@@ -62,6 +63,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
             "本店素材并非图片，为专业设计师使用的设计源文件，非设计师请勿购买。",
         ),
     ]
+
     if item.shop_name == "泡泡素材":
         data_list.append(("* 无模特图", "本店素材均不包含模特图效果图。"))
 
@@ -72,6 +74,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
         align_item="center",
         background_color=(255, 255, 255, 255),
     )
+
     if item.save_sub_path is True:
         fun_保存图片(data_im, f"xq_{num}", item.material_id)
     else:

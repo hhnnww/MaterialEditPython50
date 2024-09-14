@@ -107,6 +107,7 @@ class LayoutAdaptiveCrop:
             all_pil.append(self.fun_制作单行(comb_list))
 
         bg = fun_图片竖向拼接(all_pil, self.spacing, "start", (255, 255, 255, 255))
+
         bg = fun_图片扩大粘贴(
             bg,
             width=self.xq_width,

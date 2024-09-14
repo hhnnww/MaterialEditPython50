@@ -3,6 +3,9 @@ from pathlib import Path
 from bson import ObjectId
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
+from tqdm import tqdm
+
 from MaterialEdit.fun_素材下载 import (
     fun_envato_图片下载,
     fun_插入素材,
@@ -10,8 +13,6 @@ from MaterialEdit.fun_素材下载 import (
     fun_获取集合,
     fun_采集,
 )
-from pydantic import BaseModel
-from tqdm import tqdm
 
 router = APIRouter(prefix="/MaterialDown")
 
@@ -72,7 +73,7 @@ class CutMaterialModel(BaseModel):
 def cut_material_list(item: CutMaterialModel):
     collect = fun_获取集合(shop_name=item.shop_name, material_site=item.material_site)
     cut_obj = collect.find_one({"_id": ObjectId(item.material_id)})
-    collect.delete_many({"create_date": {"$lte": cut_obj.get("create_date")}})
+    collect.delete_many({"create_date": {"$lte": cut_obj.get("create_date")}})  # type: ignore
 
     return "ok"
 
@@ -116,10 +117,10 @@ def get_material_down_link(
     obj = collect.find_one({"_id": ObjectId(oid=material_id)})
 
     if material_site == "envato":
-        fun_envato_图片下载(obj, down_path)
+        fun_envato_图片下载(obj, down_path)  # type: ignore
 
-    collect.update_one(obj, {"$set": {"state": True}})
-    return RedirectResponse(url=obj.get("url"), status_code=301)
+    collect.update_one(obj, {"$set": {"state": True}})  # type: ignore
+    return RedirectResponse(url=obj.get("url"), status_code=301)  # type: ignore
 
 
 # ---------------- 获取素材列表 ----------------

@@ -66,7 +66,7 @@ def fun_单行图片制作(
                         water_piex_color,
                         water_piex_color,
                         water_piex_color,
-                        int(255 * 0.8),
+                        int(255 * 0.5),
                     ),
                 )
         else:

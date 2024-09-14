@@ -1,8 +1,12 @@
 from PIL import Image
 
+from MaterialEdit.setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
+
+from ..fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
 from ..fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from ..fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from ..fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from ..fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from ..fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from ..type import ImageModel
 
@@ -21,6 +25,9 @@ def layout_3列1大横竖错落(
         height=int((small_height * 2) + spacing),
         position="center",
     )
+    if spacing > 0:
+        large_im = fun_图片画边框(large_im, FIRST_IMAGE_BORDER_COLOR)
+        large_im = fun_图片切换到圆角(large_im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
 
     small_im_list = []
     for image in image_list[1:]:
@@ -40,6 +47,10 @@ def layout_3列1大横竖错落(
                 height=int((small_height * 2) + spacing),
                 position="center",
             )
+
+        if spacing > 0:
+            im = fun_图片画边框(im, FIRST_IMAGE_BORDER_COLOR)
+            im = fun_图片切换到圆角(im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
 
         small_im_list.append(im.copy())
 
