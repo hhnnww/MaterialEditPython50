@@ -22,12 +22,10 @@ def fun_蜘蛛水印(im: Image.Image):
 if __name__ == "__main__":
     from pathlib import Path
 
-    hs_up = r"\\HUANGSHUO\Users\materialedit\Desktop\UPLOAD"
-    for in_file in Path(r"F:\小夕素材\10000-20000\10576\10576").rglob("*"):
+    hs_up = Path(r"\\HUANGSHUO\Users\materialedit\Desktop\UPLOAD")
+    ma_path = Path(r"F:\小夕素材\10000-20000\10461\10461")
+    for in_file in ma_path.rglob("*"):
         if in_file.is_file() and in_file.suffix.lower() in [".png", ".jpg"]:
-            if in_file.stem == "0":
-                continue
-
             print(in_file)
             im = Image.open(in_file.as_posix())
             im = fun_蜘蛛水印(im=im)

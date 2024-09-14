@@ -40,6 +40,6 @@ class PPTFile:
                 self.ppt_file.unlink()
 
             ppt.Close()
-            pythoncom.CoUninitialize()
+            pythoncom.CoUninitialize()  # type: ignore
 
             return "ok"

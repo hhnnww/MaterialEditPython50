@@ -26,6 +26,7 @@ from MaterialEdit.fun_文件夹操作.fun_制作享设计大图 import fun_享�
 from MaterialEdit.fun_文件夹操作.fun_图片添加白色背景 import fun_图片添加白色背景
 from MaterialEdit.fun_文件夹操作.fun_子目录psd重命名 import fun_子目录PSD重命名
 from MaterialEdit.fun_文件夹操作.fun_子目录图片重命名 import fun_子目录图片重命名
+from MaterialEdit.fun_文件夹操作.fun_子目录拼接图片 import fun_子目录拼接图片
 from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
 from MaterialEdit.fun_文件夹操作.fun_按数字分类 import fun_按数字分类
 from MaterialEdit.fun_文件夹操作.fun_文件夹内文件夹重命名 import (
@@ -331,6 +332,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "子目录图片重命名":
             fun_子目录图片重命名(material_path=material_structure.material_path)
+
+        case "子目录拼接图片":
+            fun_子目录拼接图片(material_path=material_structure.material_path)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
