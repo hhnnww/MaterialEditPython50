@@ -3,7 +3,8 @@ from pathlib import Path
 
 from PIL import Image
 
-from ..fun_图片编辑 import ImageEdit
+from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
+from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 
 class PPTPICMerge:
@@ -61,14 +62,16 @@ class PPTPICMerge:
         return oneline_height
 
     def fun_制作单排PIL(self, pil_list, oneline_height):
-        bg = Image.new("RGBA", (self.xq_width, oneline_height + self.gutter), (255, 255, 255))
+        bg = Image.new(
+            "RGBA", (self.xq_width, oneline_height + self.gutter), (255, 255, 255)
+        )
 
         x = self.gutter
         y = self.gutter
         for pil in pil_list:
             width = int(oneline_height * (pil.width / pil.height))
-            img = ImageEdit.fun_图片裁剪(pil, width, oneline_height, "center")
-            img = ImageEdit.fun_图片切换到圆角(img, 10)
+            img = fun_图片裁剪(pil, width, oneline_height, "center")
+            img = fun_图片切换到圆角(img, 10)
             bg.paste(img, (x, y), img)
             x += img.width + self.gutter
 
@@ -76,7 +79,10 @@ class PPTPICMerge:
 
     def main(self):
         all_pil_list = self.fun_组合图片()
-        all_line = [self.fun_制作单排PIL(pil, self.fun_计算单排高度(pil)) for pil in all_pil_list]
+        all_line = [
+            self.fun_制作单排PIL(pil, self.fun_计算单排高度(pil))
+            for pil in all_pil_list
+        ]
         height = sum((line.height for line in all_line)) + self.gutter
         bg = Image.new("RGBA", (self.xq_width, height), (255, 255, 255))
         x = 0

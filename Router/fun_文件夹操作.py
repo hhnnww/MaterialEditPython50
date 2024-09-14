@@ -9,7 +9,8 @@ from tqdm import tqdm
 from win10toast import ToastNotifier  # type: ignore
 from win32com.client import Dispatch
 
-from MaterialEdit import AIFile, PPTEdit, PSFile
+from MaterialEdit import AIFile, PSFile
+from MaterialEdit.fun_ppt导出图片 import PPT导出图片
 from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
 from MaterialEdit.fun_文件夹操作.fun_AI文件重命名 import fun_ai文件重命名
@@ -282,10 +283,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             )
 
             for in_file in tqdm(all_file, ncols=100, desc="PPT导出图片"):
+                print(in_file)
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-                    export_path = in_file.parent
-                    PPTEdit(ppt_path=in_file, ppt_export_path=export_path).main()
+                    PPT导出图片(ppt_path=in_file).main()
 
         case "子目录内文件移动到根":
             for in_path in Path(material_structure.material_path).iterdir():

@@ -12,12 +12,12 @@ class PPTFile:
         self.ppt_dir = ppt_export_path / ppt_file.stem
 
     def fun_导出PNG(self):
-        pythoncom.CoInitialize()
+        pythoncom.CoInitialize()  # type: ignore
         ppt_app = DispatchEx("PowerPoint.Application")
         ppt_app.DisplayAlerts = 0
         try:
             ppt = ppt_app.Presentations.Open(self.ppt_file.as_posix())
-        except:
+        except:  # noqa: E722
             print("文件打开错误。")
             return None
         else:
@@ -30,7 +30,7 @@ class PPTFile:
 
                 ppt_png = self.ppt_file.with_suffix(".png")
                 bg.save(ppt_png.as_posix())
-            except:
+            except:  # noqa: E722
                 print(f"错误文件，无法导出：{self.ppt_file.as_posix()}")
                 ppt.Close()
                 return None
@@ -39,6 +39,7 @@ class PPTFile:
                 ppt.SaveAs(self.ppt_file.with_suffix(".pptx"))
                 self.ppt_file.unlink()
 
+            ppt.Save()
             ppt.Close()
             pythoncom.CoUninitialize()  # type: ignore
 

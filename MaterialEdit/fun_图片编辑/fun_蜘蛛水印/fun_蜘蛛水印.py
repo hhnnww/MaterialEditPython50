@@ -23,10 +23,15 @@ if __name__ == "__main__":
     from pathlib import Path
 
     hs_up = Path(r"\\HUANGSHUO\Users\materialedit\Desktop\UPLOAD")
-    ma_path = Path(r"F:\小夕素材\10000-20000\10461\10461")
+    ma_path = Path(r"F:\小夕素材\10000-20000\10587\10587")
     for in_file in ma_path.rglob("*"):
         if in_file.is_file() and in_file.suffix.lower() in [".png", ".jpg"]:
             print(in_file)
+
+            if in_file.parent.stem.lower() == "links":
+                print(f"{in_file} 跳过")
+                continue
+
             im = Image.open(in_file.as_posix())
             im = fun_蜘蛛水印(im=im)
             im.save(in_file.as_posix())
