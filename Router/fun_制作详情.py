@@ -40,11 +40,14 @@ class MakeProductImageRequestModel(BaseModel):
 
     crop_position: ALIGNITEM
     xq_width: int
-    save_sub_path: bool = False
+    image_name_has_material_id: bool = False
+
+    clear_upload_path: bool = True
 
 
 def fun_make_material_product_image(item: MakeProductImageRequestModel):
-    fun_清空桌面上传文件夹图片("xq")
+    if item.clear_upload_path:
+        fun_清空桌面上传文件夹图片("xq")
 
     num = 1
     # 制作数据图
@@ -75,7 +78,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
         background_color=(255, 255, 255, 255),
     )
 
-    if item.save_sub_path is True:
+    if item.image_name_has_material_id is True:
         fun_保存图片(data_im, f"xq_{num}", item.material_id)
     else:
         fun_保存图片(data_im, f"xq_{num}")
@@ -112,7 +115,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
             )
 
             for im in fun_裁剪图片(im=data_im):
-                if item.save_sub_path is True:
+                if item.image_name_has_material_id is True:
                     fun_保存图片(im, f"xq_{num}", item.material_id)
                 else:
                     fun_保存图片(im, f"xq_{num}")
@@ -152,7 +155,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
             )
 
             for im in fun_裁剪图片(im=data_im):
-                if item.save_sub_path is True:
+                if item.image_name_has_material_id is True:
                     fun_保存图片(im, f"xq_{num}", item.material_id)
                 else:
                     fun_保存图片(im, f"xq_{num}")

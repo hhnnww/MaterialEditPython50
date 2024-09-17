@@ -1,12 +1,12 @@
 from pathlib import Path
 
+from tqdm import tqdm
+
+from MaterialEdit import fun_获取素材信息
 from Router.fun_制作详情 import (
     MakeProductImageRequestModel,
     fun_make_material_product_image,
 )
-from tqdm import tqdm
-
-from MaterialEdit import fun_获取素材信息
 
 from ..fun_获取路径数字 import fun_获取路径数字
 from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
@@ -72,7 +72,8 @@ class AutoMakeProductImage:
                 preview_image_count=len(ma_info.preview_image_list),
                 crop_position="start",
                 xq_width=1500,
-                save_sub_path=True,
+                image_name_has_material_id=True,
+                clear_upload_path=False,
             )
         )
 
