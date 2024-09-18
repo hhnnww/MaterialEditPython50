@@ -63,12 +63,11 @@ def style_黑鲸高(
     water_pil = fun_获取单个水印(60, fill_clor=(255, 255, 255, 255))
     water_pil_bg = fun_画一个圆角矩形(
         width=water_pil.width + 50,
-        height=int(water_pil.height * 2) + 80,
+        height=int(water_pil.height * 2) + 90,
         border_radius=80,
         background_color=(255, 255, 255, 0),
         fill_color=(0, 0, 0, 255),
     )
-
     water_pil_bg = water_pil_bg.crop(
         (0, int(water_pil_bg.height / 2), water_pil_bg.width, water_pil_bg.height)
     )
@@ -77,7 +76,7 @@ def style_黑鲸高(
         water_pil,
         (
             int((water_pil_bg.width - water_pil.width) / 2),
-            int((water_pil_bg.height - water_pil.height) / 2) - 10,
+            int((water_pil_bg.height - water_pil.height) / 2) - 5,
         ),
         water_pil,
     )
