@@ -1,7 +1,13 @@
 from PIL import Image
 from tqdm import tqdm
 
-from ..fun_图片编辑.ClassImageEdit import ImageEdit
+from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
+from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+
 from ..type import ALIGNITEM, ImageModel
 from .fun_重新构建所有图片 import fun_重新构建所有图片
 
@@ -43,23 +49,25 @@ def fun_layout_固定裁剪2(
         one_line = []
         for image in comb_list:
             im = Image.open(image.path)
+
             if im.mode != "RGBA":
                 im = im.convert("RGBA")
 
-            im = ImageEdit.fun_图片裁剪(im, image_width, image_height, crop_position)
+            im = fun_图片裁剪(im, image_width, image_height, crop_position)
+
             if spacing > 0:
-                im = ImageEdit.fun_图片画边框(im, border_color=(240, 240, 240, 255))
-                im = ImageEdit.fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
+                im = fun_图片画边框(im, border_color=(240, 240, 240, 255))
+                im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
 
             one_line.append(im)
 
-        one_line_im = ImageEdit.fun_图片横向拼接(
+        one_line_im = fun_图片横向拼接(
             one_line, spacing, "center", (255, 255, 255, 255)
         )
         all_comb.append(one_line_im)
 
-    bg = ImageEdit.fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 255))
-    bg = ImageEdit.fun_图片扩大粘贴(
+    bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 255))
+    bg = fun_图片扩大粘贴(
         bg, xq_width, xq_height, "center", "center", (255, 255, 255, 255)
     )
     return bg

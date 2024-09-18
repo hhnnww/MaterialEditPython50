@@ -24,7 +24,7 @@ def style_黑鲸高(
         size=80,
         fill=(255, 255, 255, 255),
         background=(255, 255, 255, 0),
-        font_weight="bold",
+        font_weight="normal",
     )
     ad_pil = fun_单行文字转图片2(
         text=f"{shop_name} - 9.9元加入会员，全店免费",

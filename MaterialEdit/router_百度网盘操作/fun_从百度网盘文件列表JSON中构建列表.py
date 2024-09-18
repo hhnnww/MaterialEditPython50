@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class BaiduFileItem(BaseModel):
-    id: str
+    id: int
     path: str
     filename: str
 
