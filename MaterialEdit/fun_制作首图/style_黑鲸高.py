@@ -24,8 +24,9 @@ def style_黑鲸高(
         size=80,
         fill=(255, 255, 255, 255),
         background=(255, 255, 255, 0),
-        font_weight="normal",
+        font_weight="bold",
     )
+
     ad_pil = fun_单行文字转图片2(
         text=f"{shop_name} - 9.9元加入会员，全店免费",
         size=30,
@@ -33,6 +34,7 @@ def style_黑鲸高(
         background=(0, 0, 0, 255),
         font_weight="bold",
     )
+
     title_ad = fun_图片竖向拼接(
         image_list=[title_pil, ad_pil],
         spacing=25,
@@ -66,9 +68,11 @@ def style_黑鲸高(
         background_color=(255, 255, 255, 0),
         fill_color=(0, 0, 0, 255),
     )
+
     water_pil_bg = water_pil_bg.crop(
         (0, int(water_pil_bg.height / 2), water_pil_bg.width, water_pil_bg.height)
     )
+
     water_pil_bg.paste(
         water_pil,
         (
@@ -97,6 +101,7 @@ def style_黑鲸高(
         chinese_font_name="noto",
         background_color=(0, 0, 0, 255),
     )
+
     id_bg = fun_画一个圆角矩形(
         width=id_pil.width + 50,
         height=id_pil.height + 30,
@@ -104,6 +109,7 @@ def style_黑鲸高(
         fill_color=(0, 0, 0, 255),
         background_color=(0, 0, 0, 0),
     )
+
     id_bg.paste(
         id_pil,
         (
@@ -112,5 +118,7 @@ def style_黑鲸高(
         ),
         id_pil,
     )
+
     bg.paste(id_bg, (bg.width - id_bg.width - 30, 30), id_bg)
+
     return bg
