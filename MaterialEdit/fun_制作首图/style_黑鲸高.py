@@ -4,9 +4,6 @@ from MaterialEdit.fun_制作首图.fun_制作格式 import fun_制作格式
 from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
     fun_单行文字转图片,
 )
-from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片2 import (
-    fun_单行文字转图片2,
-)
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
@@ -19,21 +16,41 @@ def style_黑鲸高(
     if im.width < 1500 or im.height < 1250:
         im = fun_图片扩大粘贴(im, 1500, 1250, "center", "center", (255, 255, 255, 255))
 
-    title_pil = fun_单行文字转图片2(
+    title_pil = fun_单行文字转图片(
         text=title,
-        size=80,
-        fill=(255, 255, 255, 255),
-        background=(255, 255, 255, 0),
         font_weight="bold",
+        font_size=85,
+        fill_color=(255, 255, 255, 255),
+        background_color=(0, 0, 0, 255),
+        english_font_name="montserrat",
+        chinese_font_name="opposans",
     )
 
-    ad_pil = fun_单行文字转图片2(
-        text=f"{shop_name} - 9.9元加入会员，全店免费",
-        size=30,
-        fill=(255, 255, 255, 255),
-        background=(0, 0, 0, 255),
+    # title_pil = fun_单行文字转图片2(
+    #     text=title,
+    #     size=80,
+    #     fill=(255, 255, 255, 255),
+    #     background=(255, 255, 255, 0),
+    #     font_weight="bold",
+    # )
+
+    ad_pil = fun_单行文字转图片(
+        text=f"{shop_name} - 9.9元加入会员，全店免费 Paopaosucai.taobao.com",
         font_weight="bold",
+        font_size=25,
+        fill_color=(255, 255, 255, 255),
+        background_color=(0, 0, 0, 255),
+        english_font_name="montserrat",
+        chinese_font_name="opposans",
     )
+
+    # ad_pil = fun_单行文字转图片2(
+    #     text=f"{shop_name} - 9.9元加入会员，全店免费 Paopaosucai.taobao.com",
+    #     size=30,
+    #     fill=(255, 255, 255, 255),
+    #     background=(0, 0, 0, 255),
+    #     font_weight="normal",
+    # )
 
     title_ad = fun_图片竖向拼接(
         image_list=[title_pil, ad_pil],

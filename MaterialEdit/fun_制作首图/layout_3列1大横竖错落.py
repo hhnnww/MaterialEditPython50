@@ -54,6 +54,9 @@ def layout_3列1大横竖错落(
 
         small_im_list.append(im.copy())
 
+        if len(small_im_list) > 15:
+            break
+
     bottom_line_list = []
     bottom_list = []
 
@@ -112,6 +115,7 @@ def layout_3列1大横竖错落(
         align_item="start",
         background_color=(255, 255, 255, 255),
     )
+
     bg = fun_图片扩大粘贴(
         im=bg,
         width=xq_width,

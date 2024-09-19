@@ -13,7 +13,7 @@ from MaterialEdit import (
     fun_黑鲸首图,
     layout_s1_n,
 )
-from MaterialEdit.fun_制作首图 import style_paopao
+from MaterialEdit.fun_制作首图 import Layout1大N行2列, Layout1大N行自适应, style_paopao
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
@@ -194,6 +194,33 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
         )
 
+    elif item.first_image_layout == "1大2行2列":
+        bg = Layout1大N行2列(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=2,
+        ).main()
+
+    elif item.first_image_layout == "1大3行2列":
+        bg = Layout1大N行2列(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=3,
+        ).main()
+
+    elif item.first_image_layout == "1大N行":
+        bg = Layout1大N行自适应(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=0,
+        ).main()
+
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -203,6 +230,8 @@ def make_first_image(item: MakeFirstImageModel):
             xq_width=xq_width,
             xq_height=xq_height,
         )
+
+    # ---------------- 水印 ----------------
 
     # 开始制作首图样式
     water_pixel_color = int(0)
@@ -241,6 +270,8 @@ def make_first_image(item: MakeFirstImageModel):
             1,
             (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
         )
+
+    # ---------------- 样式 ----------------
 
     if item.first_image_style == "T500":
         bg = fun_T500首图(

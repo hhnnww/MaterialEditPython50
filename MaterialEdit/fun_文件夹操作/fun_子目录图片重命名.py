@@ -12,7 +12,7 @@ def fun_子目录图片重命名(material_path: str):
                 ".jpeg",
                 ".png",
             ]:
-                in_file.rename(in_file.with_stem(str(uuid4)))
+                in_file.rename(in_file.with_stem(str(uuid4())))
 
         # 改名
         num = 0

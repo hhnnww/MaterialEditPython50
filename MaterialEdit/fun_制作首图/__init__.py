@@ -2,6 +2,8 @@ from .layout_1_2_3 import fun_layout_1_2_3
 from .layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from .layout_1_3 import fun_layout_1_3
 from .layout_1_N import fun_layout_1_n
+from .layout_1大_N行_2列 import Layout1大N行2列
+from .layout_1大_N行_自适应 import Layout1大N行自适应
 from .layout_3列1大横竖错落 import layout_3列1大横竖错落
 from .layout_3列横竖错落 import layout_3列横竖错落
 from .layout_S1_N import layout_s1_n
@@ -13,6 +15,8 @@ from .style_泡泡 import style_paopao
 from .style_黑鲸 import fun_黑鲸首图
 
 __all__ = [
+    "Layout1大N行自适应",
+    "Layout1大N行2列",
     "fun_layout_1_n",
     "fun_layout_1_3",
     "fun_layout_1_2_3",
