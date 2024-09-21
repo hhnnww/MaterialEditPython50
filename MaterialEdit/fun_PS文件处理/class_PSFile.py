@@ -106,7 +106,11 @@ class PSFile:
             # 普通图层
             if in_layer.Kind != ArtLayerKind.TextLayer:
                 com_普通图层广告(
-                    self.app, in_layer, include_names, is_names, photo_names  # type: ignore
+                    self.app,
+                    in_layer,
+                    include_names,
+                    is_names,
+                    photo_names,  # type: ignore
                 )
 
                 if in_layer.Kind == 17:
@@ -229,8 +233,8 @@ class PSFile:
         # 插入广告
         # fun_插入广告(self.app, self.doc, self.tb_name, self.ad_layer_name)
 
-        print(f"保存：\t{save_path.as_posix()}")
-        self.doc.Save()
+        # print(f"保存：\t{save_path.as_posix()}")
+        # self.doc.Save()
 
         print(f"关闭：\t{save_path.as_posix()}")
         self.doc.Close(2)

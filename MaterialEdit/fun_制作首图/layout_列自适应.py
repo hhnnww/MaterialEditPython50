@@ -15,6 +15,7 @@ from MaterialEdit.type import ImageModel
 def layout_列自适应(
     image_list: list[ImageModel], col: int, xq_width: int, xq_height: int, spacing: int
 ):
+    image_list = image_list + image_list + image_list
     col_width = math.ceil((xq_width - ((col + 1) * spacing)) / col)
     bg_height = xq_height - spacing
 

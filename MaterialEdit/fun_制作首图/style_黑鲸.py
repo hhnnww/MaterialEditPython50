@@ -50,6 +50,7 @@ def fun_黑鲸首图(
     # 画边框和写标题
     circle = fun_画一个圆角矩形(1500, 400, 80, (0, 0, 0, 255), (255, 255, 255, 255))
     circle = circle.crop((0, 200, circle.width, circle.height))
+
     title_pil = fun_单行文字转图片(
         text=title,
         font_weight="bold",
@@ -59,13 +60,6 @@ def fun_黑鲸首图(
         english_font_name="montserrat",
         chinese_font_name="opposans",
     )
-    # title_pil = fun_单行文字转图片2(
-    #     text=title,
-    #     font_weight="normal",
-    #     size=100,
-    #     fill=(255, 255, 255, 255),
-    #     background=(0, 0, 0, 255),
-    # )
 
     circle.paste(
         title_pil, (80, int((circle.height - title_pil.height) / 2)), title_pil

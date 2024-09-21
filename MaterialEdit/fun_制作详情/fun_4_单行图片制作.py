@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageFile
 
 from MaterialEdit.fun_制作详情.fun_5_获取源文件 import fun_获取图片对应的源文件
 from MaterialEdit.fun_制作详情.fun_6_小图增加信息 import fun_小图增加信息
@@ -11,6 +11,8 @@ from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边�
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 from ..type import ALIGNITEM, _ImageItem
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def fun_单行图片制作(

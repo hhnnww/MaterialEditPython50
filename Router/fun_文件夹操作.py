@@ -4,6 +4,7 @@ from pathlib import Path
 from pprint import pprint
 
 import pythoncom
+from PIL import Image
 from pydantic import BaseModel
 from tqdm import tqdm
 from win10toast import ToastNotifier  # type: ignore
@@ -12,6 +13,7 @@ from win32com.client import Dispatch
 from MaterialEdit import AIFile, PSFile
 from MaterialEdit.fun_ppt导出图片 import PPT导出图片
 from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
+from MaterialEdit.fun_图片编辑.fun_蜘蛛水印.fun_蜘蛛水印 import fun_蜘蛛水印
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
 from MaterialEdit.fun_文件夹操作.fun_AI文件重命名 import fun_ai文件重命名
 from MaterialEdit.fun_文件夹操作.fun_享设计文件夹重构 import fun_享设计文件夹重构
@@ -40,6 +42,7 @@ from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动�
 from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
 from MaterialEdit.fun_文件夹操作.fun_解压ZIP import fun_解压ZIP
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
 
 toaster = ToastNotifier()
@@ -286,7 +289,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 print(in_file)
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-                    PPT导出图片(ppt_path=in_file).main()
+                    PPT导出图片(
+                        ppt_path=in_file, effect_path=material_structure.effect_path
+                    ).main()
 
         case "子目录内文件移动到根":
             for in_path in Path(material_structure.material_path).iterdir():
@@ -336,6 +341,20 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "子目录拼接图片":
             fun_子目录拼接图片(material_path=material_structure.material_path)
+
+        case "效果图蜘蛛水印":
+            for in_file in fun_遍历图片(
+                folder=material_structure.effect_path,
+                used_image_number=0,
+                image_sort=True,
+            ):
+                im = Image.open(in_file)
+                if im.mode != "rgba":
+                    im = im.convert("RGBA")
+
+                im = fun_蜘蛛水印(im)
+                Path(in_file).unlink()
+                im.save(Path(in_file).with_suffix(".png"))
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"

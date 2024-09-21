@@ -16,7 +16,7 @@ from MaterialEdit.setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
 
 
 class PPT导出图片:
-    def __init__(self, ppt_path: Path) -> None:
+    def __init__(self, ppt_path: Path, effect_path: str) -> None:
         self.ppt_path = ppt_path
         self.ppt_dir = ppt_path.parent / ppt_path.stem
         self.png_path = ppt_path.with_suffix(".png")
@@ -25,6 +25,10 @@ class PPT导出图片:
 
         self.line_col = 3
         self.line = 4
+
+        self.effect_path = Path(effect_path)
+        if self.effect_path.exists() is not True:
+            self.effect_path.mkdir()
 
     @property
     def first_width(self):
@@ -149,12 +153,17 @@ class PPT导出图片:
 
         shutil.rmtree(self.ppt_dir)
 
+    def fun_备份首图(self):
+        if self.ppt_dir.exists() is not True:
+            return
+
+        for in_file in self.ppt_dir.iterdir():
+            if in_file.is_file() and "1" in in_file.stem:
+                effect_image_path = self.effect_path / f"{self.ppt_path.stem}.jpg"
+                shutil.copy(in_file, effect_image_path)
+                break
+
     def main(self):
         self.fun_ppt导出图片()
+        self.fun_备份首图()
         self.fun_图片合并()
-
-
-if __name__ == "__main__":
-    PPT导出图片(
-        ppt_path=Path(r"F:\小夕素材\10000-20000\10594\10594\小夕素材(1).ppt")
-    ).fun_图片合并()

@@ -8,7 +8,7 @@ from MaterialEdit.fun_图片编辑 import (
     fun_图片边框圆角,
 )
 
-from .class_layout import LayoutInit
+from .class_layout_init import LayoutInit
 
 
 class Layout1大N行2列(LayoutInit):
