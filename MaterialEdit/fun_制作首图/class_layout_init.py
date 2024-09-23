@@ -1,6 +1,7 @@
 import math
 
 from PIL import Image
+from tqdm import tqdm
 
 from MaterialEdit.type import ImageModel
 
@@ -23,7 +24,7 @@ class LayoutInit:
     @property
     def pil_list(self) -> list[Image.Image]:
         pil_list = []
-        for image in self.image_list:
+        for image in tqdm(self.image_list, desc="制作首图布局", ncols=100):
             im = Image.open(image.path)
             if im.mode.lower() != "rgba":
                 im = im.convert("RGBA")
@@ -40,4 +41,4 @@ class LayoutInit:
         return math.ceil(ori_width / (im.width / im.height))
 
     def fun_计算单行高度(self, im_list: list[Image.Image]) -> int:
-        return sum([im.height for im in im_list]) + (len(im_list) * self.spacing)
+        return sum([im.height for im in im_list]) + ((len(im_list) - 1) * self.spacing)

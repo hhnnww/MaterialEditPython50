@@ -17,6 +17,7 @@ from MaterialEdit.fun_制作首图 import (
     Layout1大N行2列,
     Layout1大N行自适应,
     Layout1大竖2排小竖,
+    Layout列固定尺寸,
     style_paopao,
 )
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
@@ -83,6 +84,15 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             crop_position=item.crop_position,
         ).run_制作自适应布局图片()
+
+    elif item.first_image_layout == "列-固定尺寸":
+        bg = Layout列固定尺寸(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+        ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
         bg = layout_竖横竖竖(
@@ -257,8 +267,8 @@ def make_first_image(item: MakeFirstImageModel):
         bg = fun_图片打满水印(
             bg,  # type: ignore
             60,
-            5,
-            5,
+            3,
+            3,
             (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
         )
 
@@ -266,8 +276,8 @@ def make_first_image(item: MakeFirstImageModel):
         bg = fun_图片打满水印(
             bg,
             60,
-            5,
-            5,
+            3,
+            3,
             (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
         )
     else:

@@ -13,6 +13,7 @@ from win32com.client import Dispatch
 from MaterialEdit import AIFile, PSFile
 from MaterialEdit.fun_ppt导出图片 import PPT导出图片
 from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_蜘蛛水印.fun_蜘蛛水印 import fun_蜘蛛水印
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
 from MaterialEdit.fun_文件夹操作.fun_AI文件重命名 import fun_ai文件重命名
@@ -149,21 +150,26 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             pythoncom.CoInitialize()  # type: ignore
             app = Dispatch("Illustrator.Application")
             for in_file in tqdm(all_file, ncols=100, desc="处理AI文件"):
-                png_path = in_file.with_suffix(".png")
-                png_state = png_path.exists()
+                pic_state = False
+                for suffix in [".jpg", ".jpeg", ".png"]:
+                    png_path = in_file.with_suffix(suffix)
+                    png_path: Path
+                    if png_path.exists() is True:
+                        pic_state = True
 
-                if png_state is False:
+                if pic_state is False:
                     all_png = [
                         in_png.stem
                         for in_png in fun_遍历指定文件(
-                            material_structure.material_path, [".png"]
+                            material_structure.material_path, [".png", ".jpeg", ".jpg"]
                         )
                     ]
+
                     for in_png in all_png:
                         if in_file.stem in in_png:
-                            png_state = True
+                            pic_state = True
 
-                if png_state is False:
+                if pic_state is False:
                     AIFile(in_file.as_posix(), app).fun_导出PNG()
 
             app.Quit()
@@ -355,6 +361,27 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 im = fun_蜘蛛水印(im)
                 Path(in_file).unlink()
                 im.save(Path(in_file).with_suffix(".png"))
+
+        case "效果图扩大":
+            for in_file in fun_遍历图片(
+                folder=material_structure.effect_path,
+                used_image_number=0,
+                image_sort=True,
+            ):
+                im = Image.open(in_file)
+                if im.mode.lower() != "rgba":
+                    im = im.convert("RGBA")
+
+                im = fun_图片扩大粘贴(
+                    im,
+                    width=int(im.width * 1.1),
+                    height=int(im.height * 1.1),
+                    left="center",
+                    top="center",
+                    background_color=(255, 255, 255, 255),
+                )
+
+                im.save(in_file)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"

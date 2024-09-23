@@ -14,10 +14,20 @@ class AIFile:
     def __init__(self, ai_path: str, app: CDispatch):
         self.ai_path = Path(ai_path)
         self.app = app
+
+        try:
+            self.doc = self.app.Open(ai_path)
+        except:  # noqa: E722
+            self.app.Quit()
+
         self.doc = self.app.Open(ai_path)
 
     def fun_导出PNG(self):
-        fun_删除图层广告(self.doc)
+        try:
+            fun_删除图层广告(self.doc)
+        except:  # noqa: E722
+            pass
+
         fun_导出PNG(self.doc, self.ai_path)
         fun_PNG图片移动到上层目录(self.ai_path)
         fun_同层级图片改名(ai_path=self.ai_path)

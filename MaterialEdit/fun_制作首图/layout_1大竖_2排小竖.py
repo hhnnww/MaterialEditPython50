@@ -1,4 +1,5 @@
 from functools import cached_property
+from itertools import cycle
 
 from PIL import Image
 
@@ -44,11 +45,9 @@ class Layout1大竖2排小竖(LayoutInit):
         return im
 
     def main(self) -> Image.Image:
-        pil_list = self.pil_list[1:] + self.pil_list[1:] + self.pil_list[1:]
-
         line_list = []
         right_im_list = []
-        for im in pil_list:
+        for im in cycle(self.pil_list[1:]):
             im = im.resize(
                 (
                     self.fun_小图宽度,

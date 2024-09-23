@@ -57,7 +57,10 @@ def fun_素材图水印(material_path: str, shop_name: str):
                 except OSError:
                     print(in_file.as_posix())
                 else:
-                    im.save(in_file.with_suffix(".png"))
+                    if in_file.suffix.lower() != ".png":
+                        im.convert("RGB")
+
+                    im.save(in_file)
                     im.close()
             except ValueError as e:
                 print(in_file.as_posix(), e)

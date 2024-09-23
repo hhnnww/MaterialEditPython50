@@ -25,6 +25,7 @@ def fun_制作文件夹大图(sub_path: Path, shop_name: str):
             png_file_list.append(in_file)
 
     pil_list = [Image.open(in_file.as_posix()) for in_file in png_file_list]
+
     avera_ratio = sum([pil.width / pil.height for pil in pil_list]) / len(pil_list)
 
     for pil in pil_list:

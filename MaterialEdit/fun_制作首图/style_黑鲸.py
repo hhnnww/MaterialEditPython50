@@ -16,6 +16,9 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 def fun_黑鲸首图(
     im: Image.Image, title: str, material_format: str, material_id: str
 ) -> Image.Image:
+    if im.width > 1500:
+        im = im.crop((0, 0, 1500, im.height))
+
     # 制作素材ID
     material_id_pil = fun_单行文字转图片2(
         text="ID:" + material_id,
@@ -50,11 +53,12 @@ def fun_黑鲸首图(
     # 画边框和写标题
     circle = fun_画一个圆角矩形(1500, 400, 80, (0, 0, 0, 255), (255, 255, 255, 255))
     circle = circle.crop((0, 200, circle.width, circle.height))
+    # circle = fun_画一个圆角矩形(1500, 200, 60, (0, 0, 0, 255), (255, 255, 255, 255))
 
     title_pil = fun_单行文字转图片(
         text=title,
         font_weight="bold",
-        font_size=95,
+        font_size=90,
         fill_color=(255, 255, 255, 255),
         background_color=(0, 0, 0, 255),
         english_font_name="montserrat",
