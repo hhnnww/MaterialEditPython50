@@ -1,3 +1,5 @@
+from itertools import cycle
+
 from PIL import Image
 from tqdm import tqdm
 
@@ -26,6 +28,8 @@ def fun_layout_固定裁剪2(
     all_image_average_ratio = sum(
         [image.ratio for image in image_list if image.ratio is not None]
     ) / len(image_list)
+
+    image_list = cycle(image_list)  # type: ignore
 
     # 计算单行各种图片的比例
     oneline_num_ratio_list = list(

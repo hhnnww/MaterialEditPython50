@@ -9,6 +9,9 @@ MATERIAL_SOURCE_SUFFIX = [
     ".eps",
     ".ppt",
     ".pptx",
+    ".procreate",
+    ".brushset",
+    ".abr",
 ]
 
 IMAGE_SUFFIX = [".jpg", ".png", ".jpeg"]
@@ -33,6 +36,7 @@ AD_SUFFIX = [
     ".otf",
     ".ttf",
     ".ttc",
+    ".lnk",
 ]
 
 

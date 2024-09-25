@@ -1,9 +1,10 @@
 import math
+from functools import cached_property
 
 from PIL import Image
 from tqdm import tqdm
 
-from MaterialEdit.type import ImageModel
+from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
 class LayoutInit:
@@ -14,14 +15,16 @@ class LayoutInit:
         xq_height: int,
         spacing: int,
         col: int,
+        crop_position: ALIGNITEM,
     ) -> None:
         self.image_list = image_list
         self.xq_width = xq_width
         self.xq_height = xq_height
         self.spacing = spacing
         self.col = col
+        self.crop_position: ALIGNITEM = crop_position
 
-    @property
+    @cached_property
     def pil_list(self) -> list[Image.Image]:
         pil_list = []
         for image in tqdm(self.image_list, desc="制作首图布局", ncols=100):
@@ -35,6 +38,10 @@ class LayoutInit:
                 break
 
         return pil_list
+
+    @cached_property
+    def fun_所有图片平均比例(self) -> float:
+        return sum([im.width / im.height for im in self.pil_list]) / len(self.pil_list)
 
     @staticmethod
     def fun_计算小图高度(im: Image.Image, ori_width: int) -> int:

@@ -23,10 +23,7 @@ class AIFile:
         self.doc = self.app.Open(ai_path)
 
     def fun_导出PNG(self):
-        try:
-            fun_删除图层广告(self.doc)
-        except:  # noqa: E722
-            pass
+        fun_删除图层广告(self.doc)
 
         fun_导出PNG(self.doc, self.ai_path)
         fun_PNG图片移动到上层目录(self.ai_path)

@@ -1,6 +1,5 @@
 import shutil
 from pathlib import Path
-from uuid import uuid4
 
 from .fun_PPT导出图片 import PPTFile
 from .fun_图片组合 import PPTPICMerge
@@ -20,17 +19,19 @@ class PPTEdit:
         if ppt_export.fun_导出PNG() == "ok":
             ppt_dir = ppt_export.ppt_dir
 
-            for in_file in ppt_dir.iterdir():
-                if in_file.is_file():
-                    effect_image = self.effect_path / f"{str(uuid4())}.png"
-                    shutil.copy(in_file, effect_image)
-                    break
+            # for in_file in ppt_dir.iterdir():
+            #     if in_file.is_file():
+            #         effect_image = self.effect_path / f"{str(uuid4())}.png"
+            #         shutil.copy(in_file, effect_image)
+            #         break
 
             bg = PPTPICMerge(ppt_dir)
             bg = bg.main()
 
             ppt_png = self.ppt_path.with_suffix(".png")
             bg.save(ppt_png.as_posix())
+
+            bg.save(self.effect_path / f'{self.ppt_path.with_suffix('.png').name}')
 
             for in_file in ppt_dir.iterdir():
                 if in_file.is_file():

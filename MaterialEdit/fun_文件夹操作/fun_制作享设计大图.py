@@ -19,7 +19,7 @@ def fun_制作文件夹大图(sub_path: Path, shop_name: str):
     for in_file in sub_path.iterdir():
         if (
             in_file.is_file()
-            and in_file.suffix.lower() in [".png"]
+            and in_file.suffix.lower() in [".png", ".jpg", ".jpeg"]
             and shop_name in in_file.stem
         ):
             png_file_list.append(in_file)

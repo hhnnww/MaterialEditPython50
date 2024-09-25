@@ -150,7 +150,7 @@ class PPT导出图片:
         )
 
         bg.save(self.png_path.as_posix())
-
+        bg.save(self.effect_path / self.png_path.name)
         shutil.rmtree(self.ppt_dir)
 
     def fun_备份首图(self):
@@ -165,5 +165,5 @@ class PPT导出图片:
 
     def main(self):
         self.fun_ppt导出图片()
-        self.fun_备份首图()
+        # self.fun_备份首图()
         self.fun_图片合并()

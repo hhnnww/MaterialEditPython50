@@ -383,6 +383,18 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
                 im.save(in_file)
 
+        case "效果图webp转png":
+            for in_file in fun_遍历指定文件(
+                folder=material_structure.effect_path, suffix=[".webp"]
+            ):
+                print(in_file)
+                im = Image.open(in_file.as_posix())
+                if im.mode != "RGBA":
+                    im = im.convert("RGBA")
+
+                im.save(in_file.with_suffix(".png"))
+                in_file.unlink()
+
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
     )

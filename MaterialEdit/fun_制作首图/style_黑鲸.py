@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
@@ -58,7 +60,7 @@ def fun_黑鲸首图(
     title_pil = fun_单行文字转图片(
         text=title,
         font_weight="bold",
-        font_size=90,
+        font_size=100,
         fill_color=(255, 255, 255, 255),
         background_color=(0, 0, 0, 255),
         english_font_name="montserrat",
@@ -130,6 +132,12 @@ def fun_黑鲸首图(
         ),
         format_pil,
     )
+
+    # procreate 图标
+    if material_format.lower() in ["pro", "procreate", "brushset", "abr"]:
+        logo_path = Path(__file__).parent / "img" / "procreate.png"
+        format_bg_circle = Image.open(logo_path)
+        format_bg_circle.thumbnail((150, 150))
 
     bg.paste(
         format_bg_circle,

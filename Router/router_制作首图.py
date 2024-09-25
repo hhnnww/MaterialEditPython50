@@ -14,10 +14,13 @@ from MaterialEdit import (
     layout_s1_n,
 )
 from MaterialEdit.fun_制作首图 import (
+    Layout1大3小自适应,
     Layout1大N行2列,
     Layout1大N行自适应,
     Layout1大竖2排小竖,
+    Layout2大竖4小竖,
     Layout列固定尺寸,
+    Layout超长图拼接,
     style_paopao,
 )
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
@@ -25,6 +28,7 @@ from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3�
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
+from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -92,6 +96,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
             col=item.first_image_line,
+            crop_position=item.crop_position,
         ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
@@ -219,6 +224,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
             col=2,
+            crop_position=item.crop_position,
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
@@ -228,6 +234,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
             col=3,
+            crop_position=item.crop_position,
         ).main()
 
     elif item.first_image_layout == "1大N行-自适应":
@@ -237,6 +244,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
             col=0,
+            crop_position=item.crop_position,
         ).main()
 
     elif item.first_image_layout == "1竖-2排小竖-自适应":
@@ -246,8 +254,47 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
             col=0,
+            crop_position=item.crop_position,
         ).main()
 
+    elif item.first_image_layout == "1大3小-自适应":
+        bg = Layout1大3小自适应(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=0,
+            crop_position=item.crop_position,
+        ).main()
+
+    elif item.first_image_layout == "2大竖-4小竖":
+        bg = Layout2大竖4小竖(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=0,
+            crop_position=item.crop_position,
+        ).fun_底部图片()
+
+    elif item.first_image_layout == "超长图":
+        bg = Layout超长图拼接(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+        ).main()
+    elif item.first_image_layout == "背景图":
+        bg = Layout背景图排版(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+        ).main()
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -261,32 +308,33 @@ def make_first_image(item: MakeFirstImageModel):
     # ---------------- 水印 ----------------
 
     # 开始制作首图样式
-    water_pixel_color = int(0)
-
     if item.shop_name != "泡泡素材":
+        water_pixel_color = int(0)
         bg = fun_图片打满水印(
             bg,  # type: ignore
-            60,
+            80,
             3,
             3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
         )
 
         water_pixel_color = int(255)
         bg = fun_图片打满水印(
             bg,
-            60,
+            80,
             3,
             3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.5)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
         )
     else:
+        # 泡泡素材
+        water_pixel_color = int(0)
         bg = fun_图片打满水印(
             bg,  # type: ignore
             60,
             2,
             1,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
         )
 
         water_pixel_color = int(255)
@@ -295,7 +343,7 @@ def make_first_image(item: MakeFirstImageModel):
             60,
             2,
             1,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
         )
 
     # ---------------- 样式 ----------------
