@@ -2,9 +2,6 @@ from pathlib import Path
 
 from PIL import Image
 
-from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
-    fun_单行文字转图片,
-)
 from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片2 import (
     fun_单行文字转图片2,
 )
@@ -57,14 +54,22 @@ def fun_黑鲸首图(
     circle = circle.crop((0, 200, circle.width, circle.height))
     # circle = fun_画一个圆角矩形(1500, 200, 60, (0, 0, 0, 255), (255, 255, 255, 255))
 
-    title_pil = fun_单行文字转图片(
+    # title_pil = fun_单行文字转图片(
+    #     text=title,
+    #     font_weight="medium",
+    #     font_size=100,
+    #     fill_color=(255, 255, 255, 255),
+    #     background_color=(0, 0, 0, 255),
+    #     english_font_name="montserrat",
+    #     chinese_font_name="noto",
+    # )
+
+    title_pil = fun_单行文字转图片2(
         text=title,
-        font_weight="bold",
-        font_size=100,
-        fill_color=(255, 255, 255, 255),
-        background_color=(0, 0, 0, 255),
-        english_font_name="montserrat",
-        chinese_font_name="opposans",
+        size=100,
+        fill=(255, 255, 255, 255),
+        background=(0, 0, 0, 255),
+        font_weight="medium",
     )
 
     circle.paste(

@@ -2,7 +2,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel
 
-_FONT_WEIGHT = Literal["light", "normal", "bold", "heavy"]
+_FONT_WEIGHT = Literal["light", "normal", "medium", "bold", "heavy"]
 _FONT_NAME = Literal["misans", "opposans", "montserrat", "zihun", "lato", "noto", "sam"]
 _COLOR = tuple[int, int, int, int]
 ALIGNITEM = Literal["start", "center", "end"]

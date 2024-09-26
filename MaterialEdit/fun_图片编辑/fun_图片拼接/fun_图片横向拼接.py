@@ -31,6 +31,7 @@ def fun_图片横向拼接(
             bg.paste(image, (left, top))
 
         left += image.width + spacing
+
         image.close()
 
     return bg

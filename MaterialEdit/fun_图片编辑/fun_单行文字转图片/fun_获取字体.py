@@ -25,6 +25,7 @@ def fun_获取字体(
         "montserrat": {
             "light": "montserrat-latin-300-normal.ttf",
             "normal": "montserrat-latin-400-normal.ttf",
+            "medium": "montserrat-latin-500-normal.ttf",
             "bold": "montserrat-latin-600-normal.ttf",
             "heavy": "montserrat-latin-700-normal.ttf",
         },
@@ -43,12 +44,14 @@ def fun_获取字体(
         "noto": {
             "light": "light.otf",
             "normal": "regular.otf",
+            "medium": "medium.otf",
             "bold": "bold.otf",
             "heavy": "black.otf",
         },
         "sam": {
             "light": "samsungsharpsans.otf",
             "normal": "samsungsharpsans-medium.otf",
+            "medium": "samsungsharpsans-medium.otf",
             "bold": "samsungsharpsans-bold.otf",
             "heavy": "samsungsharpsans-bold.otf",
         },

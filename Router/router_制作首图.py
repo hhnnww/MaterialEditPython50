@@ -27,8 +27,10 @@ from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
+from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
+from MaterialEdit.fun_制作首图.layout_行_自适应 import Layout行自适应
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -286,6 +288,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
         ).main()
+
     elif item.first_image_layout == "背景图":
         bg = Layout背景图排版(
             image_list=item.select_image_list,
@@ -295,6 +298,27 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
         ).main()
+
+    elif item.first_image_layout == "行-自适应":
+        bg = Layout行自适应(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+        ).main()
+
+    elif item.first_image_layout == "小元素排列":
+        bg = Layout小元素排列(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+        ).main()
+
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
