@@ -62,7 +62,7 @@ class Layout1大竖2排小竖(LayoutInit):
             # )
             print(self.fun_小图宽度, self.fun_小图高度)
             im = fun_图片裁剪(
-                im, width=self.fun_小图宽度, height=small_height, position="center"
+                im, width=self.fun_小图宽度, height=self.fun_小图高度, position="center"
             )
 
             line_list.append(im.copy())

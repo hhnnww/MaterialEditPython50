@@ -3,7 +3,7 @@ from pathlib import Path
 from MaterialEdit.fun_制作首图.layout_1大竖_2排小竖 import Layout1大竖2排小竖
 from MaterialEdit.type import ImageModel
 
-ma_path = Path(r"D:\泡泡素材\0000-0999\076\预览图")
+ma_path = Path(r"D:\泡泡素材\0000-0999\0726\预览图")
 
 pic_list = []
 for in_file in ma_path.iterdir():
@@ -19,6 +19,11 @@ for in_file in ma_path.iterdir():
 
 
 bg = Layout1大竖2排小竖(
-    image_list=pic_list, xq_width=1500, xq_height=1300, spacing=10, col=0
+    image_list=pic_list,
+    xq_width=1500,
+    xq_height=1300,
+    spacing=10,
+    col=0,
+    crop_position="center",
 ).main()
 bg.show()
