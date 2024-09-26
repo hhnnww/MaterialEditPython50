@@ -106,7 +106,7 @@ class PSFile:
             # 普通图层
             if in_layer.Kind != ArtLayerKind.TextLayer:
                 com_普通图层广告(
-                    self.app,
+                    self.app,  # type: ignore
                     in_layer,
                     include_names,
                     is_names,
@@ -138,7 +138,7 @@ class PSFile:
 
         if len(all_layers) < 100:
             all_item = run_导出所有图层(
-                app=self.app,
+                app=self.app,  # type: ignore
                 in_doc=self.doc,
                 file=Path(self.ps_path),
                 layer_list=all_layers,
@@ -160,11 +160,11 @@ class PSFile:
                         continue
 
                     img_1 = fun_打开图片(img_path.as_posix())
-                    res = run_对比所有图片(img_1, self.ad_pic_list)
+                    res = run_对比所有图片(img_1, self.ad_pic_list)  # type: ignore
                     if res is True:
                         print(
                             "\n"
-                            + Back.RED
+                            + Back.RED  # type: ignore
                             + Fore.BLACK
                             + f"对比图片发现广告:\t{item.item.Name}"
                             + Style.RESET_ALL

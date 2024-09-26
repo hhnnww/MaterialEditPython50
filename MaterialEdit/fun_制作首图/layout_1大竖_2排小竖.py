@@ -31,6 +31,10 @@ class Layout1大竖2排小竖(LayoutInit):
         """去掉了中间边距的小图实际宽度"""
         return math.ceil((self.fun_剩余宽度 - self.spacing) / 2)
 
+    @cached_property
+    def fun_小图高度(self) -> int:
+        return math.ceil((self.xq_height - (self.spacing * 2)) / 3)
+
     @property
     def fun_左边的大图(self) -> Image.Image:
         im = self.pil_list[0]
@@ -56,7 +60,7 @@ class Layout1大竖2排小竖(LayoutInit):
             #     (self.fun_小图宽度, small_height),
             #     resample=Image.Resampling.LANCZOS,
             # )
-            print(self.fun_小图宽度, small_height)
+            print(self.fun_小图宽度, self.fun_小图高度)
             im = fun_图片裁剪(
                 im, width=self.fun_小图宽度, height=small_height, position="center"
             )

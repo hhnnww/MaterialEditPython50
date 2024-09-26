@@ -307,44 +307,23 @@ def make_first_image(item: MakeFirstImageModel):
 
     # ---------------- 水印 ----------------
 
-    # 开始制作首图样式
-    if item.shop_name != "泡泡素材":
-        water_pixel_color = int(0)
-        bg = fun_图片打满水印(
-            bg,  # type: ignore
-            80,
-            3,
-            3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
-        )
+    water_pixel_color = int(0)
+    bg = fun_图片打满水印(
+        bg,  # type: ignore
+        80,
+        3,
+        2,
+        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.66)),
+    )
 
-        water_pixel_color = int(255)
-        bg = fun_图片打满水印(
-            bg,
-            80,
-            3,
-            3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
-        )
-    else:
-        # 泡泡素材
-        water_pixel_color = int(0)
-        bg = fun_图片打满水印(
-            bg,  # type: ignore
-            60,
-            2,
-            1,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
-        )
-
-        water_pixel_color = int(255)
-        bg = fun_图片打满水印(
-            bg,
-            60,
-            2,
-            1,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.6)),
-        )
+    water_pixel_color = int(255)
+    bg = fun_图片打满水印(
+        bg,
+        80,
+        3,
+        2,
+        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+    )
 
     # ---------------- 样式 ----------------
 
