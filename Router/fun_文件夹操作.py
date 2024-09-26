@@ -215,8 +215,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                         tb_name=item.shop_name,
                         ad_pic_list=ad_pic_list,
                     ).run_删除广告导出PNG()
-            app = Dispatch("photoshop.application")
-            app.Quit()
+            # app = Dispatch("photoshop.application")
+            # app.Quit()
 
             pythoncom.CoUninitialize()  # type: ignore
 
@@ -240,8 +240,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                         tb_name=item.shop_name,
                         ad_pic_list=[],
                     ).run_导出图片添加广告()
-            app = Dispatch("photoshop.application")
-            app.Quit()
+            # app = Dispatch("photoshop.application")
+            # app.Quit()
 
             pythoncom.CoUninitialize()  # type: ignore
 
@@ -265,8 +265,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                         ad_pic_list=[],
                     ).run_图层改名_导出图片()
 
-            app = Dispatch("photoshop.application")
-            app.Quit()
+            # app = Dispatch("photoshop.application")
+            # app.Quit()
 
             pythoncom.CoUninitialize()  # type: ignore
 
@@ -290,8 +290,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                         ad_pic_list=[],
                     ).run_导出图片()
 
-            app = Dispatch("photoshop.application")
-            app.Quit()
+            # app = Dispatch("photoshop.application")
+            # app.Quit()
 
             pythoncom.CoUninitialize()  # type: ignore
 
