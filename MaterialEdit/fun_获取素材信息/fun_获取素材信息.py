@@ -65,6 +65,8 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool):
             material_source_format_title = f"{first_suffix} 幻灯片设计素材"
         elif first_suffix in ["otf", "ttf"]:
             material_source_format_title = f"{first_suffix} 字体文件素材"
+        elif first_suffix in ["cdr"]:
+            material_source_format_title = f"{first_suffix} 矢量素材"
 
     return MaterialInfo(
         material_path=material_path.upper(),

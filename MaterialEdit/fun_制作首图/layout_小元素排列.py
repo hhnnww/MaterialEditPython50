@@ -20,7 +20,7 @@ class Layout小元素排列(LayoutInit):
 
     @cached_property
     def fun_小图宽度(self) -> int:
-        return math.ceil(self.fun_小图高度 / self.fun_所有图片平均比例)
+        return math.ceil(self.fun_小图高度 / self._fun_所有图片平均比例)
 
     def fun_计算行宽(self, im_list: list[Image.Image]) -> int:
         return sum([im.width for im in im_list]) + ((len(im_list) - 1) * self.spacing)
@@ -29,7 +29,7 @@ class Layout小元素排列(LayoutInit):
         line_list = []
         bg_list = []
 
-        for im in cycle(self.pil_list):
+        for im in cycle(self._pil_list):
             im.thumbnail(
                 (self.fun_小图宽度, self.fun_小图高度),
                 resample=Image.Resampling.LANCZOS,

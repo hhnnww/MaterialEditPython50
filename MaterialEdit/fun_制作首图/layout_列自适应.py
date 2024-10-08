@@ -6,13 +6,18 @@ from PIL import Image
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-from MaterialEdit.type import ImageModel
+from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
 def layout_列自适应(
-    image_list: list[ImageModel], col: int, xq_width: int, xq_height: int, spacing: int
+    image_list: list[ImageModel],
+    col: int,
+    xq_width: int,
+    xq_height: int,
+    spacing: int,
+    crop_position: ALIGNITEM,
 ):
-    col_width = math.floor((xq_width - ((col - 1) * spacing)) / col)
+    col_width = math.ceil((xq_width - ((col - 1) * spacing)) / col)
 
     in_line = []
     in_line_pil = []
@@ -26,14 +31,11 @@ def layout_列自适应(
         im = fun_图片裁剪(
             im=im,
             width=col_width,
-            height=int(col_width / (im.width / im.height)),
-            position="start",
+            height=math.ceil(col_width / (im.width / im.height)),
+            position=crop_position,
         )
 
         # im.thumbnail((col_width, bg_height))
-
-        # if spacing > 0:
-        #     im = fun_图片边框圆角(im)
 
         in_line.append(im.copy())
 

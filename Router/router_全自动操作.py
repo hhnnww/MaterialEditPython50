@@ -60,7 +60,7 @@ def make_all_xq(item: MakeXQ):
         material_parent_path=item.material_parent_path,
         start_stem=item.start_item,
         shop_name=item.shop_name,
-        make_effect=item.make_effect,
+        make_effect=False,
     ).run()
 
 
@@ -114,6 +114,7 @@ def auto_edit_material(item: EditItem):
     used_folder.sort(key=lambda k: fun_获取路径数字(Path(k).stem))
 
     for root_path in used_folder:
+        # TODO：区分AI和PSD的操作
         if item.shop_name == "饭桶设计":
             actions = [
                 "解压ZIP",

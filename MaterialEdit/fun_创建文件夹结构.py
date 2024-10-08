@@ -25,10 +25,11 @@ def fun_创建文件夹结构(root_path: Union[str, Path]):
 
     preview_path = root_path_obj / "预览图"
     effect_path = root_path_obj / "效果图"
-
+    ori_img_path = root_path_obj / "原始图"
     return _FolderStructure(
         root_path=root_path_obj.as_posix(),
         material_path=material_path.as_posix(),
         preview_path=preview_path.as_posix(),
         effect_path=effect_path.as_posix(),
+        ori_img_path=ori_img_path.as_posix(),
     )

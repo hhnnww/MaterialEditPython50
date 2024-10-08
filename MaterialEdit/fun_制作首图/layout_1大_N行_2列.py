@@ -22,7 +22,7 @@ class Layout1大N行2列(LayoutInit):
 
     def first_im(self) -> Image.Image:
         im = fun_图片裁剪(
-            im=self.pil_list[0],
+            im=self._pil_list[0],
             width=int(self.xq_width - (self.spacing * 2)),
             height=int((self.small_height * 2) + self.spacing),
             position="center",
@@ -37,7 +37,7 @@ class Layout1大N行2列(LayoutInit):
         line_small_im_list = []
         bottom_im_list = []
 
-        for im in self.pil_list[1:]:
+        for im in self._pil_list[1:]:
             im = fun_图片裁剪(
                 im=im,
                 width=self.small_width,

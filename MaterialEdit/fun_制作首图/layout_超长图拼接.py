@@ -14,7 +14,7 @@ class Layout超长图拼接(LayoutInit):
 
     def main(self):
         line_list = []
-        for im in cycle(self.pil_list):
+        for im in cycle(self._pil_list):
             im = fun_图片裁剪(
                 im=im,
                 width=self.fun_小图宽度,

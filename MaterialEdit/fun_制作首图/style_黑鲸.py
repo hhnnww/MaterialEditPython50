@@ -142,7 +142,12 @@ def fun_黑鲸首图(
     if material_format.lower() in ["pro", "procreate", "brushset", "abr"]:
         logo_path = Path(__file__).parent / "img" / "procreate.png"
         format_bg_circle = Image.open(logo_path)
-        format_bg_circle.thumbnail((150, 150))
+        format_bg_circle.thumbnail((180, 180))
+
+    elif material_format.lower() in ["cdr"]:
+        logo_path = Path(__file__).parent / "img" / "cdr.png"
+        format_bg_circle = Image.open(logo_path)
+        format_bg_circle.thumbnail((180, 180))
 
     bg.paste(
         format_bg_circle,

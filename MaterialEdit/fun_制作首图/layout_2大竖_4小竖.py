@@ -11,17 +11,17 @@ class Layout2大竖4小竖(LayoutInit):
     @cached_property
     def fun_顶部图片(self):
         im_width = math.ceil((self.xq_width - self.spacing) / 2)
-        im_height = math.ceil(im_width / self.fun_所有图片平均比例)
+        im_height = math.ceil(im_width / self._fun_所有图片平均比例)
         top_im = fun_图片横向拼接(
             image_list=[
                 fun_图片裁剪(
-                    im=self.pil_list[0],
+                    im=self._pil_list[0],
                     width=im_width,
                     height=im_height,
                     position="center",
                 ),
                 fun_图片裁剪(
-                    im=self.pil_list[1],
+                    im=self._pil_list[1],
                     width=im_width,
                     height=im_height,
                     position="center",
@@ -36,19 +36,19 @@ class Layout2大竖4小竖(LayoutInit):
 
     def fun_底部图片(self):
         im_width = math.ceil((self.xq_width - (self.spacing * 3)) / 4)
-        im_height = math.ceil(im_width / self.fun_所有图片平均比例)
+        im_height = math.ceil(im_width / self._fun_所有图片平均比例)
         bottom_height = self.xq_height - self.fun_顶部图片.height - self.spacing
 
         line_image_list = []
         bottom_image_list = []
 
-        for im in cycle(self.pil_list[2:]):
+        for im in cycle(self._pil_list[2:]):
             im = fun_图片裁剪(
                 im=im, width=im_width, height=im_height, position="center"
             )
             line_image_list.append(im.copy())
 
-            if self.fun_计算单行高度(line_image_list) >= bottom_height:
+            if self._fun_计算单行高度(line_image_list) >= bottom_height:
                 bottom_im = fun_图片竖向拼接(
                     image_list=line_image_list,
                     spacing=self.spacing,

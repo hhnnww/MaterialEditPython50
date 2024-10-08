@@ -13,7 +13,7 @@ class Layout1大竖2排小竖(LayoutInit):
     @cached_property
     def fun_大图宽度(self) -> int:
         """去掉边距后的大图实际宽度"""
-        im = self.pil_list[0]
+        im = self._pil_list[0]
         im_width = self.xq_height * (im.width / im.height)
 
         if im_width > self.xq_width * 0.55:
@@ -37,7 +37,7 @@ class Layout1大竖2排小竖(LayoutInit):
 
     @property
     def fun_左边的大图(self) -> Image.Image:
-        im = self.pil_list[0]
+        im = self._pil_list[0]
         # im = im.resize(
         #     (self.fun_大图宽度, self.xq_height),
         #     resample=Image.Resampling.LANCZOS,
@@ -50,12 +50,12 @@ class Layout1大竖2排小竖(LayoutInit):
         line_list = []
         right_im_list = []
 
-        ava_ratio = sum([im.width / im.height for im in self.pil_list[1:]]) / len(
-            self.pil_list[1:]
+        ava_ratio = sum([im.width / im.height for im in self._pil_list[1:]]) / len(
+            self._pil_list[1:]
         )
         small_height = math.ceil(self.fun_小图宽度 / ava_ratio)
 
-        for im in cycle(self.pil_list[1:]):
+        for im in cycle(self._pil_list[1:]):
             # im = im.resize(
             #     (self.fun_小图宽度, small_height),
             #     resample=Image.Resampling.LANCZOS,
@@ -67,7 +67,7 @@ class Layout1大竖2排小竖(LayoutInit):
 
             line_list.append(im.copy())
 
-            if self.fun_计算单行高度(im_list=line_list) > self.xq_height:
+            if self._fun_计算单行高度(im_list=line_list) > self.xq_height:
                 line_im = fun_图片竖向拼接(
                     image_list=line_list,
                     spacing=self.spacing,

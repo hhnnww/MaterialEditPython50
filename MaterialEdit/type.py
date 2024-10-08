@@ -31,6 +31,7 @@ class _FolderStructure(BaseModel):
     material_path: str
     preview_path: str
     effect_path: str
+    ori_img_path: str
 
 
 class MaterialInfo(BaseModel):

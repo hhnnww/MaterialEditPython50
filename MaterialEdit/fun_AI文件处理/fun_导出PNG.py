@@ -8,10 +8,7 @@ def fun_导出PNG(doc: CDispatch, ai_path: Path):
     option = Dispatch("Illustrator.ExportForScreensOptionsPNG24")
     option.ScaleType = 1
 
-    if doc.Height / doc.Width < 1.5:
-        option.ScaleTypeValue = 3000
-    else:
-        option.ScaleTypeValue = 1500
+    option.ScaleTypeValue = 2000
 
     option.Transparency = False
     option.Interlaced = True

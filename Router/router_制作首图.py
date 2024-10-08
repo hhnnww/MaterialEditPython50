@@ -30,7 +30,7 @@ from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适�
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
-from MaterialEdit.fun_制作首图.layout_行_自适应 import Layout行自适应
+from MaterialEdit.fun_制作首图.layout_行_自适应_固定尺寸 import Layout行自适应
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -39,6 +39,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 )
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
@@ -217,6 +218,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             xq_width=xq_width,
             spacing=item.spacing,
+            crop_position=item.crop_position,
         )
 
     elif item.first_image_layout == "1大2行2列":
@@ -307,7 +309,17 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
-        ).main()
+        ).main(small_size="自适应")
+
+    elif item.first_image_layout == "行-固定尺寸":
+        bg = Layout行自适应(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+        ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
         bg = Layout小元素排列(
@@ -335,8 +347,8 @@ def make_first_image(item: MakeFirstImageModel):
     bg = fun_图片打满水印(
         bg,  # type: ignore
         80,
-        3,
         2,
+        3,
         (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.66)),
     )
 
@@ -344,8 +356,8 @@ def make_first_image(item: MakeFirstImageModel):
     bg = fun_图片打满水印(
         bg,
         80,
-        3,
         2,
+        3,
         (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
     )
 
@@ -361,6 +373,32 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     elif item.first_image_style == "黑鲸":
+        from PIL import Image
+
+        if item.spacing > 10:
+            bg.thumbnail((bg.width - item.spacing, bg.height - item.spacing))
+
+            if "行" in item.first_image_layout:
+                bg = fun_图片扩大粘贴(
+                    im=bg,
+                    width=bg.width,
+                    height=bg.height + item.spacing,
+                    left="center",
+                    top="center",
+                    background_color=(255, 255, 255, 255),
+                )
+            if "列" in item.first_image_layout:
+                bg = fun_图片扩大粘贴(
+                    im=bg,
+                    width=bg.width + item.spacing,
+                    height=bg.height + int(item.spacing / 2),
+                    left="center",
+                    top="end",
+                    background_color=(255, 255, 255, 255),
+                )
+
+            bg = bg.resize((xq_width, xq_height), resample=Image.Resampling.LANCZOS)
+
         bg = fun_黑鲸首图(
             im=bg,
             title=item.first_image_title,

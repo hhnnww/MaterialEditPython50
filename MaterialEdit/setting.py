@@ -12,6 +12,7 @@ MATERIAL_SOURCE_SUFFIX = [
     ".procreate",
     ".brushset",
     ".abr",
+    ".cdr",
 ]
 
 IMAGE_SUFFIX = [".jpg", ".png", ".jpeg"]

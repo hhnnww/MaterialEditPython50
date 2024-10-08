@@ -11,7 +11,7 @@ class Layout背景图排版(LayoutInit):
         spacing = 180
         bg = Image.new("RGBA", (self.xq_width, self.xq_height), (255, 255, 255, 255))
         left = 0
-        for num, im in enumerate(self.pil_list):
+        for num, im in enumerate(self._pil_list):
             im = fun_图片裁剪(
                 im=im, width=self.xq_width, height=self.xq_height, position="start"
             )

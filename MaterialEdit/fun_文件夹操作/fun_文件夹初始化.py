@@ -12,7 +12,8 @@ def fun_文件夹初始化(root_path: Union[str, Path]):
     material_path_obj = Path(path_structures.material_path)
     preview_path_obj = Path(path_structures.preview_path)
     effect_path_obj = Path(path_structures.effect_path)
-
+    ori_img_path_obj = Path(path_structures.ori_img_path)
+    # ori_img_path_obj = Path()
     if material_path_obj.exists() is False:
         material_path_obj.mkdir()
 
@@ -21,6 +22,7 @@ def fun_文件夹初始化(root_path: Union[str, Path]):
             material_path_obj,
             preview_path_obj,
             effect_path_obj,
+            ori_img_path_obj,
         ]:
             new_path = material_path_obj / in_file.name
 

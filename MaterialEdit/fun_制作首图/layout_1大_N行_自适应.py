@@ -14,7 +14,7 @@ from .class_layout_init import LayoutInit
 class Layout1大N行自适应(LayoutInit):
     @cached_property
     def first_image(self) -> Image.Image:
-        im = self.pil_list[0]
+        im = self._pil_list[0]
 
         first_height = math.ceil((self.xq_width) / (im.width / im.height))
         im = im.resize((self.xq_width, first_height), resample=Image.Resampling.LANCZOS)
@@ -32,7 +32,7 @@ class Layout1大N行自适应(LayoutInit):
     def main(self):
         col_list = []
         bottom_list = []
-        for pil in self.pil_list[1:]:
+        for pil in self._pil_list[1:]:
             small_height = math.ceil(self.small_width / (pil.width / pil.height))
             im = pil.resize(
                 (self.small_width, small_height), resample=Image.Resampling.LANCZOS

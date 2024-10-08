@@ -14,4 +14,4 @@ def fun_另存为AI文件(doc: CDispatch, ai_path: Path):
 
     else:
         doc.Save()
-        doc.Close()
+        doc.Close(2)

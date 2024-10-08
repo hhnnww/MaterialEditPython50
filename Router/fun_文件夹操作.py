@@ -38,6 +38,7 @@ from MaterialEdit.fun_文件夹操作.fun_文件夹内文件夹重命名 import 
 )
 from MaterialEdit.fun_文件夹操作.fun_文件夹初始化 import fun_文件夹初始化
 from MaterialEdit.fun_文件夹操作.fun_文件重命名 import fun_文件重命名
+from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目录内放置广告
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
@@ -172,12 +173,12 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 if pic_state is False:
                     AIFile(in_file.as_posix(), app).fun_导出PNG()
 
-            app.Quit()
+            # app.Quit()
 
             pythoncom.CoUninitialize()  # type: ignore
 
             for in_file in Path(material_structure.material_path).rglob("*"):
-                if in_file.is_dir() and in_file.name == "3000w":
+                if in_file.is_dir() and in_file.name in ["3000w", "2000w"]:
                     shutil.rmtree(in_file.as_posix())
 
         case "PSD-删除广告-导出图片-添加广告":
@@ -346,6 +347,19 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 material_path=material_structure.material_path, shop_name=item.shop_name
             )
 
+        case "eps转ai":
+            pythoncom.CoInitialize()  # type: ignore
+            app = Dispatch("Illustrator.Application")
+            for in_file in Path(material_structure.material_path).rglob("*"):
+                if in_file.suffix.lower() in [".eps"] and in_file.is_file():
+                    print(in_file.as_posix())
+                    ai_path = in_file.with_suffix(".ai")
+
+                    doc = app.Open(in_file.as_posix())
+                    doc.SaveAs(ai_path)
+                    doc.Close(2)
+                    in_file.unlink()
+
         case "享设计文件夹重构":
             fun_享设计文件夹重构(material_path=material_structure.material_path)
 
@@ -360,6 +374,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "子目录拼接图片":
             fun_子目录拼接图片(material_path=material_structure.material_path)
+
+        case "目录内放置广告":
+            fun_目录内放置广告(
+                material_path=material_structure.material_path, shop_name=item.shop_name
+            )
 
         case "效果图蜘蛛水印":
             for in_file in fun_遍历图片(

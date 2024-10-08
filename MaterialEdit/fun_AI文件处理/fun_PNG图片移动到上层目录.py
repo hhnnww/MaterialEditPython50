@@ -5,7 +5,12 @@ from pathlib import Path
 def fun_PNG图片移动到上层目录(ai_path: Path):
     # 移动到上层目录
     # png_path = ai_path.parent / "3000w"
-    png_path_list = [ai_path.parent / "3000w", ai_path.parent / "1500w"]
+    png_path_list = [
+        ai_path.parent / "3000w",
+        ai_path.parent / "1500w",
+        ai_path.parent / "2000w",
+        ai_path.parent / "1000w",
+    ]
 
     png_file_list = []
     for p in png_path_list:

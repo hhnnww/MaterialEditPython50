@@ -2,12 +2,13 @@ from pathlib import Path
 
 from win32com.client.dynamic import CDispatch
 
+from MaterialEdit.fun_AI文件处理.fun_删除图层广告 import fun_删除图层广告
+from MaterialEdit.fun_AI文件处理.fun_添加广告 import fun_添加广告
+
 from .fun_PNG图片移动到上层目录 import fun_PNG图片移动到上层目录
-from .fun_删除图层广告 import fun_删除图层广告
 from .fun_另存为AI文件 import fun_另存为AI文件
 from .fun_同层级图片改名 import fun_同层级图片改名
 from .fun_导出PNG import fun_导出PNG
-from .fun_添加广告 import fun_添加广告
 
 
 class AIFile:

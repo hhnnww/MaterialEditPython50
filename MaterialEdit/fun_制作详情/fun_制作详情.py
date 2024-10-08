@@ -41,14 +41,16 @@ def fun_制作详情(
             image_list=comb_image,
             contains_info=contains_info,
             material_file_list=material_fil_list,
-            spacing=25,
+            spacing=20,
             crop_position=crop_position,
             xq_width=xq_width,
             shop_name=shop_name,
         )
         comb_pil_list.append(im)
 
-    spacing = 20
+    # TODO: 单行间距
+    spacing = 0
+
     if contains_info:
         spacing = 180
 
@@ -58,10 +60,13 @@ def fun_制作详情(
         align_item="center",
         background_color=(255, 255, 255, 255),
     )
+
+    im = im.crop((0, 0, xq_width, im.height))
+
     im = fun_图片扩大粘贴(
         background_color=(255, 255, 255, 255),
         height=im.height + 200,
-        width=1500,
+        width=xq_width,
         im=im,
         left="center",
         top="start",

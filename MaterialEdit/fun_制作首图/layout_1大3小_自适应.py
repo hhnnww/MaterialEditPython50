@@ -11,7 +11,7 @@ from .class_layout_init import LayoutInit
 class Layout1大3小自适应(LayoutInit):
     @cached_property
     def fun_first_image(self):
-        im = self.pil_list[0]
+        im = self._pil_list[0]
         im_height = math.ceil(self.xq_width / (im.width / im.height))
         if im_height < self.xq_height - 250:
             im_height = self.xq_height - 250
@@ -29,7 +29,7 @@ class Layout1大3小自适应(LayoutInit):
         return bottom_height
 
     def main(self):
-        bottom_list = self.pil_list[1:4]
+        bottom_list = self._pil_list[1:4]
         small_width = math.ceil(
             (self.xq_width - ((len(bottom_list) - 1) * self.spacing)) / len(bottom_list)
         )

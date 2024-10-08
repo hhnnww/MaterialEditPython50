@@ -57,6 +57,8 @@ class PSFile:
         """
         in_layer_list = []
         for in_layer in in_object.layers:
+            # TODO:用完后删除
+            # in_layer.Visible = True
             visible = in_layer.Visible
             if in_layer.AllLocked is True:
                 in_layer.AllLocked = False
@@ -79,6 +81,8 @@ class PSFile:
         """
         in_layer_set_list = []
         for in_layer in in_object.LayerSets:
+            # TODO:用完后删除
+            # in_layer.Visible = True
             visible = in_layer.Visible
             if in_layer.AllLocked is True:
                 in_layer.AllLocked = False

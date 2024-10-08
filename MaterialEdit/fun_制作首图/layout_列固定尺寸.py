@@ -36,7 +36,10 @@ class Layout列固定尺寸(LayoutInit):
         line_list = []
         all_list = []
 
-        for im in cycle(self.fun_pil_list):
+        for im in cycle(self.image_list):
+            print(im.path)
+            im = Image.open(im.path)
+
             if im.mode.lower() != "rgba":
                 im = im.convert("RGBA")
 
@@ -47,12 +50,9 @@ class Layout列固定尺寸(LayoutInit):
                 position="center",
             )
 
-            # if self.spacing > 0:
-            #     im = fun_图片边框圆角(im)
-
             line_list.append(im.copy())
 
-            if self.fun_计算单行高度(im_list=line_list) > self.xq_height:
+            if self._fun_计算单行高度(im_list=line_list) > self.xq_height:
                 line_im = fun_图片竖向拼接(
                     image_list=line_list,
                     spacing=self.spacing,
