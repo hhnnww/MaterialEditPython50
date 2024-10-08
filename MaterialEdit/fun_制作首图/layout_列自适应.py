@@ -16,6 +16,7 @@ def layout_列自适应(
     xq_height: int,
     spacing: int,
     crop_position: ALIGNITEM,
+    bg_color: tuple,
 ):
     col_width = math.ceil((xq_width - ((col - 1) * spacing)) / col)
 
@@ -46,7 +47,7 @@ def layout_列自适应(
                 image_list=in_line,
                 spacing=spacing,
                 align_item="start",
-                background_color=(255, 255, 255, 255),
+                background_color=bg_color,
             )
             inline_im = inline_im.crop((0, 0, inline_im.width, xq_height))
             in_line_pil.append(inline_im.copy())
@@ -60,7 +61,7 @@ def layout_列自适应(
         image_list=in_line_pil,
         spacing=spacing,
         align_item="start",
-        background_color=(255, 255, 255, 255),
+        background_color=bg_color,
     )
 
     bg = fun_图片裁剪(im=bg, width=xq_width, height=xq_height, position="start")

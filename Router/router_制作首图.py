@@ -65,10 +65,28 @@ class MakeFirstImageModel(BaseModel):
 
     source_count: str
 
+    bg_color: str
+
+
+def fun_转换COLOR(bg_color: str) -> tuple[int, int, int, int]:
+    bg = []
+    for in_str in bg_color.split(" "):
+        try:
+            int(in_str)
+        except ValueError:
+            pass
+        else:
+            bg.append(int(in_str))
+
+    return tuple(bg[:3])
+
 
 @router.post("")
 def make_first_image(item: MakeFirstImageModel):
     fun_清空桌面上传文件夹图片("st_" + item.first_image_num)
+
+    # 转换bg_color
+    bg_color = fun_转换COLOR(bg_color=item.bg_color)
 
     # 制作首图背景
     xq_width, xq_height = 1500, 1500
@@ -100,6 +118,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
@@ -219,6 +238,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_width=xq_width,
             spacing=item.spacing,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         )
 
     elif item.first_image_layout == "1大2行2列":
@@ -229,11 +249,13 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=2,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
         bg = Layout1大N行2列(
             image_list=item.select_image_list,
+            bg_color=bg_color,
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
@@ -244,6 +266,7 @@ def make_first_image(item: MakeFirstImageModel):
     elif item.first_image_layout == "1大N行-自适应":
         bg = Layout1大N行自适应(
             image_list=item.select_image_list,
+            bg_color=bg_color,
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
@@ -259,6 +282,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=0,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main()
 
     elif item.first_image_layout == "1大3小-自适应":
@@ -269,6 +293,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=0,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main()
 
     elif item.first_image_layout == "2大竖-4小竖":
@@ -279,11 +304,13 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=0,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).fun_底部图片()
 
     elif item.first_image_layout == "超长图":
         bg = Layout超长图拼接(
             image_list=item.select_image_list,
+            bg_color=bg_color,
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
@@ -299,6 +326,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main()
 
     elif item.first_image_layout == "行-自适应":
@@ -309,6 +337,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main(small_size="自适应")
 
     elif item.first_image_layout == "行-固定尺寸":
@@ -319,11 +348,13 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            bg_color=bg_color,
         ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
         bg = Layout小元素排列(
             image_list=item.select_image_list,
+            bg_color=bg_color,
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
@@ -343,23 +374,24 @@ def make_first_image(item: MakeFirstImageModel):
 
     # ---------------- 水印 ----------------
 
-    water_pixel_color = int(0)
-    bg = fun_图片打满水印(
-        bg,  # type: ignore
-        80,
-        2,
-        3,
-        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.66)),
-    )
+    if item.shop_name != "饭桶设计":
+        water_pixel_color = int(0)
+        bg = fun_图片打满水印(
+            bg,  # type: ignore
+            80,
+            2,
+            3,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.66)),
+        )
 
-    water_pixel_color = int(255)
-    bg = fun_图片打满水印(
-        bg,
-        80,
-        2,
-        3,
-        (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
-    )
+        water_pixel_color = int(255)
+        bg = fun_图片打满水印(
+            bg,
+            80,
+            2,
+            3,
+            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
+        )
 
     # ---------------- 样式 ----------------
 
@@ -385,7 +417,7 @@ def make_first_image(item: MakeFirstImageModel):
                     height=bg.height + item.spacing,
                     left="center",
                     top="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=bg_color,
                 )
             if "列" in item.first_image_layout:
                 bg = fun_图片扩大粘贴(
@@ -394,7 +426,7 @@ def make_first_image(item: MakeFirstImageModel):
                     height=bg.height + int(item.spacing / 2),
                     left="center",
                     top="end",
-                    background_color=(255, 255, 255, 255),
+                    background_color=bg_color,
                 )
 
             bg = bg.resize((xq_width, xq_height), resample=Image.Resampling.LANCZOS)

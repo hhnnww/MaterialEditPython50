@@ -49,7 +49,7 @@ class Layout行自适应(LayoutInit):
                     image_list=line_list,
                     spacing=self.spacing,
                     align_item="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=self.bg_color,
                 )
                 line_list = []
 
@@ -65,7 +65,7 @@ class Layout行自适应(LayoutInit):
             image_list=bg_list,
             spacing=self.spacing,
             align_item="center",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
         crop_left = math.ceil((bg.width - self.xq_width) / 2)
         bg = bg.crop((crop_left, 0, self.xq_width + crop_left, self.xq_height))
