@@ -13,7 +13,7 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 
 
 def fun_黑鲸首图(
-    im: Image.Image, title: str, material_format: str, material_id: str
+    im: Image.Image, title: str, material_format: str, material_id: str, shop_name: str
 ) -> Image.Image:
     if im.width > 1500:
         im = im.crop((0, 0, 1500, im.height))
@@ -38,15 +38,30 @@ def fun_黑鲸首图(
     im.paste(material_id_bg, (im.width - material_id_bg.width - 30, 30), material_id_bg)
 
     # 左边的logo
-    logo = fun_获取单个水印(80, fill_clor=(255, 255, 255, 255))
+    logo = fun_获取单个水印(100, fill_clor=(255, 255, 255, 255))
+    # shop_name_pil = fun_单行文字转图片2(
+    #     text=shop_name,
+    #     size=28,
+    #     fill=(255, 255, 255, 255),
+    #     background=(0, 0, 0, 255),
+    #     font_weight="medium",
+    # )
+    # logo = fun_图片竖向拼接(
+    #     [logo, shop_name_pil],
+    #     spacing=20,
+    #     align_item="center",
+    #     background_color=(0, 0, 0, 255),
+    # )
+    add_width = 60
     logo_bg = fun_画一个圆角矩形(
-        width=logo.width + 40,
-        height=int((logo.height + 40) * 2),
+        width=logo.width + add_width,
+        height=int((logo.height + 70) * 2),
         border_radius=60,
         fill_color=(0, 0, 0, 255),
     )
     logo_bg = logo_bg.crop((0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height))
-    logo_bg.paste(logo, (20, 15), logo)
+    logo_bg.paste(logo, (int(add_width / 2), 30), logo)
+
     im.paste(logo_bg, (60, 0), logo_bg)
 
     # 画边框和写标题

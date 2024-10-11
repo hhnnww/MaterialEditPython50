@@ -373,25 +373,35 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     # ---------------- 水印 ----------------
+    if item.first_image_style != "无样式":
+        if item.shop_name != "饭桶设计":
+            water_pixel_color = int(0)
+            bg = fun_图片打满水印(
+                bg,  # type: ignore
+                80,
+                2,
+                3,
+                (
+                    water_pixel_color,
+                    water_pixel_color,
+                    water_pixel_color,
+                    int(255 * 0.66),
+                ),
+            )
 
-    if item.shop_name != "饭桶设计":
-        water_pixel_color = int(0)
-        bg = fun_图片打满水印(
-            bg,  # type: ignore
-            80,
-            2,
-            3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.66)),
-        )
-
-        water_pixel_color = int(255)
-        bg = fun_图片打满水印(
-            bg,
-            80,
-            2,
-            3,
-            (water_pixel_color, water_pixel_color, water_pixel_color, int(255 * 0.8)),
-        )
+            water_pixel_color = int(255)
+            bg = fun_图片打满水印(
+                bg,
+                80,
+                2,
+                3,
+                (
+                    water_pixel_color,
+                    water_pixel_color,
+                    water_pixel_color,
+                    int(255 * 0.8),
+                ),
+            )
 
     # ---------------- 样式 ----------------
 
@@ -436,6 +446,7 @@ def make_first_image(item: MakeFirstImageModel):
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
+            shop_name=item.shop_name,
         )
 
     elif item.first_image_style == "泡泡":

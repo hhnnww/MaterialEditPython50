@@ -18,8 +18,8 @@ def fun_单行图片制作(
     image_list: list[_ImageItem],
     contains_info: bool,
     material_file_list: list[Path],
-    xq_width: math.ceil,
-    spacing: math.ceil,
+    xq_width: int,
+    spacing: int,
     crop_position: ALIGNITEM,
     shop_name: str,
 ):
@@ -66,9 +66,9 @@ def fun_单行图片制作(
             for water_piex_color in [0, 255]:
                 im = fun_图片打满水印(
                     im=im,
-                    size=50,
-                    line_number=3,
-                    singe_line_number=2,
+                    size=120,
+                    line_number=2,
+                    singe_line_number=1,
                     water_color=(
                         water_piex_color,
                         water_piex_color,
@@ -80,7 +80,7 @@ def fun_单行图片制作(
             water_piex_color = math.ceil(255 * 0.6)
             im = fun_图片打满水印(
                 im=im,
-                size=50,
+                size=80,
                 line_number=2,
                 singe_line_number=1,
                 water_color=(
