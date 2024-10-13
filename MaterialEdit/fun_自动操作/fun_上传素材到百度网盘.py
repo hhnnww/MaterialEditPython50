@@ -31,6 +31,7 @@ class AutoUploadMaterialToBaiduYun:
 
     @staticmethod
     def fun_上传单个文件夹(folder_path: Path):
+        print(folder_path)
         path_name = "上传到网盘"
         os.startfile(folder_path)
         position = fun_获取窗口坐标(folder_path.name)

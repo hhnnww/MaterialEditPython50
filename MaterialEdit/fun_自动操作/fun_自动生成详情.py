@@ -38,6 +38,22 @@ class AutoMakeProductImage:
             root_path=root_path.as_posix(), used_image=0, image_sort=True
         )
 
+        # pic_list = [ImageModel(**obj) for obj in ma_info.preview_image_list]
+        # for x in range(4):
+        #     st = Layout列固定尺寸(
+        #         image_list=pic_list,
+        #         col=3,
+        #         xq_width=1500,
+        #         xq_height=1500,
+        #         spacing=10,
+        #         crop_position="center",
+        #         bg_color=(255, 255, 255, 255),
+        #     ).main()
+        #     fun_保存图片(
+        #         im=st, material_id=f"st-{ma_info.material_id}_{x+1}", stem="st"
+        #     )
+        #     random.shuffle(pic_list)
+
         oneline_number = 2
         oneline_ratio = 2.5
 

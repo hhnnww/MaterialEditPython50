@@ -13,10 +13,11 @@ def fun_获取图片(img_name: str, path_name: str, position: Any):
     :param position: 查找位置
     :return:
     """
-    print(img_name, path_name, position)
+    # print(img_name, path_name, position)
 
     image_root_path = Path(__file__).parent / "img" / path_name
     img_path = image_root_path / (img_name + ".png")
+
     if img_path.exists() is False:
         raise IndexError(f"路径不存在 {img_path}")
 
