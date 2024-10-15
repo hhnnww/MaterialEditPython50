@@ -40,7 +40,6 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
-from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -373,35 +372,35 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     # ---------------- 水印 ----------------
-    if item.first_image_style != "无样式":
-        if item.shop_name != "饭桶设计":
-            water_pixel_color = int(0)
-            bg = fun_图片打满水印(
-                bg,  # type: ignore
-                80,
-                2,
-                3,
-                (
-                    water_pixel_color,
-                    water_pixel_color,
-                    water_pixel_color,
-                    int(255 * 0.66),
-                ),
-            )
+    # if item.first_image_style != "无样式":
+    #     if item.shop_name != "饭桶设计":
+    #         water_pixel_color = int(0)
+    #         bg = fun_图片打满水印(
+    #             bg,  # type: ignore
+    #             80,
+    #             2,
+    #             3,
+    #             (
+    #                 water_pixel_color,
+    #                 water_pixel_color,
+    #                 water_pixel_color,
+    #                 int(255 * 0.66),
+    #             ),
+    #         )
 
-            water_pixel_color = int(255)
-            bg = fun_图片打满水印(
-                bg,
-                80,
-                2,
-                3,
-                (
-                    water_pixel_color,
-                    water_pixel_color,
-                    water_pixel_color,
-                    int(255 * 0.8),
-                ),
-            )
+    #         water_pixel_color = int(255)
+    #         bg = fun_图片打满水印(
+    #             bg,
+    #             80,
+    #             2,
+    #             3,
+    #             (
+    #                 water_pixel_color,
+    #                 water_pixel_color,
+    #                 water_pixel_color,
+    #                 int(255 * 0.8),
+    #             ),
+    #         )
 
     # ---------------- 样式 ----------------
 

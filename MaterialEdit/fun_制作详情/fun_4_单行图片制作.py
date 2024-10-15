@@ -6,7 +6,6 @@ from PIL import Image, ImageFile
 from MaterialEdit.fun_制作详情.fun_5_获取源文件 import fun_获取图片对应的源文件
 from MaterialEdit.fun_制作详情.fun_6_小图增加信息 import fun_小图增加信息
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
-from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 from ..type import ALIGNITEM, _ImageItem
@@ -62,34 +61,34 @@ def fun_单行图片制作(
         #     im=im, border_color=(pix_color, pix_color, pix_color, 255), width=1
         # )
 
-        if shop_name != "泡泡素材":
-            for water_piex_color in [0, 255]:
-                im = fun_图片打满水印(
-                    im=im,
-                    size=120,
-                    line_number=2,
-                    singe_line_number=1,
-                    water_color=(
-                        water_piex_color,
-                        water_piex_color,
-                        water_piex_color,
-                        math.ceil(255 * 0.5),
-                    ),
-                )
-        else:
-            water_piex_color = math.ceil(255 * 0.6)
-            im = fun_图片打满水印(
-                im=im,
-                size=80,
-                line_number=2,
-                singe_line_number=1,
-                water_color=(
-                    water_piex_color,
-                    water_piex_color,
-                    water_piex_color,
-                    math.ceil(255 * 0.8),
-                ),
-            )
+        # if shop_name != "泡泡素材":
+        #     for water_piex_color in [0, 255]:
+        #         im = fun_图片打满水印(
+        #             im=im,
+        #             size=60,
+        #             line_number=2,
+        #             singe_line_number=1,
+        #             water_color=(
+        #                 water_piex_color,
+        #                 water_piex_color,
+        #                 water_piex_color,
+        #                 math.ceil(255 * 0.5),
+        #             ),
+        #         )
+        # else:
+        #     water_piex_color = math.ceil(255 * 0.6)
+        #     im = fun_图片打满水印(
+        #         im=im,
+        #         size=80,
+        #         line_number=2,
+        #         singe_line_number=1,
+        #         water_color=(
+        #             water_piex_color,
+        #             water_piex_color,
+        #             water_piex_color,
+        #             math.ceil(255 * 0.8),
+        #         ),
+        #     )
 
         # 切换到圆角
         # im = fun_图片切换到圆角(

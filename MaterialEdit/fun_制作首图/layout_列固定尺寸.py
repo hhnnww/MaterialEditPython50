@@ -57,7 +57,7 @@ class Layout列固定尺寸(LayoutInit):
                     image_list=line_list,
                     spacing=self.spacing,
                     align_item="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=self.bg_color,
                 )
                 all_list.append(line_im.copy())
 
@@ -70,7 +70,7 @@ class Layout列固定尺寸(LayoutInit):
             image_list=all_list,
             spacing=self.spacing,
             align_item="start",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
 
         bg = bg.crop((0, 0, self.xq_width, self.xq_height))
