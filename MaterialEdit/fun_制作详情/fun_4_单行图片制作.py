@@ -46,8 +46,15 @@ def fun_单行图片制作(
             image_height = image_width / image.ratio
 
         im = Image.open(image.path)
+
         if im.mode != "RGBA":
             im = im.convert("RGBA")
+
+        # TODO:背景添加黑色
+        # bg = Image.new("RGBA", im.size, (0, 0, 0, 255))
+        # bg.paste(im, (0, 0), im)
+        # im = bg
+
         im = fun_图片裁剪(
             im,
             width=math.ceil(image_width),

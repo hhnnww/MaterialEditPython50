@@ -13,7 +13,7 @@ def fun_插入素材(shop_name: str, material_site: str, material_model: Materia
 
     if collect.count_documents({"url": material_model.url}) <= 0:
         material_model.create_date = datetime.utcnow()
-        insert_id = collect.insert_one(material_model.dict()).inserted_id
+        insert_id = collect.insert_one(material_model.model_dump()).inserted_id
         print(f"插入到数据库：{insert_id}")
         time.sleep(0.01)
 
