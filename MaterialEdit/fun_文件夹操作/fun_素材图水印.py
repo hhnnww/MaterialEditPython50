@@ -25,7 +25,7 @@ def fun_素材图水印(material_path: str, shop_name: str):
         fill_color=(255, 255, 255, 255),
         background_color=(255, 255, 255, 0),
     )
-
+    spacing = 30
     t2 = ""
     t3 = ""
     match shop_name:
@@ -59,18 +59,18 @@ def fun_素材图水印(material_path: str, shop_name: str):
     )
 
     shop_name_pil = fun_图片竖向拼接(
-        [shop_name_pil, t2_pil, t3_pil], 5, "start", (255, 255, 255, 0)
+        [shop_name_pil, t2_pil, t3_pil], spacing, "start", (255, 255, 255, 0)
     )
     water_pil = fun_获取单个水印(
         600, (water_pix_color, water_pix_color, water_pix_color, water_pix_color)
     )
     water_pil = fun_图片竖向拼接(
-        [water_pil, shop_name_pil], 10, "start", (255, 255, 255, 0)
+        [water_pil, shop_name_pil], spacing, "start", (255, 255, 255, 0)
     )
     water_pil.thumbnail((999999, erweima_pil.height), resample=Image.Resampling.LANCZOS)
 
     water_pil = fun_图片横向拼接(
-        [erweima_pil, water_pil], 10, "start", (255, 255, 255, 0)
+        [erweima_pil, water_pil], spacing, "start", (255, 255, 255, 0)
     )
 
     all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)

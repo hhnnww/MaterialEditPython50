@@ -12,9 +12,10 @@ from .fun_导出PNG import fun_导出PNG
 
 
 class AIFile:
-    def __init__(self, ai_path: str, app: CDispatch):
+    def __init__(self, ai_path: str, app: CDispatch, shop_name: str):
         self.ai_path = Path(ai_path)
         self.app = app
+        self.shop_name = shop_name
 
         try:
             self.doc = self.app.Open(ai_path)
@@ -29,5 +30,5 @@ class AIFile:
         fun_导出PNG(self.doc, self.ai_path)
         fun_PNG图片移动到上层目录(self.ai_path)
         fun_同层级图片改名(ai_path=self.ai_path)
-        fun_添加广告(self.doc)
+        fun_添加广告(self.doc, shop_name=self.shop_name)
         fun_另存为AI文件(self.doc, self.ai_path)

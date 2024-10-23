@@ -22,7 +22,7 @@ def fun_T500首图(
         fill_color=(0, 0, 0, 255),
         background_color=(255, 255, 255, 0),
     )
-    water_pil = fun_获取单个水印(100, (255, 200, 85, 255))
+    water_pil = fun_获取单个水印(80, (255, 200, 85, 255))
     water_pil_shop_name = fun_单行文字转图片(
         text=shop_name,
         chinese_font_name="noto",

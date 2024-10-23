@@ -28,6 +28,7 @@ from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3�
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
+from MaterialEdit.fun_制作首图.layout_横版1221 import Layout_横版1221
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
 from MaterialEdit.fun_制作首图.layout_行_自适应_固定尺寸 import Layout行自适应
@@ -360,6 +361,17 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
         ).main()
+
+    elif item.first_image_layout == "横版-1221":
+        bg = Layout_横版1221(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+        ).fun_横版1221()
 
     else:
         bg = fun_layout_固定裁剪2(

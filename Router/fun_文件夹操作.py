@@ -171,7 +171,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                             pic_state = True
 
                 if pic_state is False:
-                    AIFile(in_file.as_posix(), app).fun_导出PNG()
+                    AIFile(
+                        in_file.as_posix(), app, shop_name=item.shop_name
+                    ).fun_导出PNG()
 
             # app.Quit()
 
