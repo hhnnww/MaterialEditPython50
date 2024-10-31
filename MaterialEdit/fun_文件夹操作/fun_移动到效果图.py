@@ -27,5 +27,5 @@ def fun_移动到效果图(material_path: str, effect_path: str):
             num += 1
             effect_image_path = effect_path_obj / f"{num}{in_file.suffix}"
 
-        shutil.move(in_file.as_posix(), effect_image_path.as_posix())
+        shutil.copy(in_file.as_posix(), effect_image_path.as_posix())
         fun_单个文件制作WEB预览图(image_path=effect_image_path)

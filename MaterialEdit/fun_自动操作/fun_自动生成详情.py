@@ -54,10 +54,14 @@ class AutoMakeProductImage:
         #     )
         #     random.shuffle(pic_list)
 
-        oneline_number = 2
+        oneline_number = 1
         oneline_ratio = 2.5
 
-        if ma_info.preview_image_count > 50:
+        if ma_info.preview_image_count > 20:
+            oneline_number = 2
+            oneline_ratio = 2.5
+
+        elif ma_info.preview_image_count > 50:
             oneline_number = 3
             oneline_ratio = 3.5
 

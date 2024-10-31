@@ -16,11 +16,11 @@ def fun_竖图裁成横图(
         top = 0
 
     elif position == "center":
-        top = math.ceil((im.height - im_height) / 2)
+        top = math.floor((im.height - im_height) / 2)
         im_height += top
 
     elif position == "end":
-        top = math.ceil(im.height - im_height)
+        top = math.floor(im.height - im_height)
         im_height = im.height
 
     return im.resize(

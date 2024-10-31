@@ -7,9 +7,7 @@ def fun_导出PNG(doc: CDispatch, ai_path: Path):
     # 所有画板导出PNG
     option = Dispatch("Illustrator.ExportForScreensOptionsPNG24")
     option.ScaleType = 1
-
     option.ScaleTypeValue = 2000
-
     option.Transparency = False
     option.Interlaced = True
 

@@ -1,13 +1,12 @@
+import math
 from itertools import cycle
 
 from PIL import Image
 from tqdm import tqdm
 
-from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 from ..type import ALIGNITEM, ImageModel
@@ -45,10 +44,11 @@ def fun_layout_固定裁剪2(
     row = oneline_num_ratio_list[0][0]
     image_comb_list = fun_列表分段(image_list, row, line)
 
-    image_height = int((xq_height - ((line + 1) * spacing)) / line)
-    image_width = int((xq_width - ((row + 1) * spacing)) / row)
+    image_height = math.ceil((xq_height - ((line + 1) * spacing)) / line)
+    image_width = math.ceil((xq_width - ((row + 1) * spacing)) / row)
 
     all_comb = []
+
     for comb_list in tqdm(image_comb_list, ncols=100, desc="制作首图\t"):
         one_line = []
         for image in comb_list:
@@ -59,21 +59,26 @@ def fun_layout_固定裁剪2(
 
             im = fun_图片裁剪(im, image_width, image_height, crop_position)
 
-            if spacing > 0:
-                im = fun_图片画边框(im, border_color=(240, 240, 240, 255))
-                im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
+            # if spacing > 0:
+            #     im = fun_图片画边框(im, border_color=(240, 240, 240, 255))
+            #     im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
 
             one_line.append(im)
 
         one_line_im = fun_图片横向拼接(
             one_line, spacing, "center", (255, 255, 255, 255)
         )
+
         all_comb.append(one_line_im)
 
     bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 255))
+
     bg = fun_图片扩大粘贴(
         bg, xq_width, xq_height, "center", "center", (255, 255, 255, 255)
     )
+
+    # bg = bg.resize((xq_width, xq_height), resample=Image.Resampling.LANCZOS)
+
     return bg
 
 

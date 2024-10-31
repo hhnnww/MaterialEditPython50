@@ -37,6 +37,7 @@ def fun_素材图水印(material_path: str, shop_name: str):
             t3 = "9.9元加入会员，全店免费"
         case "饭桶设计":
             t2 = "ftdesign.taobao.com"
+            t3 = "精品海外素材"
 
     t2_pil = fun_单行文字转图片(
         text=t2,

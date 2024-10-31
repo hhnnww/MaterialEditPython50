@@ -17,7 +17,9 @@ def fun_文件重命名(folder: str, preview_path: str, shop_name: str, num: int
 
     for in_file in all_material_file:
         new_stem = str(uuid.uuid1())
-        material_file_new_name = in_file.with_stem(new_stem)
+        material_file_new_name = in_file.with_stem(new_stem).with_suffix(
+            in_file.suffix.lower()
+        )
 
         for image_suffix in IMAGE_SUFFIX:
             image_path = in_file.with_suffix(image_suffix)

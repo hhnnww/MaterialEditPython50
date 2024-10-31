@@ -10,7 +10,7 @@ from ..setting import FONT_COLOR
 
 
 def fun_小图增加信息(im: Image.Image, title: str, desc: str):
-    water_pil = fun_获取单个水印(80, fill_clor=FONT_COLOR)
+    water_pil = fun_获取单个水印(60, fill_clor=FONT_COLOR)
 
     title_pil = fun_单行文字转图片(
         text=title.upper(),

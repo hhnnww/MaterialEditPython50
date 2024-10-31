@@ -15,7 +15,7 @@ MATERIAL_SOURCE_SUFFIX = [
     ".cdr",
 ]
 
-IMAGE_SUFFIX = [".jpg", ".png", ".jpeg"]
+IMAGE_SUFFIX = [".jpg", ".png", ".jpeg", ".gif"]
 
 FONT_COLOR = (90, 90, 120, 255)
 

@@ -35,18 +35,23 @@ class Layout列固定尺寸(LayoutInit):
     def main(self):
         line_list = []
         all_list = []
+        sm_width = self.fun_small_width
+        sm_height = self.fun_small_height
 
-        for im in cycle(self.image_list):
-            print(im.path)
-            im = Image.open(im.path)
+        for im_file in cycle(self.image_list):
+            print(im_file.path)
+            im = Image.open(im_file.path)
 
             if im.mode.lower() != "rgba":
                 im = im.convert("RGBA")
 
+            print(im.size)
+            print(sm_width, sm_height)
+
             im = fun_图片裁剪(
                 im,
-                width=self.fun_small_width,
-                height=self.fun_small_height,
+                width=sm_width,
+                height=sm_height,
                 position="center",
             )
 

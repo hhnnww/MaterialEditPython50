@@ -3,7 +3,6 @@ from MaterialEdit.fun_制作详情.fun_制作详情栏目标题 import fun_制�
 from MaterialEdit.fun_制作详情.fun_裁剪详情页图片 import fun_裁剪图片
 
 from .fun_AI文件处理 import AIFile
-from .fun_PPT文件处理 import PPTEdit
 from .fun_PS文件处理 import PSFile
 from .fun_创建文件夹结构 import fun_创建文件夹结构
 from .fun_制作详情 import fun_制作详情
