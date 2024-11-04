@@ -30,6 +30,7 @@ from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适�
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
 from MaterialEdit.fun_制作首图.layout_横版1221 import Layout_横版1221
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
+from MaterialEdit.fun_制作首图.layout_竖版1221 import Layout竖版1221
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
 from MaterialEdit.fun_制作首图.layout_行_自适应_固定尺寸 import Layout行自适应
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
@@ -41,6 +42,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -171,6 +173,7 @@ def make_first_image(item: MakeFirstImageModel):
             xq_height=xq_height,
             spacing=item.spacing,
         )
+
     elif item.first_image_layout == "1-2-3-3-3":
         bg = fun_layout_1_2_3_3_3(
             image_list=item.select_image_list,
@@ -373,6 +376,17 @@ def make_first_image(item: MakeFirstImageModel):
             bg_color=bg_color,
         ).fun_横版1221()
 
+    elif item.first_image_layout == "竖版-1221":
+        bg = Layout竖版1221(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+        ).fun_竖版1221()
+
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -384,35 +398,35 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     # ---------------- 水印 ----------------
-    # if item.first_image_style != "无样式":
-    #     if item.shop_name != "饭桶设计":
-    #         water_pixel_color = int(0)
-    #         bg = fun_图片打满水印(
-    #             bg,  # type: ignore
-    #             80,
-    #             2,
-    #             3,
-    #             (
-    #                 water_pixel_color,
-    #                 water_pixel_color,
-    #                 water_pixel_color,
-    #                 int(255 * 0.66),
-    #             ),
-    #         )
+    if item.first_image_style != "无样式":
+        if item.shop_name != "饭桶设计" and item.first_image_style != "黑鲸":
+            water_pixel_color = int(0)
+            bg = fun_图片打满水印(
+                bg,  # type: ignore
+                80,
+                3,
+                3,
+                (
+                    water_pixel_color,
+                    water_pixel_color,
+                    water_pixel_color,
+                    int(255 * 0.8),
+                ),
+            )
 
-    #         water_pixel_color = int(255)
-    #         bg = fun_图片打满水印(
-    #             bg,
-    #             80,
-    #             2,
-    #             3,
-    #             (
-    #                 water_pixel_color,
-    #                 water_pixel_color,
-    #                 water_pixel_color,
-    #                 int(255 * 0.8),
-    #             ),
-    #         )
+            water_pixel_color = int(255)
+            bg = fun_图片打满水印(
+                bg,
+                80,
+                3,
+                3,
+                (
+                    water_pixel_color,
+                    water_pixel_color,
+                    water_pixel_color,
+                    int(255 * 0.8),
+                ),
+            )
 
     # ---------------- 样式 ----------------
 
@@ -440,6 +454,7 @@ def make_first_image(item: MakeFirstImageModel):
                     top="center",
                     background_color=bg_color,
                 )
+
             if "列" in item.first_image_layout:
                 bg = fun_图片扩大粘贴(
                     im=bg,

@@ -1,3 +1,4 @@
+from functools import cached_property
 from pathlib import Path
 
 
@@ -5,15 +6,19 @@ class AI_批量导出图片重命名:
     def __init__(self, ai_file: Path) -> None:
         self.ai_file = ai_file
 
+    @cached_property
+    def __all_file(self):
+        all_file = []
+        for in_file in self.ai_file.parent.iterdir():
+            if in_file.is_file() and in_file.suffix.lower() in [".jpg"]:
+                all_file.append(in_file)
+        return all_file
+
     @property
     def fun_all_jpg_file(self) -> list[Path]:
         jpg_list = []
-        for in_file in self.ai_file.parent.iterdir():
-            if (
-                in_file.is_file()
-                and in_file.suffix.lower() in [".jpg"]
-                and self.ai_file.stem in in_file.stem
-            ):
+        for in_file in self.__all_file:
+            if self.ai_file.stem in in_file.stem:
                 jpg_list.append(in_file)
 
         return jpg_list

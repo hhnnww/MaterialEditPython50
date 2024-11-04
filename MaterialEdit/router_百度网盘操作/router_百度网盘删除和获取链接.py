@@ -45,7 +45,6 @@ def fun_删除网盘文件夹(item_in: DelBaiduFolder):
     3 发送请求删除这个路径
     """
     session = HTMLSession()
-    # TODO 构建路径
 
     # 构建HEADER请求
     header = fun_构建header(header=item_in.header)

@@ -11,6 +11,7 @@ from win10toast import ToastNotifier  # type: ignore
 from win32com.client import Dispatch
 
 from MaterialEdit import AIFile, PSFile
+from MaterialEdit.fun_ppt_删除备注 import fun_处理所有PPT
 from MaterialEdit.fun_ppt导出图片 import PPT导出图片
 from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
@@ -233,8 +234,13 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
             pythoncom.CoInitialize()  # type: ignore
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
-                png_path = in_file.with_suffix(".png")
-                if png_path.exists() is False:
+                pic_exists = False
+                for pic_suffix in [".jpg", ".png"]:
+                    png_path = in_file.with_suffix(pic_suffix)
+                    if png_path.exists() is True:
+                        pic_exists = True
+
+                if pic_exists is False:
                     if in_file.stat().st_size == 4096:
                         print("错误PSD文件", in_file)
                         continue
@@ -315,6 +321,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                     PPT导出图片(
                         ppt_path=in_file, effect_path=material_structure.effect_path
                     ).main()
+
+        case "PPT-删除备注":
+            fun_处理所有PPT(material_path=material_structure.material_path)
 
         case "子目录内文件移动到根":
             for in_path in Path(material_structure.material_path).iterdir():

@@ -3,9 +3,9 @@ from pathlib import Path
 from tqdm import tqdm
 
 from MaterialEdit import fun_获取素材信息
-from Router.fun_制作详情 import (
+from MaterialEdit.router_制作详情2.fun_制作详情2 import (
     MakeProductImageRequestModel,
-    fun_make_material_product_image,
+    fun_制作详情2,
 )
 
 from ..fun_获取路径数字 import fun_获取路径数字
@@ -69,7 +69,7 @@ class AutoMakeProductImage:
             oneline_number = 4
             oneline_ratio = 4.5
 
-        fun_make_material_product_image(
+        fun_制作详情2(
             item=MakeProductImageRequestModel(
                 shop_name=self.shop_name,
                 material_path=ma_info.material_path,

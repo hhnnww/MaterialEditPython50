@@ -36,6 +36,6 @@ def fun_子目录PSD重命名(material_path: str):
                 if num == 0:
                     new_path = in_file.with_stem(f"{in_file.parent.stem}")
                 else:
-                    new_path = in_file.with_stem(f"{in_file.parent.stem}_{num+1}")
+                    new_path = in_file.with_stem(f"{in_file.parent.stem}_{num}")
 
                 in_file.rename(new_path)

@@ -22,9 +22,9 @@ class PPT导出图片:
         self.line_col = 3
         self.line = 4
 
-        self.effect_path = Path(effect_path)
-        if self.effect_path.exists() is not True:
-            self.effect_path.mkdir()
+        # self.effect_path = Path(effect_path)
+        # if self.effect_path.exists() is not True:
+        #     self.effect_path.mkdir()
 
     @property
     def first_width(self):
@@ -71,9 +71,13 @@ class PPT导出图片:
             ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
             self.ppt_path.unlink()
 
-        # ppt.Save()
-        # ppt.Close()
-        ppt_app.Quit()
+        # ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
+        self.fun_图片合并()
+
+        try:
+            ppt.Close()
+        except pywintypes.com_error:  # type: ignore
+            ppt_app.Quit()
 
     def fun_图片合并(self):
         if self.ppt_dir.exists() is not True:
@@ -147,20 +151,19 @@ class PPT导出图片:
         # )
 
         bg.save(self.png_path.as_posix())
-        bg.save(self.effect_path / self.png_path.name)
+        # bg.save(self.effect_path / self.png_path.name)
         shutil.rmtree(self.ppt_dir)
 
-    def fun_备份首图(self):
-        if self.ppt_dir.exists() is not True:
-            return
+    # def fun_备份首图(self):
+    #     if self.ppt_dir.exists() is not True:
+    #         return
 
-        for in_file in self.ppt_dir.iterdir():
-            if in_file.is_file() and "1" in in_file.stem:
-                effect_image_path = self.effect_path / f"{self.ppt_path.stem}.jpg"
-                shutil.copy(in_file, effect_image_path)
-                break
+    #     for in_file in self.ppt_dir.iterdir():
+    #         if in_file.is_file() and "1" in in_file.stem:
+    #             effect_image_path = self.effect_path / f"{self.ppt_path.stem}.jpg"
+    #             shutil.copy(in_file, effect_image_path)
+    #             break
 
     def main(self):
         self.fun_ppt导出图片()
         # self.fun_备份首图()
-        self.fun_图片合并()

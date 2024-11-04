@@ -2,6 +2,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
@@ -26,12 +27,24 @@ def fun_子目录拼接图片(material_path: str):
             )
             all_pil.append(im)
 
-        bg = fun_图片竖向拼接(
-            image_list=all_pil,
-            spacing=0,
-            align_item="center",
-            background_color=(255, 255, 255, 255),
-        )
+        # 计算图片比例
+        ratio = sum([pil.width / pil.height for pil in all_pil]) / len(all_pil)
+
+        if ratio < 0.7:
+            bg = fun_图片横向拼接(
+                image_list=all_pil,
+                spacing=10,
+                align_item="start",
+                background_color=(255, 255, 255, 255),
+            )
+
+        else:
+            bg = fun_图片竖向拼接(
+                image_list=all_pil,
+                spacing=0,
+                align_item="start",
+                background_color=(255, 255, 255, 255),
+            )
 
         return bg
 
