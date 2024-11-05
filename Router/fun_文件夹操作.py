@@ -422,7 +422,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                     height=int(im.height * 1.1),
                     left="center",
                     top="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=(255, 255, 255, 0),
                 )
 
                 im.save(in_file)

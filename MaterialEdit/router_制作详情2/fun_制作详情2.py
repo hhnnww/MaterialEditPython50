@@ -43,6 +43,7 @@ class MakeProductImageRequestModel(BaseModel):
     image_name_has_material_id: bool = False
 
     clear_upload_path: bool = True
+    has_water: int
 
 
 def fun_制作详情2(item: MakeProductImageRequestModel):
@@ -106,6 +107,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
                 use_pic=len(image_list),
                 pic_sort=True,
                 material_path=Path(item.material_path),
+                has_water=item.has_water == 1,
             ).main()
 
             data_im = fun_图片竖向拼接(
@@ -156,6 +158,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
                 use_pic=item.preview_used_number,
                 pic_sort=sort,
                 material_path=Path(item.material_path),
+                has_water=item.has_water == 1,
             ).main()
 
             data_im = fun_图片竖向拼接(

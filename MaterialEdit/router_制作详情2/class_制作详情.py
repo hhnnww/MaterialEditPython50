@@ -23,6 +23,7 @@ class ClassMakeXQ2:
         use_pic: int,
         pic_sort: bool,
         material_path: Path,
+        has_water: bool,
     ) -> None:
         self.col = col
         self.shop_name = shop_name
@@ -32,6 +33,7 @@ class ClassMakeXQ2:
         self.pic_sort = pic_sort
 
         self.material_path = material_path
+        self.has_water = has_water
 
         self.image_list = self.__fun_获取仅使用的图片(image_list)
         self.image_list = self.__fun_排序图片(self.image_list)
@@ -67,6 +69,7 @@ class ClassMakeXQ2:
                 shop_name=self.shop_name,
                 has_name=self.has_name,
                 all_material_file=self.__fun_所有源文件,
+                has_water=self.has_water,
             )
             for image in image_list
         ]
@@ -147,24 +150,3 @@ class ClassMakeXQ2:
             align_item="center",
             background_color=self.background_color,
         )
-
-
-if __name__ == "__main__":
-    root_path = Path(r"F:\小夕素材\10000-20000\10791")
-    image_list = []
-    for in_file in (root_path / "预览图").rglob("*"):
-        if in_file.is_file() and "thumb" not in in_file.stem:
-            image_list.append(in_file)
-
-    obj = ClassMakeXQ2(
-        material_path=root_path / root_path.stem,
-        image_list=image_list,
-        col=3,
-        shop_name="小夕素材",
-        has_name=True,
-        use_pic=10,
-        pic_sort=True,
-    )
-
-    im = obj.main()
-    im.show()

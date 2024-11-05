@@ -57,11 +57,11 @@ class AutoMakeProductImage:
         oneline_number = 1
         oneline_ratio = 2.5
 
-        if ma_info.preview_image_count > 20:
+        if ma_info.preview_image_count > 40:
             oneline_number = 2
             oneline_ratio = 2.5
 
-        elif ma_info.preview_image_count > 50:
+        elif ma_info.preview_image_count > 80:
             oneline_number = 3
             oneline_ratio = 3.5
 
@@ -94,6 +94,7 @@ class AutoMakeProductImage:
                 xq_width=1500,
                 image_name_has_material_id=True,
                 clear_upload_path=False,
+                has_water=self.shop_name in ["泡泡素材", "小夕素材"],
             )
         )
 

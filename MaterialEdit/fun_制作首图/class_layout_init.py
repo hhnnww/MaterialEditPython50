@@ -17,6 +17,7 @@ class LayoutInit:
         col: int,
         crop_position: ALIGNITEM,
         bg_color: tuple,
+        out_space: bool,
     ) -> None:
         self.image_list = image_list
         self.xq_width = xq_width
@@ -25,6 +26,7 @@ class LayoutInit:
         self.col = col
         self.crop_position: ALIGNITEM = crop_position
         self.bg_color = bg_color
+        self.out_space = out_space
 
     @cached_property
     def _pil_list(self) -> list[Image.Image]:

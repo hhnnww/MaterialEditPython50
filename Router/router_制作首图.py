@@ -41,7 +41,6 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 )
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
-from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
@@ -68,6 +67,8 @@ class MakeFirstImageModel(BaseModel):
     source_count: str
 
     bg_color: str
+
+    out_space: int
 
 
 def fun_转换COLOR(bg_color: str) -> tuple[int, int, int, int]:
@@ -121,6 +122,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
@@ -253,6 +255,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=2,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
@@ -264,6 +267,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=3,
             crop_position=item.crop_position,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "1大N行-自适应":
@@ -275,6 +279,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=0,
             crop_position=item.crop_position,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "1竖-2排小竖-自适应":
@@ -286,6 +291,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=0,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "1大3小-自适应":
@@ -297,6 +303,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=0,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "2大竖-4小竖":
@@ -308,6 +315,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=0,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).fun_底部图片()
 
     elif item.first_image_layout == "超长图":
@@ -319,6 +327,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "背景图":
@@ -330,6 +339,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "行-自适应":
@@ -341,6 +351,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main(small_size="自适应")
 
     elif item.first_image_layout == "行-固定尺寸":
@@ -352,6 +363,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
@@ -363,6 +375,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
             col=item.first_image_line,
             crop_position=item.crop_position,
+            out_space=item.out_space == 1,
         ).main()
 
     elif item.first_image_layout == "横版-1221":
@@ -374,6 +387,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).fun_横版1221()
 
     elif item.first_image_layout == "竖版-1221":
@@ -385,6 +399,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             bg_color=bg_color,
+            out_space=item.out_space == 1,
         ).fun_竖版1221()
 
     else:
@@ -440,33 +455,6 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     elif item.first_image_style == "黑鲸":
-        from PIL import Image
-
-        if item.spacing > 10:
-            bg.thumbnail((bg.width - item.spacing, bg.height - item.spacing))
-
-            if "行" in item.first_image_layout:
-                bg = fun_图片扩大粘贴(
-                    im=bg,
-                    width=bg.width,
-                    height=bg.height + item.spacing,
-                    left="center",
-                    top="center",
-                    background_color=bg_color,
-                )
-
-            if "列" in item.first_image_layout:
-                bg = fun_图片扩大粘贴(
-                    im=bg,
-                    width=bg.width + item.spacing,
-                    height=bg.height + int(item.spacing / 2),
-                    left="center",
-                    top="end",
-                    background_color=bg_color,
-                )
-
-            bg = bg.resize((xq_width, xq_height), resample=Image.Resampling.LANCZOS)
-
         bg = fun_黑鲸首图(
             im=bg,
             title=item.first_image_title,

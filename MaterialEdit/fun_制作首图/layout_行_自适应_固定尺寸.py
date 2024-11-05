@@ -6,6 +6,7 @@ from typing import Literal
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 from .class_layout_init import LayoutInit
@@ -14,11 +15,16 @@ from .class_layout_init import LayoutInit
 class Layout行自适应(LayoutInit):
     @cached_property
     def __fun_小图高度(self) -> int:
-        return math.ceil((self.xq_height - ((self.col - 1) * self.spacing)) / self.col)
+        if self.out_space is True:
+            return math.floor(
+                (self.xq_height - ((self.col + 1) * self.spacing)) / self.col
+            )
+
+        return math.floor((self.xq_height - ((self.col - 1) * self.spacing)) / self.col)
 
     @cached_property
     def __fun_固定尺寸小图宽度(self) -> int:
-        return math.ceil(self.__fun_小图高度 * self._fun_所有图片平均比例)
+        return math.floor(self.__fun_小图高度 * self._fun_所有图片平均比例)
 
     def main(self, small_size: Literal["固定尺寸", "自适应"]):
         line_list = []
@@ -28,7 +34,7 @@ class Layout行自适应(LayoutInit):
             im = self._fun_打开图片(image_path=image.path)
 
             if small_size == "自适应":
-                small_width = math.ceil(self.__fun_小图高度 * (im.width / im.height))
+                small_width = math.floor(self.__fun_小图高度 * (im.width / im.height))
                 im = im.resize(
                     (small_width, self.__fun_小图高度),
                     resample=Image.Resampling.LANCZOS,
@@ -67,7 +73,17 @@ class Layout行自适应(LayoutInit):
             align_item="center",
             background_color=self.bg_color,
         )
-        crop_left = math.ceil((bg.width - self.xq_width) / 2)
-        bg = bg.crop((crop_left, 0, self.xq_width + crop_left, self.xq_height))
+
+        crop_left = math.floor((bg.width - self.xq_width) / 2)
+        bg = bg.crop((crop_left, 0, self.xq_width + crop_left, bg.height))
+
+        bg = fun_图片扩大粘贴(
+            im=bg,
+            width=self.xq_width,
+            height=self.xq_height,
+            left="center",
+            top="center",
+            background_color=self.bg_color,
+        )
 
         return bg

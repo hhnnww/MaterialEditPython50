@@ -26,6 +26,7 @@ class ClassOneImage:
         shop_name: str,
         has_name: bool,
         all_material_file: list[Path],
+        has_water: bool,
     ) -> None:
         self.image_pil = image_pil
         self.image_width = image_width
@@ -34,9 +35,7 @@ class ClassOneImage:
         self.has_name = has_name
         self.image_path = image_path
         self.all_material_file = all_material_file
-
-    def __str__(self) -> str:
-        return self.image_path.name
+        self.has_water = has_water
 
     text_color = (120, 120, 120, 255)
     logo_to_text_space = 30
@@ -44,7 +43,7 @@ class ClassOneImage:
     @cached_property
     def fun_获取对应源文件(self) -> Path:
         for in_file in self.all_material_file:
-            if in_file.stem in self.image_path.stem:
+            if in_file.stem in self.image_path.stem and self.shop_name in in_file.stem:
                 return in_file
 
         return self.image_path
@@ -115,19 +114,25 @@ class ClassOneImage:
                 reducing_gap=8,
             )
 
-        for x in range(3):
-            if x == 0:
-                top = 30
-            if x == 1:
-                top = int((small_im.height - self.__fun_图片中间广告图片.height) / 2)
-            if x == 2:
-                top = small_im.height - self.__fun_图片中间广告图片.height - 30
+        if self.has_water is True:
+            for x in range(3):
+                if x == 0:
+                    top = 30
+                if x == 1:
+                    top = int(
+                        (small_im.height - self.__fun_图片中间广告图片.height) / 2
+                    )
+                if x == 2:
+                    top = small_im.height - self.__fun_图片中间广告图片.height - 30
 
-            small_im.paste(
-                self.__fun_图片中间广告图片,
-                (int((small_im.width - self.__fun_图片中间广告图片.width) / 2), top),
-                self.__fun_图片中间广告图片,
-            )
+                small_im.paste(
+                    self.__fun_图片中间广告图片,
+                    (
+                        int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
+                        top,
+                    ),
+                    self.__fun_图片中间广告图片,
+                )
 
         return small_im
 
