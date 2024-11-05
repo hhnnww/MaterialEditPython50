@@ -71,7 +71,7 @@ class ClassMakeXQ2:
             for image in image_list
         ]
         avatar_ratio = sum([obj.fun_图片比例 for obj in obj_list]) / len(obj_list)
-        if avatar_ratio < 0.2:
+        if avatar_ratio < 0.2 or self.col == 1:
             return obj_list
 
         obj_list.sort(key=lambda k: k.fun_图片比例, reverse=True)

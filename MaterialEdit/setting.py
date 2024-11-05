@@ -5,6 +5,7 @@ MATERIAL_SOURCE_SUFFIX = [
     ".ai",
     ".otf",
     ".ttf",
+    "ttc",
     ".psb",
     ".eps",
     ".ppt",
