@@ -4,7 +4,6 @@ from pathlib import Path
 from tqdm import tqdm
 
 from ..setting import IMAGE_SUFFIX
-from .fun_单个文件制作WEB预览图 import fun_单个文件制作WEB预览图
 
 
 class ImageCopyToPreview:
@@ -64,4 +63,4 @@ class ImageCopyToPreview:
             print(f"复制到预览图:{image_file}\t->\t{preview_file}")
 
             shutil.copy(image_file, preview_file)
-            fun_单个文件制作WEB预览图(image_path=preview_file)
+            # fun_单个文件制作WEB预览图(image_path=preview_file)

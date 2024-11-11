@@ -49,7 +49,7 @@ class Layout1大N行自适应(LayoutInit):
                     image_list=col_list,
                     spacing=self.spacing,
                     align_item="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=self.bg_color,
                 )
                 bottom_list.append(col_im.copy())
                 col_list = []
@@ -61,14 +61,14 @@ class Layout1大N行自适应(LayoutInit):
             image_list=bottom_list,
             spacing=self.spacing,
             align_item="start",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
 
         bg = fun_图片竖向拼接(
             image_list=[self.first_image, bottom_im],
             spacing=self.spacing,
             align_item="center",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
 
         bg = bg.crop((0, 0, self.xq_width, self.xq_height))

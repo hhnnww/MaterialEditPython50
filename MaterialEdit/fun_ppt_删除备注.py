@@ -36,9 +36,9 @@ def __fun_删除所有备注(ppt_file: str):
                     text_frame = cell.text_frame
                     __replace_text(text_frame)
 
-            if shape.has_chart:
-                text_chart = shape.chart  # type: ignore
-                __replace_text(text_chart)
+            # if shape.has_chart:
+            #     text_chart = shape.chart  # type: ignore
+            #     __replace_text(text_chart)
 
     prs.save(file=ppt_file)
 

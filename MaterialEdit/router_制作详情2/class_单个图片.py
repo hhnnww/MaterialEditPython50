@@ -54,15 +54,20 @@ class ClassOneImage:
 
     @cached_property
     def __fun_图片中间广告图片(self) -> Image.Image:
-        return fun_单行文字转图片(
+        ad_pil = fun_单行文字转图片(
             text=f"淘宝:{self.shop_name}",
             background_color=(0, 0, 0, 0),
             chinese_font_name="zihun",
             english_font_name="lato",
             font_weight="normal",
-            font_size=40,
-            fill_color=(255, 255, 255, 30),
+            font_size=25,
+            fill_color=(120, 120, 120, 30),
         )
+
+        if ad_pil.width > self.image_width / 4:
+            ad_pil.thumbnail((int(self.image_width / 4), 999999))
+
+        return ad_pil
 
     @cached_property
     def __fun_原始图片(self) -> Image.Image:
@@ -115,24 +120,25 @@ class ClassOneImage:
             )
 
         if self.has_water is True:
-            for x in range(3):
-                if x == 0:
-                    top = 30
-                if x == 1:
-                    top = int(
-                        (small_im.height - self.__fun_图片中间广告图片.height) / 2
+            for left in [
+                30,
+                int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
+                small_im.width - self.__fun_图片中间广告图片.width - 30,
+            ]:
+                for top in [
+                    # 30,
+                    int((small_im.height - self.__fun_图片中间广告图片.height) / 2),
+                    # small_im.height - self.__fun_图片中间广告图片.height - 30,
+                ]:
+                    r, g, b, a = self.__fun_图片中间广告图片.split()
+                    small_im.paste(
+                        self.__fun_图片中间广告图片,
+                        (
+                            left,
+                            top,
+                        ),
+                        a,
                     )
-                if x == 2:
-                    top = small_im.height - self.__fun_图片中间广告图片.height - 30
-
-                small_im.paste(
-                    self.__fun_图片中间广告图片,
-                    (
-                        int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
-                        top,
-                    ),
-                    self.__fun_图片中间广告图片,
-                )
 
         return small_im
 
@@ -145,7 +151,7 @@ class ClassOneImage:
                 ],
                 spacing=25,
                 align_item="center",
-                background_color=(255, 255, 255, 255),
+                background_color=self.background_color,
             )
 
             bottom_im = fun_图片竖向拼接(
@@ -155,7 +161,7 @@ class ClassOneImage:
                 ],
                 spacing=self.logo_to_text_space,
                 align_item="center",
-                background_color=(255, 255, 255, 255),
+                background_color=self.background_color,
             )
 
             bottom_im.thumbnail(

@@ -39,7 +39,7 @@ class ClassMakeXQ2:
         self.image_list = self.__fun_排序图片(self.image_list)
 
     xq_width = 2000
-    space = 20
+    space = 40
     background_color = (255, 255, 255, 255)
 
     @cached_property

@@ -2,8 +2,9 @@ from pathlib import Path
 
 
 class Cla_需要上传的文件夹:
-    def __init__(self, start_path_str: str) -> None:
+    def __init__(self, start_path_str: str, end_num: int) -> None:
         self.start_path = Path(start_path_str)
+        self.end_num = end_num
 
     @property
     def fun_shop_name(self) -> str:
@@ -31,6 +32,7 @@ class Cla_需要上传的文件夹:
             if (
                 in_path.is_dir()
                 and self.__fun_获取文件夹NUM(in_path) >= self.__fun_start_num
+                and self.__fun_获取文件夹NUM(in_path) <= self.end_num
             ):
                 all_path.append(in_path)
 

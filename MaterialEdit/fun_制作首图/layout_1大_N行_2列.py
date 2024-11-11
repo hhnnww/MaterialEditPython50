@@ -28,8 +28,8 @@ class Layout1大N行2列(LayoutInit):
             position="center",
         )
 
-        if self.spacing > 0:
-            im = fun_图片边框圆角(im)
+        # if self.spacing > 0:
+        #     im = fun_图片边框圆角(im)
 
         return im
 
@@ -55,7 +55,7 @@ class Layout1大N行2列(LayoutInit):
                     image_list=line_small_im_list,
                     spacing=self.spacing,
                     align_item="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=self.bg_color,
                 )
 
                 bottom_im_list.append(line_im)
@@ -67,7 +67,7 @@ class Layout1大N行2列(LayoutInit):
                     image_list=bottom_im_list,
                     spacing=self.spacing,
                     align_item="center",
-                    background_color=(255, 255, 255, 255),
+                    background_color=self.bg_color,
                 )
 
                 break
@@ -76,7 +76,7 @@ class Layout1大N行2列(LayoutInit):
             image_list=[self.first_im(), bottom_im],
             spacing=self.spacing,
             align_item="center",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
 
         bg = fun_图片扩大粘贴(
@@ -85,7 +85,7 @@ class Layout1大N行2列(LayoutInit):
             height=self.xq_height,
             left="center",
             top="center",
-            background_color=(255, 255, 255, 255),
+            background_color=self.bg_color,
         )
 
         return bg
