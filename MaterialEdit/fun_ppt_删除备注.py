@@ -1,20 +1,21 @@
 from pathlib import Path
 
 from pptx import Presentation
+from python_pptx_text_replacer import TextReplacer
 from tqdm import tqdm
 
 TEXT_NEED_REPLACE = [("唐峰", "小夕")]
 
 
-def __replace_text(text_frame):
-    for paragraph in text_frame.paragraphs:
-        for run in paragraph.runs:
-            for tt in TEXT_NEED_REPLACE:
-                if tt[0] in run.text:
-                    run.text = run.text.replace(tt[0], tt[1])
+def __fun_替换本文(ppt_file: str):
+    replacer = TextReplacer(
+        ppt_file, slides="", tables=True, charts=True, textframes=True
+    )
+    replacer.replace_text([("唐峰", "小夕")])
+    replacer.write_presentation_to_file(ppt_file)
 
 
-def __fun_删除所有备注(ppt_file: str):
+def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: list[str]):
     print(f"处理PPT:{ppt_file}")
     prs = Presentation(pptx=ppt_file)
 
@@ -26,26 +27,45 @@ def __fun_删除所有备注(ppt_file: str):
 
         # 替换本文
         for shape in slide.shapes:
-            if shape.has_text_frame:
-                text_frame = shape.text_frame  # type: ignore
-                __replace_text(text_frame)
+            try:
+                if shape.shape_type:
+                    # 如果是图片
+                    # 查到对应的图片名字删除
+                    if shape.shape_type.name == "PICTURE":
+                        # if "descr=" in shape.element.xml:
+                        #     print(shape.element.xml)
 
-            if shape.has_table:
-                table = shape.table  # type: ignore
-                for cell in table.iter_cells():
-                    text_frame = cell.text_frame
-                    __replace_text(text_frame)
+                        for ad_name in ad_pic_name_list:
+                            if f'descr="{ad_name}"' in shape.element.xml:
+                                slide.shapes._spTree.remove(shape._element)
+                                print("删除广告图片")
 
-            # if shape.has_chart:
-            #     text_chart = shape.chart  # type: ignore
-            #     __replace_text(text_chart)
+                    # 如果是视频
+                    # 直接干掉
+                    elif shape.shape_type.name == "MEDIA":
+                        slide.shapes._spTree.remove(shape._element)
+
+            except:  # noqa: E722
+                pass
 
     prs.save(file=ppt_file)
 
 
 def fun_处理所有PPT(material_path: str):
+    ad_pic_name_list = [f"{x}-({y})" for x in range(1, 100) for y in range(1, 100)]
+
     for in_file in tqdm(
         list(Path(material_path).rglob("*")), ncols=100, desc="删除PPT备注"
     ):
+        in_file: Path
+
         if in_file.is_file() and in_file.suffix.lower() in [".ppt", ".pptx"]:
-            __fun_删除所有备注(ppt_file=in_file.as_posix())
+            pic_path = in_file.with_suffix(".png")
+            if pic_path.exists() is False:
+                try:
+                    __fun_删除所有备注和广告图片(
+                        ppt_file=in_file.as_posix(), ad_pic_name_list=ad_pic_name_list
+                    )
+                    __fun_替换本文(ppt_file=in_file.as_posix())
+                except:  # noqa: E722
+                    pass

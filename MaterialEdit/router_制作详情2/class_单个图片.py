@@ -60,7 +60,7 @@ class ClassOneImage:
             chinese_font_name="zihun",
             english_font_name="lato",
             font_weight="normal",
-            font_size=25,
+            font_size=40,
             fill_color=(120, 120, 120, 30),
         )
 
@@ -126,9 +126,9 @@ class ClassOneImage:
                 small_im.width - self.__fun_图片中间广告图片.width - 30,
             ]:
                 for top in [
-                    # 30,
+                    30,
                     int((small_im.height - self.__fun_图片中间广告图片.height) / 2),
-                    # small_im.height - self.__fun_图片中间广告图片.height - 30,
+                    small_im.height - self.__fun_图片中间广告图片.height - 30,
                 ]:
                     r, g, b, a = self.__fun_图片中间广告图片.split()
                     small_im.paste(
