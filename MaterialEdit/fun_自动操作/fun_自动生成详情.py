@@ -94,7 +94,7 @@ class AutoMakeProductImage:
                 xq_width=1500,
                 image_name_has_material_id=True,
                 clear_upload_path=False,
-                has_water=self.shop_name in ["泡泡素材", "小夕素材"],
+                has_water=self.shop_name in ["泡泡素材", "小夕素材", "松子素材"],
             )
         )
 

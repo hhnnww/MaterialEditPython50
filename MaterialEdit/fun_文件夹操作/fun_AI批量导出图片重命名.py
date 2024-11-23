@@ -10,7 +10,7 @@ class AI_批量导出图片重命名:
     def __all_file(self):
         all_file = []
         for in_file in self.ai_file.parent.iterdir():
-            if in_file.is_file() and in_file.suffix.lower() in [".jpg"]:
+            if in_file.is_file() and in_file.suffix.lower() in [".jpg", ".png"]:
                 all_file.append(in_file)
         return all_file
 

@@ -294,11 +294,14 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                     if in_file.stat().st_size == 4096:
                         print("错误PSD文件", in_file)
                         continue
-                    PSFile(
-                        ps_path=in_file.as_posix(),
-                        tb_name=item.shop_name,
-                        ad_pic_list=[],
-                    ).run_导出图片()
+                    try:
+                        PSFile(
+                            ps_path=in_file.as_posix(),
+                            tb_name=item.shop_name,
+                            ad_pic_list=[],
+                        ).run_导出图片()
+                    except:  # noqa: E722
+                        print("错误的PSD文件，跳过")
 
             # app = Dispatch("photoshop.application")
             # app.Quit()

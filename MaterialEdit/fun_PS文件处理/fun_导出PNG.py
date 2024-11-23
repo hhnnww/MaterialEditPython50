@@ -24,6 +24,7 @@ def com_psd导出png(ref_doc, file: Path, ad_layer_name: str, del_ad_layer: bool
             ad_layer_name,
             "隐藏 或 删除此图层即可开始您的编辑.",
             "隐藏 或 删除此图层即可开始您的编辑.",
+            "二维码",
         ]:
             if del_ad_layer is True:
                 ad_layer.AllLocked = False

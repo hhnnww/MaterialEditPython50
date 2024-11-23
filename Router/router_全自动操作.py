@@ -60,7 +60,7 @@ def make_all_xq(item: MakeXQ):
         material_parent_path=item.material_parent_path,
         start_stem=item.start_item,
         shop_name=item.shop_name,
-        make_effect=False,
+        make_effect=True,
     ).run()
 
 
@@ -114,16 +114,32 @@ def auto_edit_material(item: EditItem):
     used_folder.sort(key=lambda k: fun_获取路径数字(Path(k).stem))
 
     for root_path in used_folder:
-        # TODO：区分AI和PSD的操作
+        print(root_path)
+
         if item.shop_name == "饭桶设计":
             actions = [
-                "解压ZIP",
-                "移动到效果图",
+                # "解压ZIP",
+                # "移动到效果图",
+                # "删除素材文件夹内所有图片",
+                # "删除EPS文件",
+                # "文件重命名",
+                # "移动到根目录",
+                # "删除广告文件",
+                # "PSD-导出图片-添加广告",
+                # "PSD-导出图片",
+                # "AI-导出图片",
+                "AI批量导出图片重命名",
+                "复制图片到预览图",
+                "素材图水印",
+            ]
+
+        elif item.shop_name == "松子素材":
+            actions = [
                 "删除素材文件夹内所有图片",
-                "删除EPS文件",
                 "文件重命名",
                 "移动到根目录",
                 "删除广告文件",
+                # "PSD-图层改名-导出图片-添加广告",
                 # "PSD-导出图片-添加广告",
                 "PSD-导出图片",
                 # "AI-导出图片",
