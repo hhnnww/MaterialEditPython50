@@ -30,9 +30,11 @@ def fun_scrapy_material(item: ReqModel) -> ResModel:
     chrome_scrapy = ChromeScrapy(
         shop_name=item.shop_name, material_site=item.material_site, html=item.html
     )
-    chrome_scrapy.fun_insert_db()
+    res = chrome_scrapy.fun_insert_db()
+    if res is True:
+        return ResModel(msg="success")
 
-    return ResModel(msg="success")
+    return ResModel(msg="faild")
 
 
 # ---------------- 获取店铺名和素材网站 ----------------
