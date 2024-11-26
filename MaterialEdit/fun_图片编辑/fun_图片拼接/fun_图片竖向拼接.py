@@ -1,3 +1,5 @@
+import math
+
 from PIL import Image
 
 from ...type import _COLOR, ALIGNITEM
@@ -23,7 +25,7 @@ def fun_图片竖向拼接(
             bg.paste(image, (left, top), image)
 
         elif align_item == "center":
-            left = int((bg.width - image.width) / 2)
+            left = math.ceil((bg.width - image.width) / 2)
             bg.paste(image, (left, top), image)
 
         elif align_item == "end":
