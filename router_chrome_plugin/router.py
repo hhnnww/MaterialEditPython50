@@ -1,13 +1,34 @@
-from pathlib import Path
-
 from fastapi import APIRouter
 from pydantic import BaseModel
 
 from router_chrome_plugin.class_chrome_scrapy import ChromeScrapy
+from router_chrome_plugin.class_make_tb_xq_str import MakeTaobaoXQStr
 
 router = APIRouter(prefix="/chrome_plugin")
+# ---------------- 传递HTML构建详情 ----------------
 
-# ---------------- 处理传递过来的HTML ----------------
+
+class XQReqModel(BaseModel):
+    html: str
+
+
+class XQResModel(BaseModel):
+    xq_str: str
+
+
+@router.post("/make_xq_str", response_model=XQResModel)
+def fun_make_xq_str(item: XQReqModel) -> XQResModel:
+    # html_file = Path(__file__).parent / "xq.html"
+    # with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
+    #     html.write(item.html)
+
+    xq = MakeTaobaoXQStr(html=item.html)
+    xq.main()
+
+    return XQResModel(xq_str="success")
+
+
+# ---------------- 传递HTML进行采集 ----------------
 
 
 class ReqModel(BaseModel):
@@ -23,9 +44,9 @@ class ResModel(BaseModel):
 
 @router.post("/scrapy_material")
 def fun_scrapy_material(item: ReqModel) -> ResModel:
-    html_file = Path(__file__).parent / "text.html"
-    with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
-        html.write(item.html)
+    # html_file = Path(__file__).parent / "text.html"
+    # with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
+    #     html.write(item.html)
 
     chrome_scrapy = ChromeScrapy(
         shop_name=item.shop_name, material_site=item.material_site, html=item.html

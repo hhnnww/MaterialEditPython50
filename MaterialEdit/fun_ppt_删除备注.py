@@ -4,14 +4,16 @@ from pptx import Presentation
 from python_pptx_text_replacer import TextReplacer
 from tqdm import tqdm
 
-TEXT_NEED_REPLACE = [("唐峰", "小夕")]
-
 
 def __fun_替换本文(ppt_file: str):
+    TEXT_NEED_REPLACE = ["唐峰", "芒果", "T500"]
+
     replacer = TextReplacer(
         ppt_file, slides="", tables=True, charts=True, textframes=True
     )
-    replacer.replace_text([("唐峰", "小夕")])
+    for text in TEXT_NEED_REPLACE:
+        replacer.replace_text([(text, "小夕")])
+
     replacer.write_presentation_to_file(ppt_file)
 
 
@@ -25,7 +27,6 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
             if slide.notes_slide.notes_text_frame:
                 slide.notes_slide.notes_text_frame.clear()
 
-        # 替换本文
         for shape in slide.shapes:
             try:
                 if shape.shape_type:
@@ -53,6 +54,8 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
 
 def fun_处理所有PPT(material_path: str):
     ad_pic_name_list = [f"{x}-({y})" for x in range(1, 100) for y in range(1, 100)]
+    for x in range(1, 100):
+        ad_pic_name_list.append(f"tm-({x})")
 
     for in_file in tqdm(
         list(Path(material_path).rglob("*")), ncols=100, desc="删除PPT备注"

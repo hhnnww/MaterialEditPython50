@@ -5,7 +5,7 @@ MATERIAL_SOURCE_SUFFIX = [
     ".ai",
     ".otf",
     ".ttf",
-    "ttc",
+    ".ttc",
     ".psb",
     ".eps",
     ".ppt",
@@ -14,6 +14,7 @@ MATERIAL_SOURCE_SUFFIX = [
     ".brushset",
     ".abr",
     ".cdr",
+    ".skp",
 ]
 
 IMAGE_SUFFIX = [".jpg", ".png", ".jpeg", ".gif"]
@@ -39,6 +40,7 @@ AD_SUFFIX = [
     ".ttf",
     ".ttc",
     ".lnk",
+    ".skb",
 ]
 
 

@@ -5,14 +5,11 @@ from PIL import Image
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
-from ..setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
 from ..type import ALIGNITEM, ImageModel
 from .fun_重新构建所有图片 import fun_重新构建所有图片
 
@@ -37,7 +34,7 @@ class LayoutAdaptiveCrop:
         self.xq_width = xq_width
         self.xq_height = xq_height
         self.line = line
-        self.spacing = spacing
+        self.spacing = spacing - 4
         self.crop = crop_position
 
         self.online_height = int(
@@ -85,7 +82,7 @@ class LayoutAdaptiveCrop:
 
     def fun_制作单行(self, comb_list: CombList):
         all_pil = []
-        col_width = math.floor(
+        col_width = math.ceil(
             (self.xq_width - ((len(comb_list.image_list) + 1) * self.spacing))
             / sum([obj.ratio for obj in comb_list.image_list])
         )
@@ -94,9 +91,9 @@ class LayoutAdaptiveCrop:
             im = fun_图片裁剪(
                 im, math.ceil(col_width * image.ratio), self.online_height, self.crop
             )
-            if self.spacing > 0:
-                im = fun_图片画边框(im, FIRST_IMAGE_BORDER_COLOR)
-                im = fun_图片切换到圆角(im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
+            # if self.spacing > 0:
+            #     im = fun_图片画边框(im, FIRST_IMAGE_BORDER_COLOR)
+            #     im = fun_图片切换到圆角(im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
             all_pil.append(im)
 
         return fun_图片横向拼接(all_pil, self.spacing, "center", (255, 255, 255, 255))

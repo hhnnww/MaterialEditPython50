@@ -40,6 +40,7 @@ from MaterialEdit.fun_文件夹操作.fun_文件夹内文件夹重命名 import 
 )
 from MaterialEdit.fun_文件夹操作.fun_文件夹初始化 import fun_文件夹初始化
 from MaterialEdit.fun_文件夹操作.fun_文件重命名 import fun_文件重命名
+from MaterialEdit.fun_文件夹操作.fun_生成SKP导出命令 import fun_生成SKP批量导出脚本
 from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目录内放置广告
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
@@ -362,6 +363,15 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 material_path=material_structure.material_path, shop_name=item.shop_name
             )
 
+        case "打开没有预览图的PPT":
+            all_file = fun_遍历指定文件(
+                folder=material_structure.material_path, suffix=[".ppt", ".pptx"]
+            )
+            for in_file in all_file:
+                png_path = in_file.with_suffix(".png")
+                if png_path.exists() is not True:
+                    os.startfile(in_file.as_posix())
+
         case "eps转ai":
             pythoncom.CoInitialize()  # type: ignore
             app = Dispatch("Illustrator.Application")
@@ -448,6 +458,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             ):
                 obj = AI_批量导出图片重命名(ai_file=in_file)
                 obj.fun_jpg_重命名()
+
+        case "生成SKP导出命令":
+            fun_生成SKP批量导出脚本(in_path=material_structure.material_path)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"

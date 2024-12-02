@@ -17,14 +17,15 @@ class PPT导出图片:
         self.ppt_dir = ppt_path.parent / ppt_path.stem
         self.png_path = ppt_path.with_suffix(".png")
 
-        self.spacing = 10
+        self.spacing = 5
 
         self.line_col = 3
         self.line = 4
 
-        # self.effect_path = Path(effect_path)
-        # if self.effect_path.exists() is not True:
-        #     self.effect_path.mkdir()
+        self.effect_path = Path(effect_path)
+
+        if self.effect_path.exists() is not True:
+            self.effect_path.mkdir()
 
     @property
     def first_width(self):
@@ -94,22 +95,11 @@ class PPT导出图片:
                 im.thumbnail(
                     (self.first_width, 9999), resample=Image.Resampling.LANCZOS
                 )
-
-                # if self.spacing > 0:
-                #     im = fun_图片画边框(im=im, border_color=FIRST_IMAGE_BORDER_COLOR)
-                #     im = fun_图片切换到圆角(im=im, border_radius=FIRST_IMAGE_RATIO)
-
                 bg_list.append(im.copy())
-
             else:
                 im.thumbnail(
                     (self.small_width, 9999), resample=Image.Resampling.LANCZOS
                 )
-
-                # if self.spacing > 0:
-                #     im = fun_图片画边框(im=im, border_color=FIRST_IMAGE_BORDER_COLOR)
-                #     im = fun_图片切换到圆角(im=im, border_radius=FIRST_IMAGE_RATIO)
-
                 in_line_list.append(im.copy())
 
             if len(in_line_list) == self.line_col:
@@ -141,29 +131,19 @@ class PPT导出图片:
             background_color=(255, 255, 255, 255),
         )
 
-        # bg = fun_图片扩大粘贴(
-        #     im=bg,
-        #     width=bg.width + 20,
-        #     height=bg.height + 20,
-        #     left="center",
-        #     top="center",
-        #     background_color=(255, 255, 255, 255),
-        # )
-
         bg.save(self.png_path.as_posix())
-        # bg.save(self.effect_path / self.png_path.name)
-        shutil.rmtree(self.ppt_dir)
 
-    # def fun_备份首图(self):
-    #     if self.ppt_dir.exists() is not True:
-    #         return
-
-    #     for in_file in self.ppt_dir.iterdir():
-    #         if in_file.is_file() and "1" in in_file.stem:
-    #             effect_image_path = self.effect_path / f"{self.ppt_path.stem}.jpg"
-    #             shutil.copy(in_file, effect_image_path)
-    #             break
+    def fun_备份首图(self):
+        if self.ppt_dir.exists() is True:
+            print("备份图片")
+            shutil.move(
+                self.ppt_dir.as_posix(),
+                (self.effect_path / self.ppt_dir.stem).as_posix(),
+            )
 
     def main(self):
         self.fun_ppt导出图片()
         # self.fun_备份首图()
+
+        if self.ppt_dir.exists() is True:
+            shutil.rmtree(self.ppt_dir)

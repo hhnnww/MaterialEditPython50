@@ -18,6 +18,8 @@ def layout_列自适应(
     crop_position: ALIGNITEM,
     bg_color: tuple,
 ):
+    spacing = spacing - 4
+
     col_width = math.ceil((xq_width - ((col - 1) * spacing)) / col)
 
     in_line = []

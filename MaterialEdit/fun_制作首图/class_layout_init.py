@@ -22,7 +22,12 @@ class LayoutInit:
         self.image_list = image_list
         self.xq_width = xq_width
         self.xq_height = xq_height
-        self.spacing = spacing
+
+        if spacing > 0:
+            self.spacing = spacing - 4
+        else:
+            self.spacing = spacing
+
         self.col = col
         self.crop_position: ALIGNITEM = crop_position
         self.bg_color = bg_color

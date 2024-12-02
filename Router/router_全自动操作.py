@@ -133,6 +133,14 @@ def auto_edit_material(item: EditItem):
                 "素材图水印",
             ]
 
+        elif item.shop_name == "小夕素材":
+            actions = [
+                "解压ZIP",
+                "移动到效果图",
+                "移动到根目录",
+                "文件重命名",
+            ]
+
         elif item.shop_name == "松子素材":
             actions = [
                 "删除素材文件夹内所有图片",
