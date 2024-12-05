@@ -12,11 +12,13 @@ def fun_生成SKP批量导出脚本(in_path: str):
   Sketchup.open_file(file_path)
   model = Sketchup.active_model
   model.rendering_options["DisplayWatermarks"]= false
+  model.rendering_options["BackgroundColor"] = Sketchup::Color.new(240, 240, 240)
+  model.rendering_options["SkyColor"] = Sketchup::Color.new(240, 240, 240)
   view = model.active_view
   view.write_image(
     filename: img_path,
     width: 2000,
-    height: 1125,
+    height: 1300,
     antialias: true,
     transparent: false
   )

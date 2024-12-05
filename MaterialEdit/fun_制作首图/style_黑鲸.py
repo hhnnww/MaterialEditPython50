@@ -109,6 +109,10 @@ def fun_黑鲸首图(
         background_color = (255, 155, 0, 255)
         fill_color = (50, 0, 0, 255)
         text_color = (255, 155, 0, 255)
+    elif material_format.lower() in ["skp"]:
+        background_color = (0, 99, 163, 255)
+        fill_color = (12, 69, 115, 255)
+        text_color = (255, 255, 255, 255)
     else:
         background_color = (250, 135, 110, 255)
         fill_color = (185, 50, 25, 255)
@@ -164,6 +168,11 @@ def fun_黑鲸首图(
 
     elif material_format.lower() in ["cdr"]:
         logo_path = Path(__file__).parent / "img" / "cdr.png"
+        format_bg_circle = Image.open(logo_path)
+        format_bg_circle.thumbnail((180, 180))
+
+    elif material_format.lower() in ["skp"]:
+        logo_path = Path(__file__).parent / "img" / "su.png"
         format_bg_circle = Image.open(logo_path)
         format_bg_circle.thumbnail((180, 180))
 

@@ -10,6 +10,7 @@ router = APIRouter(prefix="/chrome_plugin")
 
 class XQReqModel(BaseModel):
     html: str
+    shop_name: str
 
 
 class XQResModel(BaseModel):
@@ -22,7 +23,7 @@ def fun_make_xq_str(item: XQReqModel) -> XQResModel:
     # with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
     #     html.write(item.html)
 
-    xq = MakeTaobaoXQStr(html=item.html)
+    xq = MakeTaobaoXQStr(html=item.html, shop_name=item.shop_name)
     xq.main()
 
     return XQResModel(xq_str="success")
