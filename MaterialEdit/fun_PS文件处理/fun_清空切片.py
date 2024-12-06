@@ -4,7 +4,10 @@ from win32com.client import Dispatch
 def fun_清空切片(app):
     """
     删除PS里面的所有切片
+
+
     """
+    print("清空切片")
     idhistoryStateChanged = app.StringIDToTypeID("historyStateChanged")
     desc260 = Dispatch("Photoshop.ActionDescriptor")
     idDocI = app.CharIDToTypeID("DocI")
@@ -22,6 +25,6 @@ def fun_清空切片(app):
     try:
         app.ExecuteAction(idhistoryStateChanged, desc260, 3)
     except:  # noqa: E722
-        pass
-    else:
+        print("无法清除切片")
+    finally:
         print("成功清空切片")

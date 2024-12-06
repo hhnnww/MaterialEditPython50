@@ -85,6 +85,8 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
         fun_保存图片(data_im, f"xq_{num}")
     num += 1
 
+    # ---------------- 制作效果图 ----------------
+
     if item.has_effect_image == 1 and Path(item.effect_image_path).exists() is True:
         image_list = [
             obj
@@ -103,7 +105,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
                 image_list=[Path(image) for image in image_list],
                 col=item.oneline_number,
                 shop_name=item.shop_name,
-                has_name=False,
+                has_name=item.shop_name in ["松子素材"],
                 use_pic=len(image_list),
                 pic_sort=True,
                 material_path=Path(item.material_path),

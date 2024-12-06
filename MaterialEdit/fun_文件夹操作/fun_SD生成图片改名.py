@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import Optional
 
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
@@ -40,3 +41,5 @@ class SDPicReName:
                 if effect_png.stem == ma_file.stem:
                     new_path = ma_file.parent / effect_png.name
                     effect_png.rename(new_path)
+
+        Path(self.effect_path).unlink()

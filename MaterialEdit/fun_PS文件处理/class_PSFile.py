@@ -7,8 +7,6 @@ from colorama import Back, Fore, Style
 from win32com.client import CDispatch, Dispatch
 
 # import face_recognition
-from MaterialEdit.fun_PS文件处理.fun_清空切片 import fun_清空切片
-
 from .fun_对比所有导出的图片 import fun_打开图片, run_对比所有图片
 from .fun_导出PNG import com_psd导出png
 from .fun_导出图层PNG import run_导出所有图层
@@ -50,7 +48,6 @@ class PSFile:
         fun_清理注释(self.app)
         print(f"\n\n处理PSD:{self.ps_path}")
 
-        fun_清空切片(self.app)
 
     @staticmethod
     def get_all_layer(in_object: CDispatch):
