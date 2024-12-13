@@ -5,9 +5,9 @@ from PIL import Image
 
 
 class DelPILBorder:
-    def __init__(self, img: Image.Image, border_color: Optional[Tuple[int]]):
+    def __init__(self, img: Image.Image, border_color: Optional[Tuple[int]]) -> None:
         if img.mode != "RGBA":
-            img = img.convert("RGBA")
+            img = img.convert(mode="RGBA")
 
         self.img = img
         self.border_color = border_color
@@ -20,7 +20,7 @@ class DelPILBorder:
         return self.border_color
 
     @cached_property
-    def left(self):
+    def left(self) -> int:
         for left in range(0, self.img.width):
             for top in range(0, self.img.height):
                 if self.img.getpixel((left, top)) != self.fun_边框颜色:
@@ -31,20 +31,20 @@ class DelPILBorder:
         return 0
 
     @cached_property
-    def upper(self):
+    def upper(self) -> int:
         for top in range(0, self.img.height):
             for left in range(0, self.img.width):
-                if self.img.getpixel((left, top)) != self.fun_边框颜色:
+                if self.img.getpixel(xy=(left, top)) != self.fun_边框颜色:
                     if top > 1:
                         top -= 1
                     return top
         return 0
 
     @cached_property
-    def right(self):
+    def right(self) -> int:
         for right in range(self.img.width - 1, 0, -1):
             for top in range(0, self.img.height):
-                if self.img.getpixel((right, top)) != self.fun_边框颜色:
+                if self.img.getpixel(xy=(right, top)) != self.fun_边框颜色:
                     if right < self.img.width:
                         right += 1
                     return right
@@ -52,7 +52,7 @@ class DelPILBorder:
         return self.img.width
 
     @cached_property
-    def bottom(self):
+    def bottom(self) -> int:
         for bottom in range(self.img.height - 1, 0, -1):
             for left in range(0, self.img.width):
                 if self.img.getpixel((left, bottom)) != self.fun_边框颜色:
@@ -64,4 +64,4 @@ class DelPILBorder:
 
     def main(self) -> Image.Image:
         bbox = (self.left, self.upper, self.right, self.bottom)
-        return self.img.crop(bbox)
+        return self.img.crop(box=bbox)

@@ -49,7 +49,7 @@ class ClassOneImage:
         return self.image_path
 
     @cached_property
-    def fun_图片比例(self):
+    def fun_图片比例(self) -> float:
         return self.image_pil.width / self.image_pil.height
 
     @cached_property
@@ -65,7 +65,7 @@ class ClassOneImage:
         )
 
         if ad_pil.width > self.image_width / 4:
-            ad_pil.thumbnail((int(self.image_width / 4), 999999))
+            ad_pil.thumbnail(size=(int(self.image_width / 4), 999999))
 
         return ad_pil
 
@@ -73,7 +73,7 @@ class ClassOneImage:
     def __fun_原始图片(self) -> Image.Image:
         im = self.image_pil
         if im.mode.lower() != "rgba":
-            im = im.convert("RGBA")
+            im = im.convert(mode="RGBA")
         return im
 
     @property
@@ -114,7 +114,7 @@ class ClassOneImage:
 
         else:
             small_im = ori_im.resize(
-                (self.image_width, height),
+                size=(self.image_width, height),
                 resample=Image.Resampling.LANCZOS,
                 reducing_gap=8,
             )
@@ -122,7 +122,7 @@ class ClassOneImage:
         if self.has_water is True:
             for left in [
                 30,
-                int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
+                int(((small_im.width - self.__fun_图片中间广告图片.width) / 2)),
                 small_im.width - self.__fun_图片中间广告图片.width - 30,
             ]:
                 for top in [
@@ -132,17 +132,17 @@ class ClassOneImage:
                 ]:
                     r, g, b, a = self.__fun_图片中间广告图片.split()
                     small_im.paste(
-                        self.__fun_图片中间广告图片,
-                        (
+                        im=self.__fun_图片中间广告图片,
+                        box=(
                             left,
                             top,
                         ),
-                        a,
+                        mask=a,
                     )
 
         return small_im
 
-    def main(self):
+    def main(self) -> Image.Image:
         if self.has_name:
             bottom_im = fun_图片竖向拼接(
                 image_list=[
@@ -165,7 +165,7 @@ class ClassOneImage:
             )
 
             bottom_im.thumbnail(
-                (math.ceil(self.image_width * 0.7), 999999),
+                size=(math.ceil(self.image_width * 0.7), 999999),
                 resample=Image.Resampling.LANCZOS,
                 reducing_gap=8,
             )

@@ -166,7 +166,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
             ).main()
 
             data_im = fun_图片竖向拼接(
-                [header_pil, preview_image],
+                image_list=[header_pil, preview_image],
                 spacing=0,
                 align_item="center",
                 background_color=(255, 255, 255, 255),
@@ -174,7 +174,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
 
             for im in fun_裁剪图片(im=data_im):
                 if item.image_name_has_material_id is True:
-                    fun_保存图片(im, f"xq_{num}", item.material_id)
+                    fun_保存图片(im=im, stem=f"xq_{num}", material_id=item.material_id)
                 else:
-                    fun_保存图片(im, f"xq_{num}")
+                    fun_保存图片(im=im, stem=f"xq_{num}")
                 num += 1
