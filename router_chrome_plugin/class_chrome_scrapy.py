@@ -1,9 +1,10 @@
 from MaterialEdit.fun_素材下载.fun_插入素材 import fun_插入素材
+from router_chrome_plugin.__calss_qianku import Qianku
 from router_chrome_plugin.__class_new_tb import NewTbScrapy
 from router_chrome_plugin.__class_old_tb import OldTbScrapy
 
 
-class ChromeScrapy(NewTbScrapy, OldTbScrapy):
+class ChromeScrapy(NewTbScrapy, OldTbScrapy, Qianku):
     def fun_insert_db(self):
         state = False
 
@@ -11,6 +12,8 @@ class ChromeScrapy(NewTbScrapy, OldTbScrapy):
             ma_list = self.fun_get_new_tb()
         elif self.material_site in ["青青草素材王国", "巴扎嘿"]:
             ma_list = self.fun_get_old_tb()
+        elif self.material_site == "千库":
+            ma_list = self.fun_get_qianku()
 
         for obj in ma_list:
             fun_插入素材(

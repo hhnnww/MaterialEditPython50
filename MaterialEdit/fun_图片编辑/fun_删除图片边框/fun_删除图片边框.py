@@ -14,6 +14,6 @@ def fun_删除图片边框(im: Image.Image) -> Image.Image:
     pix_list = list(set(pix_list))
 
     for pix_color in pix_list:
-        im = DelPILBorder(img=im, border_color=pix_color).main()  # type: ignore
+        im = DelPILBorder(img=im, border_color=pix_color).main()
 
     return im

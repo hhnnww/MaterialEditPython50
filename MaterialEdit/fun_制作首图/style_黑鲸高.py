@@ -99,15 +99,6 @@ def style_黑鲸高(
     )
     bg.paste(water_pil_bg, (55, 0), water_pil_bg)
 
-    # ID
-    # id_pil = fun_单行文字转图片2(
-    #     text=f"ID:{material_id}",
-    #     size=30,
-    #     fill=(255, 255, 255, 255),
-    #     background=(0, 0, 0, 255),
-    #     font_weight="heavy",
-    # )
-
     id_pil = fun_单行文字转图片(
         text=f"ID:{material_id}",
         font_size=20,

@@ -68,7 +68,7 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool):
         elif first_suffix in ["cdr"]:
             material_source_format_title = f"{first_suffix} 矢量素材"
         elif first_suffix in ["skp"]:
-            material_source_format_title = "SU模型SKP文件"
+            material_source_format_title = "SU单体模型"
 
     return MaterialInfo(
         material_path=material_path.upper(),

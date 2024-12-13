@@ -35,6 +35,7 @@ from MaterialEdit.fun_文件夹操作.fun_子目录psd重命名 import fun_子�
 from MaterialEdit.fun_文件夹操作.fun_子目录图片重命名 import fun_子目录图片重命名
 from MaterialEdit.fun_文件夹操作.fun_子目录拼接图片 import fun_子目录拼接图片
 from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
+from MaterialEdit.fun_文件夹操作.fun_打开没有预览图的AI文件 import OpenNoPngAIFile
 from MaterialEdit.fun_文件夹操作.fun_按数字分类 import fun_按数字分类
 from MaterialEdit.fun_文件夹操作.fun_文件夹内文件夹重命名 import (
     fun_文件夹内文件夹重命名,
@@ -373,6 +374,15 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 if png_path.exists() is not True:
                     os.startfile(in_file.as_posix())
 
+        case "打开没有预览图的SKP":
+            all_file = fun_遍历指定文件(
+                folder=material_structure.material_path, suffix=[".skp"]
+            )
+            for in_file in all_file:
+                png_path = in_file.with_suffix(".png")
+                if png_path.exists() is not True:
+                    os.startfile(in_file.as_posix())
+
         case "eps转ai":
             pythoncom.CoInitialize()  # type: ignore
             app = Dispatch("Illustrator.Application")
@@ -470,6 +480,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 shop_name=item.shop_name,
             )
             sd_rename.main()
+
+        case "打开没有预览图的AI文件":
+            obj = OpenNoPngAIFile(in_path=material_structure.material_path)
+            obj.main()
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"

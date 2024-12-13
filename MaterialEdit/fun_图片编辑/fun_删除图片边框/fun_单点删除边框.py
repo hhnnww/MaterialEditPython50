@@ -28,6 +28,8 @@ class DelPILBorder:
                         left -= 1
                     return left
 
+        return 0
+
     @cached_property
     def upper(self):
         for top in range(0, self.img.height):
@@ -36,6 +38,7 @@ class DelPILBorder:
                     if top > 1:
                         top -= 1
                     return top
+        return 0
 
     @cached_property
     def right(self):
@@ -46,6 +49,8 @@ class DelPILBorder:
                         right += 1
                     return right
 
+        return self.img.width
+
     @cached_property
     def bottom(self):
         for bottom in range(self.img.height - 1, 0, -1):
@@ -55,12 +60,8 @@ class DelPILBorder:
                         bottom += 1
                     return bottom
 
+        return self.img.height
+
     def main(self) -> Image.Image:
         bbox = (self.left, self.upper, self.right, self.bottom)
-        if bbox:
-            try:
-                return self.img.crop(bbox)
-            except TypeError:
-                pass
-
-        return self.img
+        return self.img.crop(bbox)

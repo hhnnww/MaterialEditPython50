@@ -38,7 +38,6 @@ def fun_layout_固定裁剪2(
 
     for obj in oneline_num_ratio_list:
         obj.append(abs(all_image_average_ratio - obj[1]))
-        print(obj)
 
     oneline_num_ratio_list.sort(key=lambda k: k[2], reverse=False)
 

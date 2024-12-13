@@ -105,11 +105,12 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
                 image_list=[Path(image) for image in image_list],
                 col=item.oneline_number,
                 shop_name=item.shop_name,
-                has_name=item.shop_name in ["松子素材"],
+                has_name=False,
                 use_pic=len(image_list),
                 pic_sort=True,
                 material_path=Path(item.material_path),
                 has_water=item.has_water == 1,
+                oneline_ratio=item.oneline_ratio,
             ).main()
 
             data_im = fun_图片竖向拼接(
@@ -161,6 +162,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
                 pic_sort=sort,
                 material_path=Path(item.material_path),
                 has_water=item.has_water == 1,
+                oneline_ratio=item.oneline_ratio,
             ).main()
 
             data_im = fun_图片竖向拼接(

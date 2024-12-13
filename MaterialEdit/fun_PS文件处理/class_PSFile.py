@@ -48,7 +48,6 @@ class PSFile:
         fun_清理注释(self.app)
         print(f"\n\n处理PSD:{self.ps_path}")
 
-
     @staticmethod
     def get_all_layer(in_object: CDispatch):
         """

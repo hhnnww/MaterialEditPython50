@@ -1,6 +1,7 @@
 import math
 from functools import cached_property
 from pathlib import Path
+from typing import Literal
 
 from PIL import Image
 
@@ -24,6 +25,7 @@ class ClassMakeXQ2:
         pic_sort: bool,
         material_path: Path,
         has_water: bool,
+        oneline_ratio: float,
     ) -> None:
         self.col = col
         self.shop_name = shop_name
@@ -34,25 +36,26 @@ class ClassMakeXQ2:
 
         self.material_path = material_path
         self.has_water = has_water
+        self.oneline_ratio = oneline_ratio
 
-        self.image_list = self.__fun_获取仅使用的图片(image_list)
-        self.image_list = self.__fun_排序图片(self.image_list)
+        self.image_list = self.__fun_获取仅使用的图片(image_list=image_list)
+        self.image_list = self.__fun_排序图片(image_list=self.image_list)
 
     xq_width = 2000
     space = 40
     background_color = (255, 255, 255, 255)
 
     @cached_property
-    def __fun_所有源文件(self):
+    def __fun_所有源文件(self) -> list[Path]:
         return fun_遍历指定文件(
             folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX
         )
 
     def __fun_获取仅使用的图片(self, image_list: list[Path]) -> list[Path]:
         if self.pic_sort:
-            image_list.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=False)
+            image_list.sort(key=lambda k: fun_获取路径数字(stem=k.stem), reverse=False)
         else:
-            image_list.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=True)
+            image_list.sort(key=lambda k: fun_获取路径数字(stem=k.stem), reverse=True)
 
         if self.use_pic == 0:
             return image_list
@@ -62,7 +65,7 @@ class ClassMakeXQ2:
     def __fun_排序图片(self, image_list: list[Path]) -> list[ClassOneImage]:
         obj_list = [
             ClassOneImage(
-                image_pil=Image.open(image.as_posix()),
+                image_pil=Image.open(fp=image.as_posix()),
                 image_path=image,
                 image_width=800,
                 background_color=self.background_color,
@@ -110,18 +113,25 @@ class ClassMakeXQ2:
 
         return im
 
+    def __计算单行图片的比例(
+        self, online_comb: list[ClassOneImage]
+    ) -> float | Literal[0]:
+        return sum([comb.fun_图片比例 for comb in online_comb])
+
     @cached_property
     def __fun_组合图片列表(self) -> list[list[ClassOneImage]]:
         image_list = []
         in_list = []
         break_num = 0
 
-        for num, image in enumerate(self.image_list):
+        for num, image in enumerate(iterable=self.image_list):
             in_list.append(image)
 
-            if (num - break_num > 10 or break_num == 0) and len(
-                in_list
-            ) == self.col - 1:
+            if (
+                (num - break_num > 10 or break_num == 0)
+                and len(in_list) == self.col - 1
+                or self.__计算单行图片的比例(online_comb=in_list) >= self.oneline_ratio
+            ):
                 image_list.append(in_list.copy())
                 in_list = []
                 break_num = num + 1
@@ -134,9 +144,10 @@ class ClassMakeXQ2:
 
         return image_list
 
-    def main(self):
+    def main(self) -> Image.Image:
         im_list = [
-            self.__fun_制作单行(line_image) for line_image in self.__fun_组合图片列表
+            self.__fun_制作单行(image_list=line_image)
+            for line_image in self.__fun_组合图片列表
         ]
 
         if self.has_name:

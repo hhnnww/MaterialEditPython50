@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 
@@ -19,9 +21,9 @@ class XQResModel(BaseModel):
 
 @router.post("/make_xq_str", response_model=XQResModel)
 def fun_make_xq_str(item: XQReqModel) -> XQResModel:
-    # html_file = Path(__file__).parent / "xq.html"
-    # with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
-    #     html.write(item.html)
+    html_file = Path(__file__).parent / "xq.html"
+    with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
+        html.write(item.html)
 
     xq = MakeTaobaoXQStr(html=item.html, shop_name=item.shop_name)
     xq.main()
@@ -76,6 +78,7 @@ def fun_get_shop_name_material_site() -> ShopNameModel:
             "包图",
             "摄图",
             "享设计",
+            "千库",
             "青青草素材王国",
             "加油鸭素材铺",
             "漫语摄影",
