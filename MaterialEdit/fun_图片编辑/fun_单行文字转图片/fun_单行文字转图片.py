@@ -58,18 +58,18 @@ def fun_单行文字转图片(
     """
     开始写字
     """
-    draw = ImageDraw.Draw(background_image)
+    draw = ImageDraw.Draw(im=background_image)
     left, top = 0, 0
     for t in text:
-        if fun_是英文(t) is True:
+        if fun_是英文(text=t) is True:
             curr_font_size = fun_计算单个文字的尺寸(text=t, true_font=english_font_obj)
             top = 0 - int((curr_font_size.height * ((en_size_expand_ratio - 1) / 2)))
-            draw.text((left, top), text=t, fill=fill_color, font=english_font_obj)
+            draw.text(xy=(left, top), text=t, fill=fill_color, font=english_font_obj)
             left += curr_font_size.width
 
         else:
             top = 0
-            draw.text((left, top), text=t, fill=fill_color, font=chinese_font_obj)
+            draw.text(xy=(left, top), text=t, fill=fill_color, font=chinese_font_obj)
             left += fun_计算单个文字的尺寸(text=t, true_font=chinese_font_obj).width
 
     # background_image = DelPILBorder(
