@@ -1,7 +1,13 @@
-from ...type import _COLOR, _FONT_NAME, _FONT_WEIGHT
-from ..fun_单行文字转图片.fun_单行文字转图片 import fun_单行文字转图片
-from ..fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from .fun_文字换行 import fun_文字换行
+"""制作多行本文图片"""
+
+from PIL import Image
+
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
+    fun_单行文字转图片,
+)
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_多行文字转图片.fun_文字换行 import fun_文字换行
+from MaterialEdit.type import _COLOR, _FONT_NAME, _FONT_WEIGHT
 
 
 def fun_制作多行本文(
@@ -15,7 +21,13 @@ def fun_制作多行本文(
     fill_color: _COLOR,
     background_color: _COLOR,
     en_size_expand_ratio: float = 1.2,
-):
+) -> Image.Image:
+    """制作多行本文
+    根据制定宽度来换行
+
+    Returns:
+        _type_: _description_
+    """
     text_list = fun_文字换行(text=text, line_max_number=line_max_number)
 
     text_pil_list = []

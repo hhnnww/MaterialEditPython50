@@ -1,7 +1,14 @@
+"""把一长段文字换行"""
+
 import textwrap
 
 
 def fun_文字换行(text: str, line_max_number: int) -> list[str]:
+    """把一长段文字换行
+
+    Returns:
+        _type_: _description_
+    """
     return textwrap.fill(text=text, width=line_max_number).split("\n")
 
 

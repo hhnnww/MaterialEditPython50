@@ -1,4 +1,6 @@
-from .ClassImageEdit import ImageEdit
+"""图片编辑"""
+
+from .class_image_edit import ImageEdit
 from .fun_单行文字转图片.fun_单行文字转图片 import fun_单行文字转图片
 from .fun_单行文字转图片.fun_单行文字转图片2 import fun_单行文字转图片2
 from .fun_图片扩大粘贴 import fun_图片扩大粘贴

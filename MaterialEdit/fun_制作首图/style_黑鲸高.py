@@ -1,6 +1,9 @@
+"""制作黑鲸首图"""
+
 from PIL import Image
 
 from MaterialEdit.fun_制作首图.fun_制作格式 import fun_制作格式
+from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
 from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
     fun_单行文字转图片,
 )
@@ -12,19 +15,32 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 
 def style_黑鲸高(
     im: Image.Image, title: str, format: str, material_id: str, shop_name: str
-):
+) -> Image.Image:
+    """制作黑鲸首图
+
+    Returns:
+        _type_: _description_
+    """
     if im.width < 1500 or im.height < 1250:
         im = fun_图片扩大粘贴(im, 1500, 1250, "center", "center", (255, 255, 255, 255))
 
-    title_pil = fun_单行文字转图片(
+    # title_pil = fun_单行文字转图片(
+    #     text=title,
+    #     font_weight="bold",
+    #     font_size=85,
+    #     fill_color=(255, 255, 255, 255),
+    #     background_color=(0, 0, 0, 255),
+    #     english_font_name="montserrat",
+    #     chinese_font_name="opposans",
+    # )
+
+    title_pil = MakeIbmFont(
         text=title,
-        font_weight="bold",
-        font_size=85,
-        fill_color=(255, 255, 255, 255),
-        background_color=(0, 0, 0, 255),
-        english_font_name="montserrat",
-        chinese_font_name="opposans",
-    )
+        size=85,
+        weight="bold",
+        color=(255, 255, 255, 255),
+        bg_color=(0, 0, 0, 255),
+    ).main()
 
     # title_pil = fun_单行文字转图片2(
     #     text=title,

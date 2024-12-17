@@ -1,3 +1,5 @@
+"""获取图片缩略图"""
+
 import io
 from pathlib import Path
 
@@ -14,21 +16,31 @@ router = APIRouter(prefix="/blob")
 
 @router.get("")
 def get_img(img: str):
+    """获取缩小后的图像
+
+    Args:
+        img (str): 图像地址
+
+    Returns:
+        Response | None: 返回图片内容
+        如果出错
+        返回None
+    """
     bytes_io = io.BytesIO()
     new_path = fun_单个文件制作WEB预览图(image_path=Path(img))
 
     try:
-        with Image.open(new_path) as im:
+        with Image.open(fp=new_path) as im:
             if im.mode != "RGBA":
-                im = im.convert("RGBA")
+                im = im.convert(mode="RGBA")
 
             if im.height / im.width > 2:
-                im = im.crop((0, 0, im.width, int(im.width * 1.9)))
+                im = im.crop(box=(0, 0, im.width, int(im.width * 1.9)))
 
-            im.thumbnail((500, 500))
-            im.save(bytes_io, format="png")
+            im.thumbnail(size=(500, 500))
+            im.save(fp=bytes_io, format="png")
 
-        return Response(bytes_io.getvalue(), media_type="image/png")
+        return Response(content=bytes_io.getvalue(), media_type="image/png")
 
     # 如果出现错误
     except ValueError as e:
@@ -36,20 +48,28 @@ def get_img(img: str):
         return None
 
 
-@router.get("/thumbnail")
-def get_thumbnail(img_path: str):
+@router.get(path="/thumbnail")
+def get_thumbnail(img_path: str) -> Response:
+    """获取缩略图
+
+    Args:
+        img_path (str): _description_
+
+    Returns:
+        Response: _description_
+    """
     img_path_obj = Path(img_path)
     new_path = fun_单个文件制作WEB预览图(image_path=img_path_obj)
 
     bytes_io = io.BytesIO()
-    with Image.open(new_path) as im:
+    with Image.open(fp=new_path) as im:
         if im.mode != "RGBA":
-            im = im.convert("RGBA")
+            im = im.convert(mode="RGBA")
 
         if im.height / im.width > 2:
-            im = im.crop((0, 0, im.width, int(im.width * 1.9)))
+            im = im.crop(box=(0, 0, im.width, int(im.width * 1.9)))
 
-        im.thumbnail((500, 500))
-        im.save(bytes_io, format="png")
+        im.thumbnail(size=(500, 500))
+        im.save(fp=bytes_io, format="png")
 
-    return Response(bytes_io.getvalue(), media_type="image/png")
+    return Response(content=bytes_io.getvalue(), media_type="image/png")

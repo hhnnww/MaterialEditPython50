@@ -1,3 +1,5 @@
+"""buzhidaoshishenmwenj"""
+
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -20,13 +22,24 @@ router = APIRouter(prefix="/AutoAction")
 
 
 class GetBaiduLink(BaseModel):
+    """获取网盘连接模型
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+
     start_stem: int
     end_stem: int
     parent_path: str
 
 
-@router.post("/get_baidu_link")
-def get_baidu_link(item: GetBaiduLink):
+@router.post(path="/get_baidu_link")
+def get_baidu_link(item: GetBaiduLink) -> None:
+    """获取百度网盘连接
+
+    Args:
+        item (GetBaiduLink): _description_
+    """
     AutoGetBaiDuShareLink(
         start_stem=item.start_stem, end_stem=item.end_stem, parent_path=item.parent_path
     ).run()
@@ -36,11 +49,22 @@ def get_baidu_link(item: GetBaiduLink):
 
 
 class UpTB(BaseModel):
+    """上传到淘宝模型
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+
     start_stem: int
 
 
-@router.post("/up_taobao")
-def up_taobao(item: UpTB):
+@router.post(path="/up_taobao")
+def up_taobao(item: UpTB) -> None:
+    """上传到淘宝函数
+
+    Args:
+        item (UpTB): _description_
+    """
     AutoUploadProductToTaobao(start_stem=item.start_stem).run()
 
 
@@ -98,13 +122,24 @@ def down_path_move_to_material_path(item: DownItem):
 
 
 class EditItem(BaseModel):
+    """_summary_
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+
     parent_path: str
     start_stem: int
     shop_name: str
 
 
-@router.post("/auto_edit_material")
+@router.post(path="/auto_edit_material")
 def auto_edit_material(item: EditItem):
+    """自动编辑素材
+
+    Args:
+        item (EditItem): _description_
+    """
     # 构建所有需要处理的文件夹
     all_file = list(Path(item.parent_path).iterdir())
     used_folder = []
@@ -115,6 +150,7 @@ def auto_edit_material(item: EditItem):
 
     for root_path in used_folder:
         print(root_path)
+        actions = []
 
         if item.shop_name == "饭桶设计":
             actions = [

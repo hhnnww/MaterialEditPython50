@@ -1,10 +1,10 @@
+"""制作黑鲸首图"""
+
 from pathlib import Path
 
 from PIL import Image
 
-from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片2 import (
-    fun_单行文字转图片2,
-)
+from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_画一个圆形 import fun_画一个圆
@@ -15,43 +15,48 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 def fun_黑鲸首图(
     im: Image.Image, title: str, material_format: str, material_id: str, shop_name: str
 ) -> Image.Image:
+    """制作黑鲸首图
+
+    Returns:
+        _type_: _description_
+    """
     if im.width > 1500:
         im = im.crop((0, 0, 1500, im.height))
 
     # 制作素材ID
-    material_id_pil = fun_单行文字转图片2(
+    material_id_pil = MakeIbmFont(
         text="ID:" + material_id,
-        font_weight="heavy",
+        weight="semibold",
         size=20,
-        fill=(255, 255, 255, 255),
-        background=(0, 0, 0, 255),
-    )
+        color=(255, 255, 255, 255),
+        bg_color=(0, 0, 0, 255),
+    ).main()
 
     material_id_bg = fun_画一个圆形横框(
-        material_id_pil.width + 40,
-        material_id_pil.height + 20,
+        material_id_pil.width + 50,
+        material_id_pil.height + 30,
         (0, 0, 0, 255),
         (255, 255, 255, 0),
     )
 
-    material_id_bg.paste(material_id_pil, (20, 10), material_id_pil)
+    material_id_bg.paste(material_id_pil, (25, 13), material_id_pil)
     im.paste(material_id_bg, (im.width - material_id_bg.width - 30, 30), material_id_bg)
 
     # 左边的logo
-    logo = fun_获取单个水印(80, fill_clor=(255, 255, 255, 255))
-    shop_name_pil = fun_单行文字转图片2(
+    logo = fun_获取单个水印(size=80, fill_clor=(255, 255, 255, 255))
+    shop_name_pil = MakeIbmFont(
         text=shop_name,
-        size=40,
-        fill=(255, 255, 255, 255),
-        background=(0, 0, 0, 255),
-        font_weight="heavy",
-    )
+        size=50,
+        color=(255, 255, 255, 255),
+        bg_color=(0, 0, 0, 255),
+        weight="bold",
+    ).main()
     shop_name_pil.thumbnail(
-        logo.size, resample=Image.Resampling.LANCZOS, reducing_gap=8
+        (logo.width + 20, 999999), resample=Image.Resampling.LANCZOS
     )
     logo = fun_图片竖向拼接(
-        [logo, shop_name_pil],
-        spacing=10,
+        image_list=[logo, shop_name_pil],
+        spacing=20,
         align_item="center",
         background_color=(0, 0, 0, 255),
     )
@@ -59,7 +64,7 @@ def fun_黑鲸首图(
     logo_bg = fun_画一个圆角矩形(
         width=logo.width + add_width,
         height=int((logo.height + 50) * 2),
-        border_radius=50,
+        border_radius=35,
         fill_color=(0, 0, 0, 255),
     )
     logo_bg = logo_bg.crop((0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height))
@@ -70,28 +75,17 @@ def fun_黑鲸首图(
     # 画边框和写标题
     circle = fun_画一个圆角矩形(1500, 400, 80, (0, 0, 0, 255), (255, 255, 255, 255))
     circle = circle.crop((0, 200, circle.width, circle.height))
-    # circle = fun_画一个圆角矩形(1500, 200, 60, (0, 0, 0, 255), (255, 255, 255, 255))
 
-    # title_pil = fun_单行文字转图片(
-    #     text=title,
-    #     font_weight="medium",
-    #     font_size=100,
-    #     fill_color=(255, 255, 255, 255),
-    #     background_color=(0, 0, 0, 255),
-    #     english_font_name="montserrat",
-    #     chinese_font_name="noto",
-    # )
-
-    title_pil = fun_单行文字转图片2(
+    title_pil = MakeIbmFont(
         text=title,
-        size=100,
-        fill=(255, 255, 255, 255),
-        background=(0, 0, 0, 255),
-        font_weight="medium",
-    )
+        size=110,
+        weight="text",
+        color=(255, 255, 255, 255),
+        bg_color=(0, 0, 0, 255),
+    ).main()
 
     circle.paste(
-        title_pil, (80, int((circle.height - title_pil.height) / 2)), title_pil
+        title_pil, (60, int((circle.height - title_pil.height) / 2)), title_pil
     )
 
     bg = fun_图片竖向拼接([im, circle], 0, "center", (255, 255, 255, 255))
@@ -139,18 +133,20 @@ def fun_黑鲸首图(
         format_title = "ps"
 
     # 格式文字
-    format_pil = fun_单行文字转图片2(
+    format_pil = MakeIbmFont(
         text=format_title.title(),
-        font_weight="heavy",
+        weight="semibold",
         size=90,
-        fill=text_color,
-        background=fill_color,
-    )
+        color=text_color,
+        bg_color=fill_color,
+    ).main()
+
     format_pil.thumbnail(
         (int(format_bg_circle.width * 0.6), int(format_bg_circle.height * 0.6)),
         Image.Resampling.LANCZOS,
         3,
     )
+
     format_bg_circle.paste(
         format_pil,
         (

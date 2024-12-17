@@ -1,22 +1,22 @@
+"""单个图片生成图像"""
+
 import math
 from functools import cached_property
 from pathlib import Path
 
 from PIL import Image
 
-from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
-    fun_单行文字转图片,
-)
-from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片2 import (
-    fun_单行文字转图片2,
-)
+from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+from MaterialEdit.setting import FONT_COLOR
 
 
 class ClassOneImage:
+    """详情图中的单个图片处理"""
+
     def __init__(
         self,
         image_pil: Image.Image,
@@ -37,11 +37,16 @@ class ClassOneImage:
         self.all_material_file = all_material_file
         self.has_water = has_water
 
-    text_color = (120, 120, 120, 255)
+    text_color = FONT_COLOR
     logo_to_text_space = 30
 
     @cached_property
     def fun_获取对应源文件(self) -> Path:
+        """根据图片路径获取源文件路径
+
+        Returns:
+            _type_: _description_
+        """
         for in_file in self.all_material_file:
             if in_file.stem in self.image_path.stem and self.shop_name in in_file.stem:
                 return in_file
@@ -50,19 +55,22 @@ class ClassOneImage:
 
     @cached_property
     def fun_图片比例(self) -> float:
+        """计算图片比例
+
+        Returns:
+            _type_: _description_
+        """
         return self.image_pil.width / self.image_pil.height
 
     @cached_property
     def __fun_图片中间广告图片(self) -> Image.Image:
-        ad_pil = fun_单行文字转图片(
+        ad_pil = MakeIbmFont(
             text=f"淘宝:{self.shop_name}",
-            background_color=(0, 0, 0, 0),
-            chinese_font_name="zihun",
-            english_font_name="lato",
-            font_weight="normal",
-            font_size=30,
-            fill_color=(100, 100, 100, 30),
-        )
+            bg_color=(0, 0, 0, 0),
+            weight="bold",
+            size=30,
+            color=(80, 80, 80, 30),
+        ).main()
 
         if ad_pil.width > self.image_width / 4:
             ad_pil.thumbnail(size=(int(self.image_width / 4), 999999))
@@ -78,13 +86,13 @@ class ClassOneImage:
 
     @property
     def __fun_图片名称(self) -> Image.Image:
-        return fun_单行文字转图片2(
+        return MakeIbmFont(
             text=self.fun_获取对应源文件.name.upper(),
             size=50,
-            fill=self.text_color,
-            background=self.background_color,
-            font_weight="light",
-        )
+            color=self.text_color,
+            bg_color=self.background_color,
+            weight="light",
+        ).main()
 
     @property
     def __fun_图片尺寸(self) -> Image.Image:
@@ -93,13 +101,13 @@ class ClassOneImage:
         else:
             text = " "
 
-        return fun_单行文字转图片2(
-            text=text,
-            size=35,
-            fill=self.text_color,
-            background=self.background_color,
-            font_weight="light",
-        )
+        return MakeIbmFont(
+            text=text.upper(),
+            size=40,
+            color=self.text_color,
+            bg_color=self.background_color,
+            weight="light",
+        ).main()
 
     @cached_property
     def __fun_制作小图(self) -> Image.Image:
@@ -121,16 +129,16 @@ class ClassOneImage:
 
         if self.has_water is True:
             for left in [
-                30,
+                # 30,
                 int(((small_im.width - self.__fun_图片中间广告图片.width) / 2)),
-                small_im.width - self.__fun_图片中间广告图片.width - 30,
+                # small_im.width - self.__fun_图片中间广告图片.width - 30,
             ]:
                 for top in [
-                    30,
+                    # 30,
                     int((small_im.height - self.__fun_图片中间广告图片.height) / 2),
-                    small_im.height - self.__fun_图片中间广告图片.height - 30,
+                    # small_im.height - self.__fun_图片中间广告图片.height - 30,
                 ]:
-                    r, g, b, a = self.__fun_图片中间广告图片.split()
+                    _r, _g, _b, a = self.__fun_图片中间广告图片.split()
                     small_im.paste(
                         im=self.__fun_图片中间广告图片,
                         box=(
@@ -143,6 +151,11 @@ class ClassOneImage:
         return small_im
 
     def main(self) -> Image.Image:
+        """生成详情中的单个图片
+
+        Returns:
+            Image.Image: _description_
+        """
         if self.has_name:
             bottom_im = fun_图片竖向拼接(
                 image_list=[

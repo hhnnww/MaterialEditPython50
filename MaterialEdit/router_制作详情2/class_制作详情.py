@@ -1,3 +1,5 @@
+"""制作详情"""
+
 import math
 from functools import cached_property
 from pathlib import Path
@@ -15,6 +17,8 @@ from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
 
 
 class ClassMakeXQ2:
+    """制作素材详情"""
+
     def __init__(
         self,
         image_list: list[Path],
@@ -42,7 +46,7 @@ class ClassMakeXQ2:
         self.image_list = self.__fun_排序图片(image_list=self.image_list)
 
     xq_width = 2000
-    space = 40
+    space = 8
     background_color = (255, 255, 255, 255)
 
     @cached_property
@@ -86,8 +90,8 @@ class ClassMakeXQ2:
 
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
         print(f"制作单行{image_list}")
-        width = math.ceil(
-            (self.xq_width - ((len(image_list) + 1) * self.space)) / len(image_list)
+        width = math.floor(
+            (self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list)
         )
 
         im_list = []
@@ -145,6 +149,11 @@ class ClassMakeXQ2:
         return image_list
 
     def main(self) -> Image.Image:
+        """开始执行制作详情
+
+        Returns:
+            Image.Image: _description_
+        """
         im_list = [
             self.__fun_制作单行(image_list=line_image)
             for line_image in self.__fun_组合图片列表

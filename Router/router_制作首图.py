@@ -15,10 +15,10 @@ from MaterialEdit import (
 )
 from MaterialEdit.fun_制作首图 import (
     Layout1大3小自适应,
-    Layout1大N行2列,
     Layout1大N行自适应,
     Layout1大竖2排小竖,
     Layout2大竖4小竖,
+    LayoutOneLargeTwoSmall,
     Layout列固定尺寸,
     Layout超长图拼接,
     style_paopao,
@@ -247,7 +247,7 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     elif item.first_image_layout == "1大2行2列":
-        bg = Layout1大N行2列(
+        bg = LayoutOneLargeTwoSmall(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,
@@ -259,7 +259,7 @@ def make_first_image(item: MakeFirstImageModel):
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
-        bg = Layout1大N行2列(
+        bg = LayoutOneLargeTwoSmall(
             image_list=item.select_image_list,
             bg_color=bg_color,
             xq_width=xq_width,

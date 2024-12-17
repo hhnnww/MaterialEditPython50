@@ -1,6 +1,6 @@
 from PIL import Image
 
-from .fun_单点删除边框 import DelPILBorder
+from MaterialEdit.fun_图片编辑.fun_删除图片边框.fun_单点删除边框 import DelPILBorder
 
 
 def fun_删除图片边框(im: Image.Image) -> Image.Image:

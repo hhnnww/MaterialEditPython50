@@ -9,7 +9,7 @@ def fun_画一个圆形横框(
     height: int,
     fill_color: _COLOR = (255, 255, 255, 255),
     background_color: _COLOR = (255, 255, 255, 0),
-):
+) -> Image.Image:
     bg = Image.new("RGBA", (width, height), background_color)
     circle = fun_画一个圆(
         width=height,
