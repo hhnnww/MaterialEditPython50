@@ -36,6 +36,7 @@ from MaterialEdit.fun_文件夹操作.fun_子目录图片重命名 import fun_�
 from MaterialEdit.fun_文件夹操作.fun_子目录拼接图片 import fun_子目录拼接图片
 from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
 from MaterialEdit.fun_文件夹操作.fun_打开没有预览图的AI文件 import OpenNoPngAIFile
+from MaterialEdit.fun_文件夹操作.fun_打开没有预览图的PSD文件 import OpenNoImagePsdFiles
 from MaterialEdit.fun_文件夹操作.fun_按数字分类 import fun_按数字分类
 from MaterialEdit.fun_文件夹操作.fun_文件夹内文件夹重命名 import (
     fun_文件夹内文件夹重命名,
@@ -483,6 +484,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "打开没有预览图的AI文件":
             obj = OpenNoPngAIFile(in_path=material_structure.material_path)
+            obj.main()
+
+        case "打开没有预览图的PSD文件":
+            obj = OpenNoImagePsdFiles(material_path=material_structure.material_path)
             obj.main()
 
     fun_通知(
