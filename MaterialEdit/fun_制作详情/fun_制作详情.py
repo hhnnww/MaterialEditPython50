@@ -48,7 +48,6 @@ def fun_制作详情(
         )
         comb_pil_list.append(im)
 
-    # TODO: 单行间距
     spacing = 0
 
     if contains_info:

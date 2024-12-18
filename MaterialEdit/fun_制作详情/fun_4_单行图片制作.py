@@ -25,9 +25,7 @@ def fun_单行图片制作(
     image_used_width = math.ceil(xq_width - ((len(image_list) - 1) * spacing))
     # image_used_width = xq_width
 
-    single_col_width = math.ceil(
-        image_used_width / sum([image.ratio for image in image_list])
-    )
+    single_col_width = math.ceil(image_used_width / sum([image.ratio for image in image_list]))
 
     large_pic = False
     for image in image_list:
@@ -50,7 +48,6 @@ def fun_单行图片制作(
         if im.mode != "RGBA":
             im = im.convert("RGBA")
 
-        # TODO:背景添加黑色
         # bg = Image.new("RGBA", im.size, (0, 0, 0, 255))
         # bg.paste(im, (0, 0), im)
         # im = bg
