@@ -42,8 +42,8 @@ class ClassMakeXQ2:
         self.has_water = has_water
         self.oneline_ratio = oneline_ratio
 
-        self.image_list = self.__fun_获取仅使用的图片(image_list=image_list)
-        self.image_list = self.__fun_排序图片(image_list=self.image_list)
+        self.image_list_path = self.__fun_获取仅使用的图片(image_list=image_list)
+        self.image_list = self.__fun_排序图片(image_list=self.image_list_path)
 
     xq_width = 2000
     space = 8
@@ -51,6 +51,12 @@ class ClassMakeXQ2:
 
     @cached_property
     def __fun_所有源文件(self) -> list[Path]:
+        """
+         _summary_
+
+        Returns:
+            _type_: _description_
+        """
         return fun_遍历指定文件(
             folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX
         )
