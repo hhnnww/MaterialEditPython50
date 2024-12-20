@@ -16,6 +16,8 @@ from MaterialEdit.type import ALIGNITEM
 
 
 class MakeProductImageRequestModel(BaseModel):
+    """制作详情图片请求模型."""
+
     shop_name: str
     material_path: str
     preview_image_path: str
@@ -45,14 +47,16 @@ class MakeProductImageRequestModel(BaseModel):
     clear_upload_path: bool = True
 
 
-def fun_make_material_product_image(item: MakeProductImageRequestModel):
+def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
+    """制作详情函数."""
     if item.clear_upload_path:
         fun_清空桌面上传文件夹图片("xq")
 
     num = 1
     # 制作数据图
     data_header = fun_制作详情栏目标题(
-        title="素材信息", desc="Material Info " + item.shop_name
+        title="素材信息",
+        desc="Material Info " + item.shop_name,
     )
 
     data_list = [
@@ -88,14 +92,17 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
         image_list = [
             obj
             for obj in fun_遍历图片(
-                folder=item.effect_image_path, used_image_number=0, image_sort=True
+                folder=item.effect_image_path,
+                used_image_number=0,
+                image_sort=True,
             )
             if "_thumb" not in Path(obj).stem
         ]
 
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
-                title="素材效果图", desc="* 此图片素材内不提供"
+                title="素材效果图",
+                desc="* 此图片素材内不提供",
             )
             effect_image = fun_制作详情(
                 image_path_list=image_list,
@@ -134,7 +141,8 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel):
         ]
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
-                title="素材预览图", desc="* 预览图与源文件对应"
+                title="素材预览图",
+                desc="* 预览图与源文件对应",
             )
 
             preview_image = fun_制作详情(

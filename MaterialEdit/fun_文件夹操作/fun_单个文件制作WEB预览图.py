@@ -3,10 +3,8 @@
 from pathlib import Path
 
 from PIL import Image
-from tomorrow3 import threads
 
 
-@threads(5)
 def image_make_web_thumbnail(image_path: Path) -> Path:
     """单个图片制作WEB预览图."""
     if "_thumb" in image_path.stem:

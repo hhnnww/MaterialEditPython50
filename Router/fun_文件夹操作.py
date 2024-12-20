@@ -64,12 +64,7 @@ def fun_通知(msg: str) -> None:
 
 
 class RequestMaterialPathActionModel(BaseModel):
-    """文件夹操作请求模型
-
-    Args:
-        BaseModel: _description_
-
-    """
+    """素材文件夹操作模型."""
 
     action: str
     shop_name: str
@@ -79,16 +74,8 @@ class RequestMaterialPathActionModel(BaseModel):
     path_start_stem: str
 
 
-def fun_material_path_action(item: RequestMaterialPathActionModel):
-    """文件夹操作函数
-
-    Args:
-        item: _description_
-
-    Returns:
-        _description_
-
-    """
+def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, str]:
+    """操作素材文件夹函数."""
     pprint(item)
 
     material_structure = fun_文件夹初始化(root_path=item.root_path)

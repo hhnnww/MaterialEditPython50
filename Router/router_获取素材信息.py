@@ -8,15 +8,20 @@ router = APIRouter(prefix="/GetMaterialInfo")
 
 
 class GetMaterialInfoModel(BaseModel):
+    """获取素材信息模型."""
+
     root_path: str
     preview_num: int
     preview_sort: bool
     shop_name: str
 
 
-@router.post("", response_model=MaterialInfo)
-def get_material_info(item: GetMaterialInfoModel):
-    fun_文件夹初始化(item.root_path)
+@router.post(path="")
+def get_material_info(item: GetMaterialInfoModel) -> MaterialInfo:
+    """获取素材信息路由."""
+    fun_文件夹初始化(root_path=item.root_path)
     return fun_获取素材信息(
-        item.root_path, used_image=item.preview_num, image_sort=item.preview_sort
+        root_path=item.root_path,
+        used_image=item.preview_num,
+        image_sort=item.preview_sort,
     )

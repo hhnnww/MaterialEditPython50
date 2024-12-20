@@ -1,3 +1,5 @@
+"""首图布局 1个大的竖图 旁边2排小的竖图."""
+
 import math
 from functools import cached_property
 from itertools import cycle
@@ -16,8 +18,7 @@ class Layout1大竖2排小竖(LayoutInit):
         im = self._pil_list[0]
         im_width = self.xq_height * (im.width / im.height)
 
-        if im_width > self.xq_width * 0.55:
-            im_width = self.xq_width * 0.55
+        im_width = min(im_width, self.xq_width * 0.55)
 
         return math.ceil(im_width)
 
@@ -33,39 +34,29 @@ class Layout1大竖2排小竖(LayoutInit):
 
     @cached_property
     def fun_小图高度(self) -> int:
+        """计算小图的高度."""
         return math.ceil((self.xq_height - (self.spacing * 2)) / 3)
 
     @property
     def fun_左边的大图(self) -> Image.Image:
+        """构建左边的大图."""
         im = self._pil_list[0]
-        # im = im.resize(
-        #     (self.fun_大图宽度, self.xq_height),
-        #     resample=Image.Resampling.LANCZOS,
-        # )
-        im = fun_图片裁剪(im, self.fun_大图宽度, self.xq_height, "center")
-
-        return im
+        return fun_图片裁剪(im, self.fun_大图宽度, self.xq_height, "center")
 
     def main(self) -> Image.Image:
+        """开始制作图片."""
         line_list = []
         right_im_list = []
 
-        ava_ratio = sum([im.width / im.height for im in self._pil_list[1:]]) / len(
-            self._pil_list[1:]
-        )
-        small_height = math.ceil(self.fun_小图宽度 / ava_ratio)
-
         for im in cycle(self._pil_list[1:]):
-            # im = im.resize(
-            #     (self.fun_小图宽度, small_height),
-            #     resample=Image.Resampling.LANCZOS,
-            # )
-            print(self.fun_小图宽度, self.fun_小图高度)
-            im = fun_图片裁剪(
-                im, width=self.fun_小图宽度, height=self.fun_小图高度, position="center"
+            in_im = fun_图片裁剪(
+                im,
+                width=self.fun_小图宽度,
+                height=self.fun_小图高度,
+                position="center",
             )
 
-            line_list.append(im.copy())
+            line_list.append(in_im.copy())
 
             if self._fun_计算单行高度(im_list=line_list) > self.xq_height:
                 line_im = fun_图片竖向拼接(
@@ -79,7 +70,8 @@ class Layout1大竖2排小竖(LayoutInit):
 
                 line_list = []
 
-            if len(right_im_list) == 2:
+            right_col = 2
+            if len(right_im_list) == right_col:
                 break
 
         right_im = fun_图片横向拼接(
@@ -96,6 +88,4 @@ class Layout1大竖2排小竖(LayoutInit):
             background_color=(255, 255, 255, 255),
         )
 
-        bg = bg.crop((0, 0, self.xq_width, self.xq_height))
-
-        return bg
+        return bg.crop((0, 0, self.xq_width, self.xq_height))

@@ -5,7 +5,7 @@ from pathlib import Path
 from ..fun_创建文件夹结构 import fun_创建文件夹结构
 from ..fun_遍历图片 import fun_遍历图片
 from ..type import MaterialInfo
-from .fun_获取所有尺寸 import fun_获取所有尺寸
+from .get_all_material_file_size import get_all_material_file_size
 from .material_file_count import mateiral_file_count
 from .material_file_list import material_file_list
 
@@ -45,7 +45,7 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
 
     all_file = material_file_list(material_path=root_path_structure.material_path)
 
-    material_source_file_size = fun_获取所有尺寸(all_file=all_file)
+    material_source_file_size = get_all_material_file_size(all_file=all_file)
 
     material_count_num_obj = mateiral_file_count(file_list=all_file)
     material_count_num_obj.sort(key=lambda obj: obj[0], reverse=True)

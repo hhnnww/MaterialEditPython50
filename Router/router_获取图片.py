@@ -16,17 +16,6 @@ router = APIRouter(prefix="/blob")
 
 @router.get("")
 def get_img(img: str):
-    """获取缩小后的图像
-
-    Args:
-        img (str): 图像地址
-
-    Returns:
-        Response | None: 返回图片内容
-        如果出错
-        返回None
-
-    """
     bytes_io = io.BytesIO()
     new_path = image_make_web_thumbnail(image_path=Path(img))
 
