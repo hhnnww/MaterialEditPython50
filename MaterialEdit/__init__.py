@@ -21,34 +21,34 @@ from .fun_图片编辑 import ImageEdit
 from .fun_桌面文件夹操作 import fun_保存图片, fun_清空桌面上传文件夹图片
 from .fun_素材文件夹合并 import fun_素材文件夹合并
 from .fun_获取素材信息.fun_获取素材信息 import fun_获取素材信息
-from .fun_获取路径数字 import fun_获取路径数字
 from .fun_遍历图片 import fun_遍历图片
+from .get_stem_num import get_path_num
 from .type import MaterialInfo
 
 __all__ = [
-    "fun_裁剪图片",
-    "fun_制作数据图",
-    "fun_制作详情栏目标题",
-    "fun_制作详情",
-    "fun_创建文件夹结构",
+    "AIFile",
+    "ImageEdit",
     "LayoutAdaptiveCrop",
-    "layout_s1_n",
+    "MaterialInfo",
+    "PPTEdit",
+    "PSFile",
+    "fun_T500首图",
     "fun_layout_1_2_3",
     "fun_layout_1_2_3_3",
     "fun_layout_1_3",
     "fun_layout_1_n",
     "fun_layout_固定裁剪2",
-    "fun_T500首图",
-    "fun_黑鲸首图",
-    "AIFile",
-    "PPTEdit",
-    "PSFile",
-    "MaterialInfo",
-    "fun_遍历图片",
-    "fun_获取路径数字",
-    "fun_获取素材信息",
-    "fun_素材文件夹合并",
-    "fun_清空桌面上传文件夹图片",
     "fun_保存图片",
-    "ImageEdit",
+    "fun_创建文件夹结构",
+    "fun_制作数据图",
+    "fun_制作详情",
+    "fun_制作详情栏目标题",
+    "fun_清空桌面上传文件夹图片",
+    "fun_素材文件夹合并",
+    "fun_获取素材信息",
+    "fun_裁剪图片",
+    "fun_遍历图片",
+    "fun_黑鲸首图",
+    "get_path_num",
+    "layout_s1_n",
 ]

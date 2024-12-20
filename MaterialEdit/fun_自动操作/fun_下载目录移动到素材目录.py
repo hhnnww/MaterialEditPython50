@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ..fun_获取路径数字 import fun_获取路径数字
+from ..get_stem_num import get_path_num
 
 
 class DownPathMoveToMaterialPath:
@@ -9,25 +9,17 @@ class DownPathMoveToMaterialPath:
         self.material_parent_path = Path(material_parent_path)
 
     def fun_获取最大目录数字(self) -> int:
-        """
-        自动获取素材文件夹的最大文件夹数字
-        """
-        all_path = [
-            in_path
-            for in_path in self.material_parent_path.iterdir()
-            if in_path.is_dir()
-        ]
+        """自动获取素材文件夹的最大文件夹数字"""
+        all_path = [in_path for in_path in self.material_parent_path.iterdir() if in_path.is_dir()]
 
         if len(all_path) > 0:
-            all_path.sort(key=lambda k: fun_获取路径数字(k.stem), reverse=True)
+            all_path.sort(key=lambda k: get_path_num(k.stem), reverse=True)
             return int(all_path[0].stem) + 1
 
         return 0
 
     def fun_构建素材文件夹(self, in_num: int) -> Path:
-        """
-        给出数字,转换为str,然后构建成path
-        """
+        """给出数字,转换为str,然后构建成path"""
         in_stem = str(in_num).rjust(4, "0")
         return self.material_parent_path / in_stem
 

@@ -5,13 +5,14 @@ from PIL import Image
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
 def fun_子目录拼接图片(material_path: str):
     def __内目录拼接图片(in_path: Path):
-        all_pic = fun_遍历指定文件(
-            folder=in_path.as_posix(), suffix=[".jpeg", ".png", ".jpg"]
+        all_pic = rglob(
+            folder=in_path.as_posix(),
+            suffix=[".jpeg", ".png", ".jpg"],
         )
 
         all_pil = []

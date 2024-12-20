@@ -69,14 +69,10 @@ def fun_素材图水印(material_path: str, shop_name: str):
     water_pil = fun_获取单个水印(
         600, (water_pix_color, water_pix_color, water_pix_color, water_pix_color)
     )
-    water_pil = fun_图片竖向拼接(
-        [water_pil, shop_name_pil], spacing, "start", (255, 255, 255, 0)
-    )
+    water_pil = fun_图片竖向拼接([water_pil, shop_name_pil], spacing, "start", (255, 255, 255, 0))
     water_pil.thumbnail((999999, erweima_pil.height), resample=Image.Resampling.LANCZOS)
 
-    water_pil = fun_图片横向拼接(
-        [erweima_pil, water_pil], spacing, "start", (255, 255, 255, 0)
-    )
+    water_pil = fun_图片横向拼接([erweima_pil, water_pil], spacing, "start", (255, 255, 255, 0))
 
     all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)
 
@@ -87,12 +83,9 @@ def fun_素材图水印(material_path: str, shop_name: str):
         if shop_name in in_file.stem:
             try:
                 im = Image.open(in_file.as_posix())
-
                 im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
                 try:
-                    im.paste(
-                        water_pil, (20, im.height - water_pil.height - 20), water_pil
-                    )
+                    im.paste(water_pil, (20, im.height - water_pil.height - 20), water_pil)
                 except OSError:
                     print(in_file.as_posix())
                 else:

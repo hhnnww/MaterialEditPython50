@@ -4,6 +4,7 @@ from typing import List, Optional
 from uuid import uuid1
 
 from colorama import Back, Fore, Style
+from passlib.context import CryptContext
 from win32com.client import CDispatch, Dispatch
 
 # import face_recognition
@@ -44,6 +45,7 @@ class PSFile:
 
         self.ad_layer_name = "隐藏 或 删除此图层即可开始您的编辑."
         self.ad_pic_list = ad_pic_list
+        self.pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
         fun_清理注释(self.app)
         print(f"\n\n处理PSD:{self.ps_path}")
@@ -219,7 +221,7 @@ class PSFile:
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
 
         # 插入广告
-        fun_插入广告(self.app, self.doc, self.tb_name, self.ad_layer_name)
+        fun_插入广告(self.app, self.doc, self.tb_name, self.pwd.hash("1221"))
 
         print(f"保存：\t{save_path.as_posix()}")
         self.doc.Save()
@@ -266,7 +268,7 @@ class PSFile:
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
 
         # 插入广告
-        fun_插入广告(self.app, self.doc, self.tb_name, self.ad_layer_name)
+        fun_插入广告(self.app, self.doc, self.tb_name, self.pwd.hash(secret="1221"))
 
         print(f"保存：\t{save_path.as_posix()}")
         self.doc.Save()

@@ -41,16 +41,12 @@ def fun_采集单页素材(single_url: str, cookie: str, material_site: str):
         case "千图":
             ma_list = scrapy_千图(single_url=single_url, cookie=cookie)
 
-    for obj in ma_list:
-        yield obj
+    yield from ma_list
 
 
 def fun_采集(base_url: str, num: int, cookie: str, material_site: str):
     if num <= 1:
-        for obj in fun_采集单页素材(
-            single_url=base_url, cookie=cookie, material_site=material_site
-        ):
-            yield obj
+        yield from fun_采集单页素材(single_url=base_url, cookie=cookie, material_site=material_site)
 
     else:
         for page_url in tqdm(
@@ -58,7 +54,6 @@ def fun_采集(base_url: str, num: int, cookie: str, material_site: str):
             ncols=100,
             desc="采集页面",
         ):
-            for obj in fun_采集单页素材(
+            yield from fun_采集单页素材(
                 single_url=page_url, cookie=cookie, material_site=material_site
-            ):
-                yield obj
+            )

@@ -4,7 +4,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
-    fun_单个文件制作WEB预览图,
+    image_make_web_thumbnail,
 )
 
 from ..setting import IMAGE_SUFFIX
@@ -16,11 +16,11 @@ class ImageCopyToPreview:
         self.preview_path_obj = Path(preview_path)
 
     def all_image(self) -> list[Path]:
-        """
-        遍历所有图片
+        """遍历所有图片
 
         Returns:
             list[Path]: _description_
+
         """
         pic_list = []
         for in_file in self.folder_path_obj.rglob("*"):
@@ -36,11 +36,13 @@ class ImageCopyToPreview:
 
         Returns:
             Path: 预览图文件夹内的图片路径
+
         """
         return Path(
             image_path.as_posix().replace(
-                self.folder_path_obj.as_posix(), self.preview_path_obj.as_posix()
-            )
+                self.folder_path_obj.as_posix(),
+                self.preview_path_obj.as_posix(),
+            ),
         )
 
     def main(self):
@@ -67,4 +69,4 @@ class ImageCopyToPreview:
             print(f"复制到预览图:{image_file}\t->\t{preview_file}")
 
             shutil.copy(image_file, preview_file)
-            fun_单个文件制作WEB预览图(image_path=preview_file)
+            image_make_web_thumbnail(image_path=preview_file)

@@ -1,3 +1,5 @@
+"""浏览器插件工具"""
+
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -11,21 +13,25 @@ router = APIRouter(prefix="/chrome_plugin")
 
 
 class XQReqModel(BaseModel):
+    """请求模型"""
+
     html: str
-    shop_name: str
 
 
 class XQResModel(BaseModel):
+    """返回模型"""
+
     xq_str: str
 
 
 @router.post("/make_xq_str", response_model=XQResModel)
 def fun_make_xq_str(item: XQReqModel) -> XQResModel:
+    """制作淘宝详情"""
     html_file = Path(__file__).parent / "xq.html"
     with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
         html.write(item.html)
 
-    xq = MakeTaobaoXQStr(html=item.html, shop_name=item.shop_name)
+    xq = MakeTaobaoXQStr(html=item.html)
     xq.main()
 
     return XQResModel(xq_str="success")
@@ -35,6 +41,8 @@ def fun_make_xq_str(item: XQReqModel) -> XQResModel:
 
 
 class ReqModel(BaseModel):
+    """采集素材请求模型"""
+
     shop_name: str
     material_site: str
     url: str
@@ -42,11 +50,14 @@ class ReqModel(BaseModel):
 
 
 class ResModel(BaseModel):
+    """采集素材返回模型"""
+
     msg: str
 
 
 @router.post("/scrapy_material")
 def fun_scrapy_material(item: ReqModel) -> ResModel:
+    """采集素材函数"""
     # html_file = Path(__file__).parent / "text.html"
     # with open(html_file.as_posix(), encoding="utf-8", mode="w") as html:
     #     html.write(item.html)
@@ -65,12 +76,15 @@ def fun_scrapy_material(item: ReqModel) -> ResModel:
 
 
 class ShopNameModel(BaseModel):
+    """获取店铺名列表和素材网站列表请求模型"""
+
     shop_name_list: list[str]
     material_site_list: list[str]
 
 
 @router.get("/get_shop_name_material_site", response_model=ShopNameModel)
 def fun_get_shop_name_material_site() -> ShopNameModel:
+    """获取店铺名列表和素材网站的函数"""
     return ShopNameModel(
         shop_name_list=["小夕素材", "饭桶设计", "泡泡素材", "松子素材"],
         material_site_list=[

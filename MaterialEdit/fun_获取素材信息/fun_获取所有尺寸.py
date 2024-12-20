@@ -1,8 +1,12 @@
+"""获取素材文件夹所有素材文件的大小"""
+
 from pathlib import Path
+from typing import Union
 
 
 def fun_获取所有尺寸(all_file: list[Path]):
-    size = sum([obj.stat().st_size for obj in all_file])
+    """获取素材所有尺寸"""
+    size: Union[int, float] = sum([obj.stat().st_size for obj in all_file])
     size_level = ["bytes", "kb", "mb", "gb"]
 
     num = 0

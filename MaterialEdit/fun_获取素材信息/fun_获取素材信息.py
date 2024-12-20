@@ -1,4 +1,4 @@
-"""获取素材信息"""
+"""获取素材信息."""
 
 from pathlib import Path
 
@@ -6,16 +6,12 @@ from ..fun_创建文件夹结构 import fun_创建文件夹结构
 from ..fun_遍历图片 import fun_遍历图片
 from ..type import MaterialInfo
 from .fun_获取所有尺寸 import fun_获取所有尺寸
-from .fun_获取所有文件列表 import fun_获取所有文件列表
-from .fun_获取源文件数量 import fun_获取源文件数量
+from .material_file_count import mateiral_file_count
+from .material_file_list import material_file_list
 
 
 def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) -> MaterialInfo:
-    """获取素材文件夹信息
-
-    Returns:
-        _type_: _description_
-    """
+    """获取素材文件夹信息."""
     root_path_structure = fun_创建文件夹结构(root_path=root_path)
 
     material_id = Path(root_path).stem
@@ -25,7 +21,9 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
     preview_image_list = [
         {"path": obj}
         for obj in fun_遍历图片(
-            folder=preview_image_path, image_sort=image_sort, used_image_number=0
+            folder=preview_image_path,
+            image_sort=image_sort,
+            used_image_number=0,
         )
         if "_thumb" not in Path(obj).stem
     ]
@@ -38,16 +36,18 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
     effect_image_list = [
         dict(path=obj)
         for obj in fun_遍历图片(
-            folder=effect_image_path, image_sort=image_sort, used_image_number=0
+            folder=effect_image_path,
+            image_sort=image_sort,
+            used_image_number=0,
         )
         if "_thumb" not in Path(obj).stem
     ]
 
-    all_file = fun_获取所有文件列表(material_path=root_path_structure.material_path)
+    all_file = material_file_list(material_path=root_path_structure.material_path)
 
     material_source_file_size = fun_获取所有尺寸(all_file=all_file)
 
-    material_count_num_obj = fun_获取源文件数量(file_list=all_file)
+    material_count_num_obj = mateiral_file_count(file_list=all_file)
     material_count_num_obj.sort(key=lambda obj: obj[0], reverse=True)
 
     try:
@@ -57,9 +57,7 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
         material_source_file_count = 0
         material_source_format = "none"
 
-    material_source_format_number = (
-        f"{material_source_file_count}个 {material_source_format} 文件"
-    )
+    material_source_format_number = f"{material_source_file_count}个 {material_source_format} 文件"
 
     material_source_format_title = ""
     if len(material_count_num_obj) > 0:

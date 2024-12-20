@@ -1,16 +1,20 @@
+"""打开享设计素材所有子文件夹."""
+
 import os
 from pathlib import Path
 
 
-def fun_打开所有子文件夹(material_path: str):
+def open_sub_path(material_path: str) -> None:
+    """打开享设计类的素材所有子文件夹."""
     material_path_obj = Path(material_path)
 
     for in_path in material_path_obj.iterdir():
         if in_path.is_dir():
-            os.startfile(in_path.absolute().as_posix())
+            os.startfile(filepath=in_path.absolute().as_posix())
 
 
-def fun_是否包含子文件夹(item_path: Path):
+def has_sub_path(item_path: Path) -> bool:
+    """判断是否包含子文件夹."""
     for in_path in item_path.iterdir():
         if in_path.is_dir():
             return True

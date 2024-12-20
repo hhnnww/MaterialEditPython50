@@ -96,10 +96,13 @@ class ClassOneImage:
 
     @property
     def __fun_图片尺寸(self) -> Image.Image:
+        text = " "
         if self.fun_获取对应源文件.suffix.lower() in [".psd", ".psb", ".jpg", ".png"]:
             text = f"{self.__fun_原始图片.width}×{self.__fun_原始图片.height} (px)"
-        else:
-            text = " "
+        elif self.fun_获取对应源文件.suffix.lower() in [".ai", ".eps"]:
+            text = "AI矢量设计素材"
+        elif self.fun_获取对应源文件.suffix.lower() in [".pptx", ".ppt"]:
+            text = "PPT幻灯片素材"
 
         return MakeIbmFont(
             text=text.upper(),
@@ -114,7 +117,7 @@ class ClassOneImage:
         ori_im = self.__fun_原始图片
         height = math.ceil(self.image_width / (ori_im.width / ori_im.height))
 
-        max_height = 5000000
+        max_height = 5000
         if height > max_height:
             small_im = fun_图片裁剪(
                 im=ori_im, width=self.image_width, height=max_height, position="start"

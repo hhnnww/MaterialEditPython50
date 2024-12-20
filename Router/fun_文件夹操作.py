@@ -1,3 +1,5 @@
+"""素材文件夹操作"""
+
 import os
 import shutil
 from pathlib import Path
@@ -34,7 +36,7 @@ from MaterialEdit.fun_文件夹操作.fun_图片添加白色背景 import fun_�
 from MaterialEdit.fun_文件夹操作.fun_子目录psd重命名 import fun_子目录PSD重命名
 from MaterialEdit.fun_文件夹操作.fun_子目录图片重命名 import fun_子目录图片重命名
 from MaterialEdit.fun_文件夹操作.fun_子目录拼接图片 import fun_子目录拼接图片
-from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import fun_打开所有子文件夹
+from MaterialEdit.fun_文件夹操作.fun_打开所有子文件夹 import open_sub_path
 from MaterialEdit.fun_文件夹操作.fun_打开没有预览图的AI文件 import OpenNoPngAIFile
 from MaterialEdit.fun_文件夹操作.fun_打开没有预览图的PSD文件 import OpenNoImagePsdFiles
 from MaterialEdit.fun_文件夹操作.fun_按数字分类 import fun_按数字分类
@@ -48,19 +50,27 @@ from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目�
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
-from MaterialEdit.fun_文件夹操作.fun_解压ZIP import fun_解压ZIP
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_文件夹操作.fun_解压ZIP import fun_unzip_file
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
 
 toaster = ToastNotifier()
 
 
-def fun_通知(msg: str):
+def fun_通知(msg: str) -> None:
+    """发送windows通知"""
     toaster.show_toast(title="素材编辑程序", msg=msg, threaded=True, duration=2)
 
 
 class RequestMaterialPathActionModel(BaseModel):
+    """文件夹操作请求模型
+
+    Args:
+        BaseModel: _description_
+
+    """
+
     action: str
     shop_name: str
     root_path: str
@@ -70,13 +80,22 @@ class RequestMaterialPathActionModel(BaseModel):
 
 
 def fun_material_path_action(item: RequestMaterialPathActionModel):
+    """文件夹操作函数
+
+    Args:
+        item: _description_
+
+    Returns:
+        _description_
+
+    """
     pprint(item)
 
     material_structure = fun_文件夹初始化(root_path=item.root_path)
 
     match item.action:
         case "打开所有子文件夹":
-            fun_打开所有子文件夹(material_path=material_structure.material_path)
+            open_sub_path(material_path=material_structure.material_path)
 
         case "打开素材文件夹":
             os.startfile(material_structure.material_path)
@@ -99,13 +118,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "解压ZIP":
             for in_file in tqdm(
-                fun_遍历指定文件(
-                    folder=material_structure.material_path, suffix=[".zip"]
-                ),
+                rglob(folder=material_structure.material_path, suffix=[".zip"]),
                 ncols=100,
                 desc="解压ZIP\t",
             ):
-                fun_解压ZIP(file_path=in_file)
+                fun_unzip_file(file_path=in_file)
 
         case "移动到根目录":
             fun_移动到根目录(folder=material_structure.material_path)
@@ -140,9 +157,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             )
 
         case "素材图水印":
-            fun_素材图水印(
-                material_path=material_structure.material_path, shop_name=item.shop_name
-            )
+            fun_素材图水印(material_path=material_structure.material_path, shop_name=item.shop_name)
 
         case "按数字分类":
             fun_按数字分类(material_path=material_structure.material_path)
@@ -150,9 +165,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "AI-导出图片":
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".ai", ".eps"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".ai", ".eps"]))
 
             pythoncom.CoInitialize()  # type: ignore
             app = Dispatch("Illustrator.Application")
@@ -160,15 +173,15 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 pic_state = False
                 for suffix in [".jpg", ".jpeg", ".png"]:
                     png_path = in_file.with_suffix(suffix)
-                    png_path: Path
                     if png_path.exists() is True:
                         pic_state = True
 
                 if pic_state is False:
                     all_png = [
                         in_png.stem
-                        for in_png in fun_遍历指定文件(
-                            material_structure.material_path, [".png", ".jpeg", ".jpg"]
+                        for in_png in rglob(
+                            material_structure.material_path,
+                            [".png", ".jpeg", ".jpg"],
                         )
                     ]
 
@@ -177,9 +190,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                             pic_state = True
 
                 if pic_state is False:
-                    AIFile(
-                        in_file.as_posix(), app, shop_name=item.shop_name
-                    ).fun_导出PNG()
+                    AIFile(in_file.as_posix(), app, shop_name=item.shop_name).fun_导出PNG()
 
             # app.Quit()
 
@@ -192,9 +203,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
         case "PSD-删除广告-导出图片-添加广告":
             # 获取所有PSD
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".psd", ".psb"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
             # 清空OUT_PATH
             for in_file in OUT_PATH.iterdir():
@@ -232,11 +241,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
         case "PSD-导出图片-添加广告":
             # 获取所有PSD
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".psd", ".psb"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
             pythoncom.CoInitialize()  # type: ignore
+
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
                 pic_exists = False
                 for pic_suffix in [".jpg", ".png"]:
@@ -262,9 +270,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
         case "PSD-图层改名-导出图片-添加广告":
             # 获取所有PSD
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".psd", ".psb"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
             pythoncom.CoInitialize()  # type: ignore
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
@@ -287,11 +293,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
         case "PSD-导出图片":
             # 获取所有PSD
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".psd", ".psb"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
             pythoncom.CoInitialize()  # type: ignore
+
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
@@ -304,8 +309,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                             tb_name=item.shop_name,
                             ad_pic_list=[],
                         ).run_导出图片()
-                    except:  # noqa: E722
-                        print("错误的PSD文件，跳过")
+                    except Exception as e:
+                        print(f"错误的PSD文件{e}")
 
             # app = Dispatch("photoshop.application")
             # app.Quit()
@@ -317,17 +322,13 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "PPT-导出图片":
             all_file = []
-            all_file.extend(
-                fun_遍历指定文件(material_structure.material_path, [".ppt", ".pptx"])
-            )
+            all_file.extend(rglob(material_structure.material_path, [".ppt", ".pptx"]))
 
             for in_file in tqdm(all_file, ncols=100, desc="PPT导出图片"):
                 print(in_file)
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-                    PPT导出图片(
-                        ppt_path=in_file, effect_path=material_structure.effect_path
-                    ).main()
+                    PPT导出图片(ppt_path=in_file).main()
 
         case "PPT-删除备注":
             fun_处理所有PPT(material_path=material_structure.material_path)
@@ -348,7 +349,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "删除ZIP文件":
             for in_file in tqdm(
-                fun_遍历指定文件(material_structure.material_path, [".zip", ".rar"]),
+                rglob(material_structure.material_path, [".zip", ".rar"]),
                 ncols=100,
                 desc="删除ZIP文件",
             ):
@@ -363,12 +364,14 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "享设计制作预览图":
             fun_享设计制作预览图(
-                material_path=material_structure.material_path, shop_name=item.shop_name
+                material_path=material_structure.material_path,
+                shop_name=item.shop_name,
             )
 
         case "打开没有预览图的PPT":
-            all_file = fun_遍历指定文件(
-                folder=material_structure.material_path, suffix=[".ppt", ".pptx"]
+            all_file = rglob(
+                folder=material_structure.material_path,
+                suffix=[".ppt", ".pptx"],
             )
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
@@ -376,9 +379,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                     os.startfile(in_file.as_posix())
 
         case "打开没有预览图的SKP":
-            all_file = fun_遍历指定文件(
-                folder=material_structure.material_path, suffix=[".skp"]
-            )
+            all_file = rglob(folder=material_structure.material_path, suffix=[".skp"])
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is not True:
@@ -414,7 +415,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
 
         case "目录内放置广告":
             fun_目录内放置广告(
-                material_path=material_structure.material_path, shop_name=item.shop_name
+                material_path=material_structure.material_path,
+                shop_name=item.shop_name,
             )
 
         case "效果图蜘蛛水印":
@@ -453,8 +455,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 im.save(in_file)
 
         case "效果图webp转png":
-            for in_file in fun_遍历指定文件(
-                folder=material_structure.effect_path, suffix=[".webp"]
+            for in_file in rglob(
+                folder=material_structure.effect_path,
+                suffix=[".webp"],
             ):
                 print(in_file)
                 im = Image.open(in_file.as_posix())
@@ -465,8 +468,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
                 in_file.unlink()
 
         case "AI批量导出图片重命名":
-            for in_file in fun_遍历指定文件(
-                folder=material_structure.material_path, suffix=[".ai"]
+            for in_file in rglob(
+                folder=material_structure.material_path,
+                suffix=[".ai"],
             ):
                 obj = AI_批量导出图片重命名(ai_file=in_file)
                 obj.fun_jpg_重命名()
@@ -483,15 +487,13 @@ def fun_material_path_action(item: RequestMaterialPathActionModel):
             sd_rename.main()
 
         case "打开没有预览图的AI文件":
-            obj = OpenNoPngAIFile(in_path=material_structure.material_path)
-            obj.main()
+            pythoncom.CoInitialize()  # type: ignore
+            OpenNoPngAIFile(in_path=material_structure.material_path).main()
 
         case "打开没有预览图的PSD文件":
-            obj = OpenNoImagePsdFiles(material_path=material_structure.material_path)
-            obj.main()
+            pythoncom.CoInitialize()  # type: ignore
+            OpenNoImagePsdFiles(material_path=material_structure.material_path).main()
 
-    fun_通知(
-        msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
-    )
+    fun_通知(msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。")
 
     return dict(msg="ok")

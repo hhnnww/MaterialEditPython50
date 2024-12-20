@@ -3,9 +3,9 @@ from pathlib import Path
 import pyautogui
 import pyperclip
 
-from ..fun_获取路径数字 import fun_获取路径数字
-from .fun_窗口操作 import fun_窗口置顶, fun_获取窗口坐标
-from .fun_获取图片 import fun_获取图片
+from MaterialEdit.fun_自动操作.fun_窗口操作 import fun_窗口置顶, fun_获取窗口坐标
+from MaterialEdit.fun_自动操作.fun_获取图片 import fun_获取图片
+from MaterialEdit.get_stem_num import get_path_num
 
 pyautogui.PAUSE = 3
 
@@ -24,13 +24,12 @@ class AutoUploadProductToTaobao:
         pyperclip.copy(
             "https://item.upload.taobao.com/sell/publish.htm?catId=201160807&smartRouter=true&keyProps=%7B%7D"
             "&newRouter=1&paramCacheId=merge_router_cache_389353239_1694673279246_988&x-gpf-submit-trace-id"
-            "=213e259e16946732792022149e0968"
+            "=213e259e16946732792022149e0968",
         )
         pyautogui.hotkey("ctrl", "v")
         pyautogui.hotkey("enter")
 
         # 关闭广告
-        print("关闭广告")
         pyautogui.click(fun_获取图片("close_ad", self.path_name, self.position))
 
         # 输入标题
@@ -42,13 +41,11 @@ class AutoUploadProductToTaobao:
         pyautogui.write("2.9")
 
         # 输入数量
-        # pyautogui.click(fun_获取图片("num_input", self.path_name, self.position))
         pyautogui.hotkey("tab")
         pyautogui.hotkey("ctrl", "a")
         pyautogui.write("88888")
 
         # 商家编码
-        # pyautogui.click(fun_获取图片("ma_id_input", self.path_name, self.position))
         pyautogui.hotkey("tab")
         pyautogui.write(material_update_path.name)
 
@@ -59,7 +56,7 @@ class AutoUploadProductToTaobao:
         # 上传首图
         pyautogui.sleep(2)
         pyautogui.click(
-            fun_获取图片("first_image_button", self.path_name, self.position)
+            fun_获取图片("first_image_button", self.path_name, self.position),
         )
         pyautogui.click(fun_获取图片("update_button_i", self.path_name, self.position))
         pyautogui.click(fun_获取图片("update_button_2", self.path_name, self.position))
@@ -85,7 +82,7 @@ class AutoUploadProductToTaobao:
 
         # 手机使用旧版
         pyautogui.click(
-            fun_获取图片("pro_use_text_mobil", self.path_name, self.position)
+            fun_获取图片("pro_use_text_mobil", self.path_name, self.position),
         )
 
         # 会员免费
@@ -114,7 +111,7 @@ class AutoUploadProductToTaobao:
         pyautogui.sleep(len(img_list))
         pyautogui.click(fun_获取图片("pro_search", self.path_name, self.position))
 
-        img_list.sort(key=lambda k: fun_获取路径数字(k.stem))
+        img_list.sort(key=lambda k: get_path_num(k.stem))
 
         for in_file in img_list[:20]:
             pyperclip.copy(in_file.name)
@@ -137,12 +134,12 @@ class AutoUploadProductToTaobao:
                 pyautogui.sleep(1)
                 pyautogui.click(fun_获取图片("xq", self.path_name, self.position))
                 pyautogui.click(
-                    fun_获取图片("pro_close", self.path_name, self.position)
+                    fun_获取图片("pro_close", self.path_name, self.position),
                 )
 
             pyautogui.sleep(1)
             pyautogui.click(
-                fun_获取图片("pro_img_submit", self.path_name, self.position)
+                fun_获取图片("pro_img_submit", self.path_name, self.position),
             )
 
         # 详情标题
@@ -158,9 +155,10 @@ class AutoUploadProductToTaobao:
         fun_获取图片("success", self.path_name, self.position)
         pyautogui.hotkey("ctrl", "w")
 
-    def run(self):
+    def run(self) -> None:
+        """上传产品到淘宝."""
         fun_窗口置顶("Edge")
 
         for ma_path in Path(r"C:\Users\wuweihua\Desktop\UPLOAD").iterdir():
-            if ma_path.is_dir() and fun_获取路径数字(ma_path.stem) >= self.start_stem:
+            if ma_path.is_dir() and get_path_num(ma_path.stem) >= self.start_stem:
                 self.fun_上传单个产品(ma_path)

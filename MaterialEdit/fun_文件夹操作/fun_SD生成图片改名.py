@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 from typing import Optional
 
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
 class SDPicReName:
@@ -19,7 +19,7 @@ class SDPicReName:
         raise IndexError(f"{old_stem}:\t效果图文件名没有找到店铺名")
 
     def main(self):
-        all_file = fun_遍历指定文件(folder=self.effect_path, suffix=[".png"])
+        all_file = rglob(folder=self.effect_path, suffix=[".png"])
         for in_file in all_file:
             new_stem = self.name_replace(in_file.stem)
             if new_stem:
@@ -28,13 +28,13 @@ class SDPicReName:
                     in_file.rename(new_path)
 
         # 删除素材文件夹的所有图片
-        ma_png_list = fun_遍历指定文件(folder=self.material_path, suffix=[".png"])
+        ma_png_list = rglob(folder=self.material_path, suffix=[".png"])
         for ma_png in ma_png_list:
             ma_png.unlink()
 
         # 遍历源文件和效果图
-        ma_file_list = fun_遍历指定文件(folder=self.material_path, suffix=[".skp"])
-        effect_png_file = fun_遍历指定文件(folder=self.effect_path, suffix=[".png"])
+        ma_file_list = rglob(folder=self.material_path, suffix=[".skp"])
+        effect_png_file = rglob(folder=self.effect_path, suffix=[".png"])
 
         for effect_png in effect_png_file:
             for ma_file in ma_file_list:

@@ -4,7 +4,7 @@ from PIL import Image
 from tqdm import tqdm
 
 from ..fun_图片编辑 import ImageEdit
-from .fun_遍历指定文件 import fun_遍历指定文件
+from .fun_遍历指定文件 import rglob
 
 
 class MakeCalenderPic:
@@ -17,7 +17,7 @@ class MakeCalenderPic:
     @staticmethod
     def fun_判断横竖版本(png_list: list[Image.Image]):
         average_ratio = sum([obj.width / obj.height for obj in png_list]) / len(
-            png_list
+            png_list,
         )
         if average_ratio > 0.7:
             return "h"
@@ -27,8 +27,7 @@ class MakeCalenderPic:
     @staticmethod
     def fun_获取文件夹所有图片(sub_path: Path) -> list[Image.Image]:
         png_file_list = [
-            Image.open(obj.as_posix())
-            for obj in fun_遍历指定文件(folder=sub_path.as_posix(), suffix=[".png"])
+            Image.open(obj.as_posix()) for obj in rglob(folder=sub_path.as_posix(), suffix=[".png"])
         ]
         png_file_list.sort(key=lambda k: k.width / k.height, reverse=True)
 
@@ -42,19 +41,12 @@ class MakeCalenderPic:
         for num, obj in enumerate(pil_list):
             in_list.append(obj)
 
-            if obj.width / obj.height > 2:
-                new_list.append(in_list.copy())
-                in_list = []
-
-            elif obj.width / obj.height > 0.8 and len(in_list) >= 2:
-                new_list.append(in_list.copy())
-                in_list = []
-
-            elif len(in_list) >= 3:
-                new_list.append(in_list.copy())
-                in_list = []
-
-            elif num + 1 == len(pil_list):
+            if (
+                obj.width / obj.height > 2
+                or (obj.width / obj.height > 0.8 and len(in_list) >= 2)
+                or len(in_list) >= 3
+                or num + 1 == len(pil_list)
+            ):
                 new_list.append(in_list.copy())
                 in_list = []
 
@@ -66,12 +58,13 @@ class MakeCalenderPic:
         col_width = ori_width / all_ratio
         small_height = int(ori_width / all_ratio)
 
-        pil_list = [
-            self.fun_制作单个图片(obj, col_width, small_height) for obj in pil_list
-        ]
+        pil_list = [self.fun_制作单个图片(obj, col_width, small_height) for obj in pil_list]
 
         return ImageEdit.fun_图片横向拼接(
-            pil_list, self.gutter, "center", (255, 255, 255, 255)
+            pil_list,
+            self.gutter,
+            "center",
+            (255, 255, 255, 255),
         )
 
     def fun_制作单个图片(self, obj: Image.Image, col_width: float, small_height: int):
@@ -100,7 +93,9 @@ class MakeCalenderPic:
 
     def main(self):
         for in_path in tqdm(
-            list(self.material_path.iterdir()), ncols=100, desc="制作日历图片\t"
+            list(self.material_path.iterdir()),
+            ncols=100,
+            desc="制作日历图片\t",
         ):
             png_path = in_path.parent / (in_path.name + ".png")
             if in_path.is_dir() and png_path.exists() is False:

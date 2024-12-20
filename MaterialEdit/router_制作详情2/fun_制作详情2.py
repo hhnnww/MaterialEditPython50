@@ -47,14 +47,13 @@ class MakeProductImageRequestModel(BaseModel):
 
 
 def fun_制作详情2(item: MakeProductImageRequestModel):
+    """制作详情"""
     if item.clear_upload_path:
         fun_清空桌面上传文件夹图片("xq")
 
     num = 1
     # 制作数据图
-    data_header = fun_制作详情栏目标题(
-        title="素材信息", desc="Material Info " + item.shop_name
-    )
+    data_header = fun_制作详情栏目标题(title="素材信息", desc="Material Info " + item.shop_name)
 
     data_list = [
         ("素材ID", item.material_id),
@@ -97,9 +96,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
         ]
 
         if len(image_list) > 0:
-            header_pil = fun_制作详情栏目标题(
-                title="素材效果图", desc="* 此图片素材内不提供"
-            )
+            header_pil = fun_制作详情栏目标题(title="素材效果图", desc="* 此图片素材内不提供")
 
             effect_image = ClassMakeXQ2(
                 image_list=[Path(image) for image in image_list],
@@ -139,9 +136,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
             if "_thumb" not in Path(obj).stem
         ]
         if len(image_list) > 0:
-            header_pil = fun_制作详情栏目标题(
-                title="素材预览图", desc="* 预览图与源文件对应"
-            )
+            header_pil = fun_制作详情栏目标题(title="素材预览图", desc="* 预览图与源文件对应")
 
             if item.preview_image_sort == 1:
                 sort = True

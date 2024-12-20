@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 
@@ -16,13 +15,7 @@ def fun_单个文件夹重构(in_material_path: Path):
         if in_file.is_file() and in_file.suffix.lower() not in [".ai", ".eps"]:
             # 如果是字体文件，移动到字体目录
             if in_file.suffix.lower() in [".otf", ".ttf", ".woff", ".woff2"]:
-                windows_font_folder_path = Path(r"C:\Windows\fonts")
-                windows_font_path = windows_font_folder_path / in_file.name
-
-                if windows_font_path.exists() is False:
-                    shutil.move(in_file, windows_font_path)
-                else:
-                    in_file.unlink()
+                in_file.unlink()
 
                 # if font_path.exists() is False:
                 #     font_path.mkdir()

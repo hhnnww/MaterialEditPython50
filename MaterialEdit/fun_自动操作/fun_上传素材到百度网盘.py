@@ -5,7 +5,7 @@ from pathlib import Path
 import pyautogui
 from tqdm import tqdm
 
-from ..fun_获取路径数字 import fun_获取路径数字
+from ..get_stem_num import get_path_num
 from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 from .fun_窗口操作 import fun_窗口置顶, fun_获取窗口坐标
 from .fun_获取图片 import fun_获取图片
@@ -15,8 +15,7 @@ pyautogui.PAUSE = 0.5
 
 class AutoUploadMaterialToBaiduYun:
     def __init__(self, parent_path: str, start_stem: int):
-        """
-        自动上传文件到百度网盘
+        """自动上传文件到百度网盘
 
         :param str parent_path: 父文件夹
         :param int start_stem: 起始数字
@@ -26,7 +25,7 @@ class AutoUploadMaterialToBaiduYun:
 
     def fun_遍历文件夹(self):
         for in_file in self.parent_path.iterdir():
-            if in_file.is_dir() and fun_获取路径数字(in_file.stem) >= self.start_stem:
+            if in_file.is_dir() and get_path_num(in_file.stem) >= self.start_stem:
                 yield in_file
 
     @staticmethod
@@ -53,7 +52,9 @@ class AutoUploadMaterialToBaiduYun:
 
     def run(self):
         for in_path in tqdm(
-            list(self.fun_遍历文件夹()), ncols=100, desc="上传到百度网盘\t"
+            list(self.fun_遍历文件夹()),
+            ncols=100,
+            desc="上传到百度网盘\t",
         ):
             if fun_判断是否为空文件夹(in_path) is True:
                 print(in_path)

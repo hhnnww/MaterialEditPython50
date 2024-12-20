@@ -1,12 +1,14 @@
+"""预览图制作WEB图."""
+
 from pathlib import Path
 
 from PIL import Image
+from tomorrow3 import threads
 
 
-def fun_单个文件制作WEB预览图(image_path: Path):
-    """
-    单个图片制作WEB预览图
-    """
+@threads(5)
+def image_make_web_thumbnail(image_path: Path) -> Path:
+    """单个图片制作WEB预览图."""
     if "_thumb" in image_path.stem:
         return image_path
 

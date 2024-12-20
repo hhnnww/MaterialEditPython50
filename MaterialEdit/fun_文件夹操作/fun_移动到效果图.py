@@ -4,7 +4,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from ..setting import IMAGE_SUFFIX
-from .fun_单个文件制作WEB预览图 import fun_单个文件制作WEB预览图
+from .fun_单个文件制作WEB预览图 import image_make_web_thumbnail
 
 
 def fun_移动到效果图(material_path: str, effect_path: str):
@@ -28,4 +28,4 @@ def fun_移动到效果图(material_path: str, effect_path: str):
             effect_image_path = effect_path_obj / f"{num}{in_file.suffix}"
 
         shutil.copy(in_file.as_posix(), effect_image_path.as_posix())
-        fun_单个文件制作WEB预览图(image_path=effect_image_path)
+        image_make_web_thumbnail(image_path=effect_image_path)

@@ -1,3 +1,5 @@
+"""删除PPT内的备注和图片广告"""
+
 from pathlib import Path
 
 from pptx import Presentation
@@ -6,12 +8,11 @@ from tqdm import tqdm
 
 
 def __fun_替换本文(ppt_file: str):
-    TEXT_NEED_REPLACE = ["唐峰", "芒果", "T500"]
+    """替换PPT内所有文字广告"""
+    text_need_replace = ["唐峰", "芒果", "T500"]
 
-    replacer = TextReplacer(
-        ppt_file, slides="", tables=True, charts=True, textframes=True
-    )
-    for text in TEXT_NEED_REPLACE:
+    replacer = TextReplacer(ppt_file, slides="", tables=True, charts=True, textframes=True)
+    for text in text_need_replace:
         replacer.replace_text([(text, "小夕")])
 
     replacer.write_presentation_to_file(ppt_file)
@@ -53,15 +54,13 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
 
 
 def fun_处理所有PPT(material_path: str):
+    """处理所有的PPT"""
     ad_pic_name_list = [f"{x}-({y})" for x in range(1, 100) for y in range(1, 100)]
     for x in range(1, 100):
-        ad_pic_name_list.append(f"tm-({x})")
+        for start_stem in ["tm", "mm"]:
+            ad_pic_name_list.append(f"{start_stem}-({x})")
 
-    for in_file in tqdm(
-        list(Path(material_path).rglob("*")), ncols=100, desc="删除PPT备注"
-    ):
-        in_file: Path
-
+    for in_file in tqdm(list(Path(material_path).rglob("*")), ncols=100, desc="删除PPT备注"):
         if in_file.is_file() and in_file.suffix.lower() in [".ppt", ".pptx"]:
             pic_path = in_file.with_suffix(".png")
             if pic_path.exists() is False:

@@ -12,7 +12,7 @@ from MaterialEdit.fun_自动操作 import (
     AutoUploadProductToTaobao,
     DownPathMoveToMaterialPath,
 )
-from MaterialEdit.fun_获取路径数字 import fun_获取路径数字
+from MaterialEdit.get_stem_num import get_path_num
 
 from .fun_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
 
@@ -26,6 +26,7 @@ class GetBaiduLink(BaseModel):
 
     Args:
         BaseModel (_type_): _description_
+
     """
 
     start_stem: int
@@ -39,9 +40,12 @@ def get_baidu_link(item: GetBaiduLink) -> None:
 
     Args:
         item (GetBaiduLink): _description_
+
     """
     AutoGetBaiDuShareLink(
-        start_stem=item.start_stem, end_stem=item.end_stem, parent_path=item.parent_path
+        start_stem=item.start_stem,
+        end_stem=item.end_stem,
+        parent_path=item.parent_path,
     ).run()
 
 
@@ -53,6 +57,7 @@ class UpTB(BaseModel):
 
     Args:
         BaseModel (_type_): _description_
+
     """
 
     start_stem: int
@@ -64,6 +69,7 @@ def up_taobao(item: UpTB) -> None:
 
     Args:
         item (UpTB): _description_
+
     """
     AutoUploadProductToTaobao(start_stem=item.start_stem).run()
 
@@ -99,7 +105,8 @@ class BaiduItem(BaseModel):
 @router.post("/auto_upload_baidu")
 def auto_upload_baidu(item: BaiduItem):
     AutoUploadMaterialToBaiduYun(
-        parent_path=item.parent_path, start_stem=item.start_stem
+        parent_path=item.parent_path,
+        start_stem=item.start_stem,
     ).run()
 
 
@@ -114,7 +121,8 @@ class DownItem(BaseModel):
 @router.post("/down_path_move_to_material_path")
 def down_path_move_to_material_path(item: DownItem):
     DownPathMoveToMaterialPath(
-        down_path=item.ori_path, material_parent_path=item.dst_path
+        down_path=item.ori_path,
+        material_parent_path=item.dst_path,
     ).main()
 
 
@@ -126,6 +134,7 @@ class EditItem(BaseModel):
 
     Args:
         BaseModel (_type_): _description_
+
     """
 
     parent_path: str
@@ -139,14 +148,15 @@ def auto_edit_material(item: EditItem):
 
     Args:
         item (EditItem): _description_
+
     """
     # 构建所有需要处理的文件夹
     all_file = list(Path(item.parent_path).iterdir())
     used_folder = []
     for in_file in all_file:
-        if in_file.is_dir() and fun_获取路径数字(in_file.stem) >= item.start_stem:
+        if in_file.is_dir() and get_path_num(in_file.stem) >= item.start_stem:
             used_folder.append(in_file.as_posix())
-    used_folder.sort(key=lambda k: fun_获取路径数字(Path(k).stem))
+    used_folder.sort(key=lambda k: get_path_num(Path(k).stem))
 
     for root_path in used_folder:
         print(root_path)

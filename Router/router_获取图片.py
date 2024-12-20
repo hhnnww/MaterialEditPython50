@@ -8,7 +8,7 @@ from fastapi.responses import Response
 from PIL import Image
 
 from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
-    fun_单个文件制作WEB预览图,
+    image_make_web_thumbnail,
 )
 
 router = APIRouter(prefix="/blob")
@@ -25,9 +25,10 @@ def get_img(img: str):
         Response | None: 返回图片内容
         如果出错
         返回None
+
     """
     bytes_io = io.BytesIO()
-    new_path = fun_单个文件制作WEB预览图(image_path=Path(img))
+    new_path = image_make_web_thumbnail(image_path=Path(img))
 
     try:
         with Image.open(fp=new_path) as im:
@@ -57,9 +58,10 @@ def get_thumbnail(img_path: str) -> Response:
 
     Returns:
         Response: _description_
+
     """
     img_path_obj = Path(img_path)
-    new_path = fun_单个文件制作WEB预览图(image_path=img_path_obj)
+    new_path = image_make_web_thumbnail(image_path=img_path_obj)
 
     bytes_io = io.BytesIO()
     with Image.open(fp=new_path) as im:

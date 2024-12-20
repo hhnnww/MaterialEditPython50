@@ -1,9 +1,13 @@
+"""PSD插入广告图层"""
+
 from pathlib import Path
 
 from win32com.client import Dispatch
 
 
 def fun_插入广告(app, doc, tb_name: str, ad_layer_name: str):
+    """PSD插入广告图层"""
+
     if doc.ArtLayers.Count > 0:
         if doc.ArtLayers.Item(1).Name == ad_layer_name:
             return

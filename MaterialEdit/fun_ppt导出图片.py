@@ -1,3 +1,5 @@
+"""PPT导出PNG图片"""
+
 import shutil
 from pathlib import Path
 
@@ -8,11 +10,16 @@ from win32com.client import DispatchEx
 
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
 class PPT导出图片:
-    def __init__(self, ppt_path: Path, effect_path: str) -> None:
+    """PPT导出PNG图片"""
+
+    def __init__(
+        self,
+        ppt_path: Path,
+    ) -> None:
         self.ppt_path = ppt_path
         self.ppt_dir = ppt_path.parent / ppt_path.stem
         self.png_path = ppt_path.with_suffix(".png")
@@ -22,30 +29,28 @@ class PPT导出图片:
         self.line_col = 3
         self.line = 4
 
-        self.effect_path = Path(effect_path)
-
-        if self.effect_path.exists() is not True:
-            self.effect_path.mkdir()
-
     @property
-    def first_width(self):
+    def first_width(self) -> int:
+        """大图宽度"""
         return self.pic_width - self.spacing * 2
 
     @property
     def small_width(self):
-        return int(
-            (self.pic_width - ((self.line_col + 1) * self.spacing)) / self.line_col
-        )
+        """小图宽度"""
+        return int((self.pic_width - ((self.line_col + 1) * self.spacing)) / self.line_col)
 
     @property
     def pic_width(self) -> int:
+        """获取图片原始宽度"""
         im = Image.open(self.pic_files[0])
         return im.width
 
     @property
     def pic_files(self):
-        pic_files = fun_遍历指定文件(
-            folder=self.ppt_dir.as_posix(), suffix=[".png", ".jpeg", ".jpg"]
+        """获取所欲图片列表"""
+        pic_files = rglob(
+            folder=self.ppt_dir.as_posix(),
+            suffix=[".png", ".jpeg", ".jpg"],
         )
         if len(pic_files) < 13:
             pic_files += pic_files
@@ -53,6 +58,7 @@ class PPT导出图片:
         return pic_files
 
     def fun_ppt导出图片(self):
+        """使用win32com导出所有图片"""
         pythoncom.CoInitialize()  # type: ignore
         ppt_app = DispatchEx("PowerPoint.Application")
         ppt_app.DisplayAlerts = 0
@@ -60,11 +66,13 @@ class PPT导出图片:
         try:
             ppt = ppt_app.Presentations.Open(self.ppt_path.as_posix())
         except pywintypes.com_error:  # type: ignore
+            print(f"错误的PPT文件{self.ppt_path}")
             return
 
         try:
             ppt.SaveAs(self.ppt_dir, 17)
         except pywintypes.com_error:  # type: ignore
+            print(f"图片导出错误{self.ppt_path}")
             ppt.Close()
             return
 
@@ -72,7 +80,6 @@ class PPT导出图片:
             ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
             self.ppt_path.unlink()
 
-        # ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
         self.fun_图片合并()
 
         try:
@@ -80,7 +87,8 @@ class PPT导出图片:
         except pywintypes.com_error:  # type: ignore
             ppt_app.Quit()
 
-    def fun_图片合并(self):
+    def fun_图片合并(self) -> None:
+        """合并所有小图片"""
         if self.ppt_dir.exists() is not True:
             return
 
@@ -92,14 +100,10 @@ class PPT导出图片:
             im = im.convert("RGBA")
 
             if num == 0:
-                im.thumbnail(
-                    (self.first_width, 9999), resample=Image.Resampling.LANCZOS
-                )
+                im.thumbnail((self.first_width, 9999), resample=Image.Resampling.LANCZOS)
                 bg_list.append(im.copy())
             else:
-                im.thumbnail(
-                    (self.small_width, 9999), resample=Image.Resampling.LANCZOS
-                )
+                im.thumbnail((self.small_width, 9999), resample=Image.Resampling.LANCZOS)
                 in_line_list.append(im.copy())
 
             if len(in_line_list) == self.line_col:
@@ -133,17 +137,9 @@ class PPT导出图片:
 
         bg.save(self.png_path.as_posix())
 
-    def fun_备份首图(self):
-        if self.ppt_dir.exists() is True:
-            print("备份图片")
-            shutil.move(
-                self.ppt_dir.as_posix(),
-                (self.effect_path / self.ppt_dir.stem).as_posix(),
-            )
-
-    def main(self):
+    def main(self) -> None:
+        """开始操作"""
         self.fun_ppt导出图片()
-        # self.fun_备份首图()
 
         if self.ppt_dir.exists() is True:
             shutil.rmtree(self.ppt_dir)

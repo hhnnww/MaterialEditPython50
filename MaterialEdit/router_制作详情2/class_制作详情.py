@@ -10,8 +10,8 @@ from PIL import Image
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
-from MaterialEdit.fun_获取路径数字 import fun_获取路径数字
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
+from MaterialEdit.get_stem_num import get_path_num
 from MaterialEdit.router_制作详情2.class_单个图片 import ClassOneImage
 from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
 
@@ -46,26 +46,24 @@ class ClassMakeXQ2:
         self.image_list = self.__fun_排序图片(image_list=self.image_list_path)
 
     xq_width = 2000
-    space = 8
+    space = 10
     background_color = (255, 255, 255, 255)
 
     @cached_property
     def __fun_所有源文件(self) -> list[Path]:
-        """
-         _summary_
+        """_summary_
 
         Returns:
             _type_: _description_
+
         """
-        return fun_遍历指定文件(
-            folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX
-        )
+        return rglob(folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX)
 
     def __fun_获取仅使用的图片(self, image_list: list[Path]) -> list[Path]:
         if self.pic_sort:
-            image_list.sort(key=lambda k: fun_获取路径数字(stem=k.stem), reverse=False)
+            image_list.sort(key=lambda k: get_path_num(stem=k.stem), reverse=False)
         else:
-            image_list.sort(key=lambda k: fun_获取路径数字(stem=k.stem), reverse=True)
+            image_list.sort(key=lambda k: get_path_num(stem=k.stem), reverse=True)
 
         if self.use_pic == 0:
             return image_list
@@ -86,8 +84,11 @@ class ClassMakeXQ2:
             )
             for image in image_list
         ]
-        avatar_ratio = sum([obj.fun_图片比例 for obj in obj_list]) / len(obj_list)
-        if avatar_ratio < 0.2 or self.col == 1:
+        # avatar_ratio = sum([obj.fun_图片比例 for obj in obj_list]) / len(obj_list)
+        # if avatar_ratio < 0.2 or self.col == 1:
+        #     return obj_list
+
+        if self.col == 1:
             return obj_list
 
         obj_list.sort(key=lambda k: k.fun_图片比例, reverse=True)
@@ -96,9 +97,7 @@ class ClassMakeXQ2:
 
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
         print(f"制作单行{image_list}")
-        width = math.floor(
-            (self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list)
-        )
+        width = math.floor((self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list))
 
         im_list = []
         for image in image_list:
@@ -123,9 +122,7 @@ class ClassMakeXQ2:
 
         return im
 
-    def __计算单行图片的比例(
-        self, online_comb: list[ClassOneImage]
-    ) -> float | Literal[0]:
+    def __计算单行图片的比例(self, online_comb: list[ClassOneImage]) -> float | Literal[0]:
         return sum([comb.fun_图片比例 for comb in online_comb])
 
     @cached_property
@@ -137,20 +134,22 @@ class ClassMakeXQ2:
         for num, image in enumerate(iterable=self.image_list):
             in_list.append(image)
 
+            next_list = in_list
+            if num < len(self.image_list) - 1:
+                next_list = in_list + [self.image_list[num + 1]]
+
             if (
-                (num - break_num > 10 or break_num == 0)
-                and len(in_list) == self.col - 1
-                or self.__计算单行图片的比例(online_comb=in_list) >= self.oneline_ratio
+                break_num == 0
+                or len(in_list) == self.col
+                or self.__计算单行图片的比例(online_comb=next_list) >= self.oneline_ratio
+                or (num + 1 == len(self.image_list) and len(in_list) > 0)
             ):
                 image_list.append(in_list.copy())
                 in_list = []
-                break_num = num + 1
+                break_num += 1
 
-            elif (num + 1 == len(self.image_list) and len(in_list) > 0) or len(
-                in_list
-            ) == self.col:
-                image_list.append(in_list.copy())
-                in_list = []
+            if break_num > 5:
+                break_num = 0
 
         return image_list
 
@@ -159,10 +158,10 @@ class ClassMakeXQ2:
 
         Returns:
             Image.Image: _description_
+
         """
         im_list = [
-            self.__fun_制作单行(image_list=line_image)
-            for line_image in self.__fun_组合图片列表
+            self.__fun_制作单行(image_list=line_image) for line_image in self.__fun_组合图片列表
         ]
 
         if self.has_name:

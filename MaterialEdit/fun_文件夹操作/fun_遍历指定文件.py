@@ -1,16 +1,19 @@
+"""遍历文件夹下的所有制定类型文件."""
+
 from pathlib import Path
 
-from ..fun_获取路径数字 import fun_获取路径数字
+from MaterialEdit.get_stem_num import get_path_num
 
 
-def fun_遍历指定文件(folder: str, suffix: list[str]) -> list[Path]:
+def rglob(folder: str, suffix: list[str]) -> list[Path]:
+    """递归遍历文件夹下的所有文件."""
     folder_obj = Path(folder)
-    image_list = []
+    image_list = [
+        in_file
+        for in_file in folder_obj.rglob("*")
+        if in_file.is_file() and in_file.suffix.lower() in suffix
+    ]
 
-    for in_file in folder_obj.rglob("*"):
-        if in_file.is_file() and in_file.suffix.lower() in suffix:
-            image_list.append(in_file)
-
-    image_list.sort(key=lambda k: fun_获取路径数字(k.stem))
+    image_list.sort(key=lambda k: get_path_num(stem=k.stem))
 
     return image_list

@@ -8,7 +8,7 @@ from MaterialEdit.router_制作详情2.fun_制作详情2 import (
     fun_制作详情2,
 )
 
-from ..fun_获取路径数字 import fun_获取路径数字
+from ..get_stem_num import get_path_num
 from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 
 
@@ -28,14 +28,16 @@ class AutoMakeProductImage:
     def fun_生成文件夹列表(self):
         path_list = []
         for in_path in list(self.parent_path.iterdir()):
-            if in_path.is_dir() and fun_获取路径数字(in_path.stem) >= self.start_id:
+            if in_path.is_dir() and get_path_num(in_path.stem) >= self.start_id:
                 path_list.append(in_path)
 
         return path_list
 
     def fun_生成单个详情(self, root_path: Path):
         ma_info = fun_获取素材信息(
-            root_path=root_path.as_posix(), used_image=0, image_sort=True
+            root_path=root_path.as_posix(),
+            used_image=0,
+            image_sort=True,
         )
 
         # pic_list = [ImageModel(**obj) for obj in ma_info.preview_image_list]
@@ -95,7 +97,7 @@ class AutoMakeProductImage:
                 image_name_has_material_id=True,
                 clear_upload_path=False,
                 has_water=self.shop_name in ["泡泡素材", "小夕素材", "松子素材"],
-            )
+            ),
         )
 
     def run(self):

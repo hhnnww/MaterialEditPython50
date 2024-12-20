@@ -3,14 +3,14 @@ from pathlib import Path
 
 from win32com.client import Dispatch
 
-from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import fun_遍历指定文件
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.setting import IMAGE_SUFFIX
 
 
 class OpenNoPngAIFile:
     def __init__(self, in_path: str) -> None:
         self.material_path = Path(in_path)
-        self.all_ai_file = fun_遍历指定文件(in_path, suffix=[".ai"])
+        self.all_ai_file = rglob(in_path, suffix=[".ai"])
 
     def main(self):
         app = Dispatch("Illustrator.Application")
@@ -44,8 +44,7 @@ class AIFile:
 
     @property
     def has_png(self):
-        """
-        遍历所有图片
+        """遍历所有图片
         如果ai文件的stem在图片的stem
         返回True
         不然返回False
