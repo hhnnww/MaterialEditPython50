@@ -85,7 +85,8 @@ class MakeXQ(BaseModel):
 
 
 @router.post("/make_all_xq")
-def make_all_xq(item: MakeXQ):
+def make_all_xq(item: MakeXQ) -> None:
+    """制作所有淘宝详情."""
     AutoMakeProductImage(
         material_parent_path=item.material_parent_path,
         start_stem=item.start_item,
@@ -103,7 +104,8 @@ class BaiduItem(BaseModel):
 
 
 @router.post("/auto_upload_baidu")
-def auto_upload_baidu(item: BaiduItem):
+def auto_upload_baidu(item: BaiduItem) -> None:
+    """上传到百度网盘."""
     AutoUploadMaterialToBaiduYun(
         parent_path=item.parent_path,
         start_stem=item.start_stem,

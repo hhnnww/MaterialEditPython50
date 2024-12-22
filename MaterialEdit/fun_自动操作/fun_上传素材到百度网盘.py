@@ -1,5 +1,6 @@
 import os
 import time
+from collections.abc import Generator
 from pathlib import Path
 
 import pyautogui
@@ -14,7 +15,7 @@ pyautogui.PAUSE = 0.5
 
 
 class AutoUploadMaterialToBaiduYun:
-    def __init__(self, parent_path: str, start_stem: int):
+    def __init__(self, parent_path: str, start_stem: int) -> None:
         """自动上传文件到百度网盘
 
         :param str parent_path: 父文件夹
@@ -23,7 +24,8 @@ class AutoUploadMaterialToBaiduYun:
         self.parent_path = Path(parent_path)
         self.start_stem = start_stem
 
-    def fun_遍历文件夹(self):
+    def fun_遍历文件夹(self) -> Generator[Path]:
+        """遍历所有需要上传的文件夹."""
         for in_file in self.parent_path.iterdir():
             if in_file.is_dir() and get_path_num(in_file.stem) >= self.start_stem:
                 yield in_file
