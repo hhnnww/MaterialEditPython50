@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import math
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from PIL import Image
 from tqdm import tqdm
 
-from MaterialEdit.type import ALIGNITEM, ImageModel
+if TYPE_CHECKING:
+    from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
 class LayoutInit:
@@ -18,7 +22,10 @@ class LayoutInit:
         crop_position: ALIGNITEM,
         bg_color: tuple,
         out_space: bool,
+        design_path: str,
     ) -> None:
+        """图片布局初始化."""
+        self.design_path = design_path
         self.image_list = image_list
         self.xq_width = xq_width
         self.xq_height = xq_height
@@ -58,7 +65,7 @@ class LayoutInit:
     @cached_property
     def _fun_所有图片平均比例(self) -> float:
         return sum([im.width / im.height for im in self._pil_list]) / len(
-            self._pil_list
+            self._pil_list,
         )
 
     @staticmethod

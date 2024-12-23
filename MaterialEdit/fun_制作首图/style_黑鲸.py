@@ -13,12 +13,7 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 
 
 def fun_make_material_id_image(material_id: str) -> Image.Image:
-    """
-     制作首图右上角的素材ID
-
-    Returns:
-        _type_: _description_
-    """
+    """制作右上角的素材ID."""
     # 制作素材ID
     material_id_pil = MakeIbmFont(
         text="ID:" + material_id,
@@ -40,15 +35,7 @@ def fun_make_material_id_image(material_id: str) -> Image.Image:
 
 
 def fun_make_left_logo_image(shop_name: str) -> Image.Image:
-    """
-    制作左上角的LOGO
-
-    Args:
-        shop_name (str): _description_
-
-    Returns:
-        Image.Image: _description_
-    """
+    """制作左边的logo."""
     # 左边的logo
     logo = fun_获取单个水印(size=80, fill_clor=(255, 255, 255, 255))
     shop_name_pil = MakeIbmFont(
@@ -79,15 +66,7 @@ def fun_make_left_logo_image(shop_name: str) -> Image.Image:
 
 
 def fun_make_title_image(title: str) -> Image.Image:
-    """
-    制作大标题的图片
-
-    Args:
-        title (str): _description_
-
-    Returns:
-        Image.Image: _description_
-    """
+    """制作大标题."""
     circle = fun_画一个圆角矩形(
         width=1500,
         height=400,
@@ -104,21 +83,15 @@ def fun_make_title_image(title: str) -> Image.Image:
         bg_color=(0, 0, 0, 255),
     ).main()
     circle.paste(
-        im=title_pil, box=(60, int((circle.height - title_pil.height) / 2)), mask=title_pil
+        im=title_pil,
+        box=(60, int((circle.height - title_pil.height) / 2)),
+        mask=title_pil,
     )
     return circle
 
 
 def fun_select_format_color(material_format: str) -> tuple[tuple[int, int, int, int], ...]:
-    """
-    选择素材格式小图标的文字边框和背景颜色
-
-    Args:
-        material_format (str): _description_
-
-    Returns:
-        tuple[tuple[int, int, int, int], ...]: _description_
-    """
+    """制作格式图片."""
     if material_format.lower() in ["psd"]:
         background_color = (35, 200, 250, 255)
         fill_color = (5, 30, 35, 255)
@@ -144,26 +117,24 @@ def fun_select_format_color(material_format: str) -> tuple[tuple[int, int, int, 
 
 
 def fun_make_format_image(material_format: str) -> Image.Image:
-    """
-    制作右下角格式的圆圈图片
-
-    Args:
-        material_format (str): _description_
-
-    Returns:
-        Image.Image: _description_
-    """
+    """制作右下角格式的圆圈图片."""
     # 构建素材格式的颜色
     background_color, fill_color, text_color = fun_select_format_color(
-        material_format=material_format
+        material_format=material_format,
     )
 
     # 制作格式
     format_bg_circle = fun_画一个圆(
-        width=195, height=195, fill_color=background_color, background_color=(255, 255, 255, 0)
+        width=195,
+        height=195,
+        fill_color=background_color,
+        background_color=(255, 255, 255, 0),
     )
     format_fill_circle = fun_画一个圆(
-        width=170, height=170, fill_color=fill_color, background_color=(255, 255, 255, 0)
+        width=170,
+        height=170,
+        fill_color=fill_color,
+        background_color=(255, 255, 255, 0),
     )
     format_bg_circle.paste(
         im=format_fill_circle,
@@ -224,15 +195,20 @@ def fun_make_format_image(material_format: str) -> Image.Image:
 
 
 def fun_黑鲸首图(
-    im: Image.Image, title: str, material_format: str, material_id: str, shop_name: str
+    im: Image.Image,
+    title: str,
+    material_format: str,
+    material_id: str,
+    shop_name: str,
+    bg_color: tuple[int, ...],
 ) -> Image.Image:
-    """制作黑鲸首图
-
-    Returns:
-        _type_: _description_
-    """
-    if im.width > 1500:
+    """制作黑鲸首图."""
+    xq_width = 1500
+    if im.width > xq_width:
         im = im.crop(box=(0, 0, 1500, im.height))
+    bg = Image.new("RGBA", im.size, bg_color)
+    bg.paste(im, (0, 0), im)
+    im = bg
 
     # 制作素材ID
     material_id_bg = fun_make_material_id_image(material_id=material_id)

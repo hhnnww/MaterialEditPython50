@@ -9,7 +9,7 @@ from .setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
 from .type import _FolderStructure
 
 
-def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str):
+def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str) -> None:
     ori_obj: _FolderStructure = fun_创建文件夹结构(root_path=ori_path)
     dst_obj: _FolderStructure = fun_创建文件夹结构(root_path=dst_path)
 

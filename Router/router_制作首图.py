@@ -1,3 +1,5 @@
+"""制作首图路由."""
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 
@@ -13,6 +15,7 @@ from MaterialEdit import (
     fun_黑鲸首图,
     layout_s1_n,
 )
+from MaterialEdit.fun_创建文件夹结构 import fun_创建文件夹结构
 from MaterialEdit.fun_制作首图 import (
     Layout1大3小自适应,
     Layout1大N行自适应,
@@ -48,6 +51,8 @@ router = APIRouter(prefix="/MakeFirstImage")
 
 
 class MakeFirstImageModel(BaseModel):
+    root_path: str
+
     first_image_title: str
     select_image_list: list[ImageModel]
 
@@ -71,21 +76,18 @@ class MakeFirstImageModel(BaseModel):
     out_space: int
 
 
-def fun_转换COLOR(bg_color: str) -> tuple[int, int, int, int]:
-    bg = []
-    for in_str in bg_color.split(" "):
-        try:
-            int(in_str)
-        except ValueError:
-            pass
-        else:
-            bg.append(int(in_str))
-
+def fun_转换COLOR(bg_color: str) -> tuple[int, ...]:
+    """颜色转换成rbga颜色."""
+    bg = [int(in_str) for in_str in bg_color.split(" ")]
     return tuple(bg[:3])
 
 
 @router.post("")
-def make_first_image(item: MakeFirstImageModel):
+def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
+    """制作首图路由."""
+    path_jiegou = fun_创建文件夹结构(root_path=item.root_path)
+
+    """制作首图函数."""
     fun_清空桌面上传文件夹图片("st_" + item.first_image_num)
 
     # 转换bg_color
@@ -123,6 +125,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
@@ -219,7 +222,7 @@ def make_first_image(item: MakeFirstImageModel):
             line_row=item.first_image_line,
         ).main()
 
-    elif "3列横竖错落" == item.first_image_layout:
+    elif item.first_image_layout == "3列横竖错落":
         bg = layout_3列横竖错落(
             image_list=item.select_image_list,
             xq_width=xq_width,
@@ -227,7 +230,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
         )
 
-    elif "3列1大横竖错落" == item.first_image_layout:
+    elif item.first_image_layout == "3列1大横竖错落":
         bg = layout_3列1大横竖错落(
             image_list=item.select_image_list,
             xq_width=xq_width,
@@ -235,7 +238,7 @@ def make_first_image(item: MakeFirstImageModel):
             spacing=item.spacing,
         )
 
-    elif "列-自适应" == item.first_image_layout:
+    elif item.first_image_layout == "列-自适应":
         bg = layout_列自适应(
             image_list=item.select_image_list,
             col=item.first_image_line,
@@ -256,6 +259,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
@@ -268,6 +272,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=3,
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "1大N行-自适应":
@@ -280,6 +285,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=0,
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "1竖-2排小竖-自适应":
@@ -292,6 +298,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "1大3小-自适应":
@@ -304,6 +311,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "2大竖-4小竖":
@@ -316,6 +324,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).fun_底部图片()
 
     elif item.first_image_layout == "超长图":
@@ -328,6 +337,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "背景图":
@@ -340,6 +350,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "行-自适应":
@@ -352,6 +363,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main(small_size="自适应")
 
     elif item.first_image_layout == "行-固定尺寸":
@@ -364,6 +376,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
@@ -376,6 +389,7 @@ def make_first_image(item: MakeFirstImageModel):
             col=item.first_image_line,
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).main()
 
     elif item.first_image_layout == "横版-1221":
@@ -388,6 +402,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).fun_横版1221()
 
     elif item.first_image_layout == "竖版-1221":
@@ -400,6 +415,7 @@ def make_first_image(item: MakeFirstImageModel):
             crop_position=item.crop_position,
             bg_color=bg_color,
             out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
         ).fun_竖版1221()
 
     else:
@@ -413,35 +429,34 @@ def make_first_image(item: MakeFirstImageModel):
         )
 
     # ---------------- 水印 ----------------
-    if item.first_image_style != "无样式":
-        if item.shop_name != "饭桶设计" and item.first_image_style != "黑鲸":
-            water_pixel_color = int(0)
-            bg = fun_图片打满水印(
-                bg,  # type: ignore
-                80,
-                3,
-                3,
-                (
-                    water_pixel_color,
-                    water_pixel_color,
-                    water_pixel_color,
-                    int(255 * 0.8),
-                ),
-            )
+    if item.first_image_style != "无样式" and item.shop_name != "饭桶设计" and item.first_image_style != "黑鲸":
+        water_pixel_color = 0
+        bg = fun_图片打满水印(
+            bg,
+            80,
+            3,
+            3,
+            (
+                water_pixel_color,
+                water_pixel_color,
+                water_pixel_color,
+                int(255 * 0.8),
+            ),
+        )
 
-            water_pixel_color = int(255)
-            bg = fun_图片打满水印(
-                bg,
-                80,
-                3,
-                3,
-                (
-                    water_pixel_color,
-                    water_pixel_color,
-                    water_pixel_color,
-                    int(255 * 0.8),
-                ),
-            )
+        water_pixel_color = 255
+        bg = fun_图片打满水印(
+            bg,
+            80,
+            3,
+            3,
+            (
+                water_pixel_color,
+                water_pixel_color,
+                water_pixel_color,
+                int(255 * 0.8),
+            ),
+        )
 
     # ---------------- 样式 ----------------
 
@@ -461,6 +476,7 @@ def make_first_image(item: MakeFirstImageModel):
             material_format=item.source_format,
             material_id=item.material_id,
             shop_name=item.shop_name,
+            bg_color=fun_转换COLOR(bg_color=item.bg_color),
         )
 
     elif item.first_image_style == "泡泡":

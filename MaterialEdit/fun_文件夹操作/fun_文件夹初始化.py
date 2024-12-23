@@ -1,11 +1,19 @@
+"""初始化一个素材文件夹."""
+
+from __future__ import annotations
+
 import shutil
 from pathlib import Path
-from typing import Union
+from typing import TYPE_CHECKING
 
-from ..fun_创建文件夹结构 import fun_创建文件夹结构
+from MaterialEdit.fun_创建文件夹结构 import fun_创建文件夹结构
+
+if TYPE_CHECKING:
+    from MaterialEdit.type import _FolderStructure
 
 
-def fun_文件夹初始化(root_path: Union[str, Path]):
+def fun_文件夹初始化(root_path: str | Path) -> _FolderStructure:
+    """初始化一个素材文件夹."""
     path_structures = fun_创建文件夹结构(root_path=root_path)
 
     root_path_obj = Path(path_structures.root_path)
@@ -13,7 +21,8 @@ def fun_文件夹初始化(root_path: Union[str, Path]):
     preview_path_obj = Path(path_structures.preview_path)
     effect_path_obj = Path(path_structures.effect_path)
     ori_img_path_obj = Path(path_structures.ori_img_path)
-    # ori_img_path_obj = Path()
+    design_path_obj = Path(path_structures.design_path)
+
     if material_path_obj.exists() is False:
         material_path_obj.mkdir()
 
@@ -23,6 +32,7 @@ def fun_文件夹初始化(root_path: Union[str, Path]):
             preview_path_obj,
             effect_path_obj,
             ori_img_path_obj,
+            design_path_obj,
         ]:
             new_path = material_path_obj / in_file.name
 

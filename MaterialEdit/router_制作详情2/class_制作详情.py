@@ -1,9 +1,10 @@
 """制作详情"""
 
+from __future__ import annotations
+
 import math
 from functools import cached_property
-from pathlib import Path
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from PIL import Image
 
@@ -14,6 +15,9 @@ from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.get_stem_num import get_path_num
 from MaterialEdit.router_制作详情2.class_单个图片 import ClassOneImage
 from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class ClassMakeXQ2:
@@ -51,12 +55,7 @@ class ClassMakeXQ2:
 
     @cached_property
     def __fun_所有源文件(self) -> list[Path]:
-        """_summary_
-
-        Returns:
-            _type_: _description_
-
-        """
+        """构建所有源文件"""
         return rglob(folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX)
 
     def __fun_获取仅使用的图片(self, image_list: list[Path]) -> list[Path]:
@@ -84,9 +83,6 @@ class ClassMakeXQ2:
             )
             for image in image_list
         ]
-        # avatar_ratio = sum([obj.fun_图片比例 for obj in obj_list]) / len(obj_list)
-        # if avatar_ratio < 0.2 or self.col == 1:
-        #     return obj_list
 
         if self.col == 1:
             return obj_list
@@ -96,7 +92,7 @@ class ClassMakeXQ2:
         return obj_list
 
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
-        print(f"制作单行{image_list}")
+        print(f"制作单行:{image_list}")  # noqa: T201
         width = math.floor((self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list))
 
         im_list = []
@@ -111,7 +107,7 @@ class ClassMakeXQ2:
             background_color=self.background_color,
         )
 
-        im = fun_图片扩大粘贴(
+        return fun_图片扩大粘贴(
             im=im,
             width=self.xq_width,
             height=im.height,
@@ -119,8 +115,6 @@ class ClassMakeXQ2:
             top="center",
             background_color=self.background_color,
         )
-
-        return im
 
     def __计算单行图片的比例(self, online_comb: list[ClassOneImage]) -> float | Literal[0]:
         return sum([comb.fun_图片比例 for comb in online_comb])
@@ -136,7 +130,7 @@ class ClassMakeXQ2:
 
             next_list = in_list
             if num < len(self.image_list) - 1:
-                next_list = in_list + [self.image_list[num + 1]]
+                next_list = [*in_list, self.image_list[num + 1]]
 
             if (
                 break_num == 0
@@ -148,7 +142,8 @@ class ClassMakeXQ2:
                 in_list = []
                 break_num += 1
 
-            if break_num > 5:
+            duandian = 5
+            if break_num > duandian:
                 break_num = 0
 
         return image_list
@@ -160,14 +155,9 @@ class ClassMakeXQ2:
             Image.Image: _description_
 
         """
-        im_list = [
-            self.__fun_制作单行(image_list=line_image) for line_image in self.__fun_组合图片列表
-        ]
+        im_list = [self.__fun_制作单行(image_list=line_image) for line_image in self.__fun_组合图片列表]
 
-        if self.has_name:
-            spacing = 0
-        else:
-            spacing = self.space
+        spacing = 0 if self.has_name else self.space
 
         return fun_图片竖向拼接(
             image_list=im_list,

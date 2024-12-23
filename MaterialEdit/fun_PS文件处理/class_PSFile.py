@@ -1,13 +1,14 @@
+"""处理psd文件."""
+
+from __future__ import annotations
+
 import time
 from pathlib import Path
-from typing import List, Optional
 from uuid import uuid1
 
-from colorama import Back, Fore, Style
 from passlib.context import CryptContext
 from win32com.client import CDispatch, Dispatch
 
-# import face_recognition
 from .fun_对比所有导出的图片 import fun_打开图片, run_对比所有图片
 from .fun_导出PNG import com_psd导出png
 from .fun_导出图层PNG import run_导出所有图层
@@ -32,8 +33,9 @@ class PSFile:
         self,
         ps_path: str,
         tb_name: str,
-        ad_pic_list: Optional[List[Path]] = None,
-    ):
+        ad_pic_list: list[Path],
+    ) -> None:
+        """输入psd文件地址 店铺名 广告关键词列表."""
         self.ps_path = ps_path
         self.tb_name = tb_name
 
@@ -48,18 +50,12 @@ class PSFile:
         self.pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
         fun_清理注释(self.app)
-        print(f"\n\n处理PSD:{self.ps_path}")
 
     @staticmethod
-    def get_all_layer(in_object: CDispatch):
-        """
-        获取所有的图层
-        :param in_object:
-        :return:
-        """
+    def get_all_layer(in_object: CDispatch) -> list:
+        """获取所有图层."""
         in_layer_list = []
         for in_layer in in_object.layers:
-            # in_layer.Visible = True
             visible = in_layer.Visible
             if in_layer.AllLocked is True:
                 in_layer.AllLocked = False
@@ -74,15 +70,10 @@ class PSFile:
         return in_layer_list
 
     @staticmethod
-    def get_all_layer_set(in_object: CDispatch):
-        """
-        获取所有的编组
-        :param in_object:
-        :return:
-        """
+    def get_all_layer_set(in_object: CDispatch) -> list:
+        """获取所有编组."""
         in_layer_set_list = []
         for in_layer in in_object.LayerSets:
-            # in_layer.Visible = True
             visible = in_layer.Visible
             if in_layer.AllLocked is True:
                 in_layer.AllLocked = False
@@ -93,56 +84,53 @@ class PSFile:
 
         return in_layer_set_list
 
-    def com_删除广告图层(self, all_layers: List[CDispatch]):
-        """
-        从数据库获取所有广告语
-        根据图层名字删除所有的广告图层
-        :param all_layers:
-        :return:
-        """
+    def com_删除广告图层(self, all_layers: list[CDispatch]) -> None:
+        """根据关键词删除广告."""
         with database:
-            include_names: List[IncludeName] = list(IncludeName.select())
-            is_names: List[IsName] = list(IsName.select())
-            text_replace: List[TextReplaceName] = list(TextReplaceName.select())
-            photo_names: List[IsPhoto] = list(IsPhoto.select())
+            include_names: list[IncludeName] = list(IncludeName.select())
+            is_names: list[IsName] = list(IsName.select())
+            text_replace: list[TextReplaceName] = list(TextReplaceName.select())
+            photo_names: list[IsPhoto] = list(IsPhoto.select())
 
         for in_layer in all_layers:
             # 普通图层
             if in_layer.Kind != ArtLayerKind.TextLayer:
                 com_普通图层广告(
-                    self.app,  # type: ignore
-                    in_layer,
-                    include_names,
-                    is_names,
-                    photo_names,  # type: ignore
+                    app=self.app,
+                    art_layer=in_layer,
+                    include_names=include_names,
+                    is_names=is_names,
+                    photo_names=photo_names,
                 )
-
-                if in_layer.Kind == 17:
+                normal_kind = 17
+                if in_layer.Kind == normal_kind:
                     in_layer.Rasterize(5)
 
             # 文字图层
             else:
-                com_文字图层广告(in_layer, text_replace)
+                com_文字图层广告(text_layer=in_layer, re_contents=text_replace)
 
     @staticmethod
-    def com_修改所有编组(all_layer_sets: List[CDispatch]):
+    def com_修改所有编组(all_layer_sets: list[CDispatch]) -> None:
+        """所有编组改名."""
         for layer_set in all_layer_sets:
             visible = layer_set.Visible
             layer_set.Name = f"组 {layer_set.ID}"
             layer_set.Visible = visible
 
-    def run_删除广告导出PNG(self):
-        all_layer_sets = self.get_all_layer_set(self.doc)
-        all_layers = self.get_all_layer(self.doc)
-        self.com_删除广告图层(all_layers)
-        self.com_修改所有编组(all_layer_sets)
+    def run_删除广告导出PNG(self) -> None:
+        """删除广告图层 导出PNG."""
+        all_layer_sets = self.get_all_layer_set(in_object=self.doc)
+        all_layers = self.get_all_layer(in_object=self.doc)
+        self.com_删除广告图层(all_layers=all_layers)
+        self.com_修改所有编组(all_layer_sets=all_layer_sets)
 
         # 导出图层PNG
         all_layers = self.get_all_layer(self.doc)
-
-        if len(all_layers) < 100:
+        all_layer_count = 100
+        if len(all_layers) < all_layer_count:
             all_item = run_导出所有图层(
-                app=self.app,  # type: ignore
+                app=self.app,
                 in_doc=self.doc,
                 file=Path(self.ps_path),
                 layer_list=all_layers,
@@ -156,63 +144,33 @@ class PSFile:
                         time.sleep(1)
                         time_out += 1
 
-                        if time_out >= 60:
+                        max_time = 60
+                        if time_out >= max_time:
                             time_out_state = True
                             break
 
                     if time_out_state is True:
                         continue
 
-                    img_1 = fun_打开图片(img_path.as_posix())
-                    res = run_对比所有图片(img_1, self.ad_pic_list)  # type: ignore
+                    img_1 = fun_打开图片(img_path=img_path.as_posix())
+                    res = run_对比所有图片(img=img_1, ad_img_list=self.ad_pic_list)
                     if res is True:
-                        print(
-                            "\n"
-                            + Back.RED  # type: ignore
-                            + Fore.BLACK
-                            + f"对比图片发现广告:\t{item.item.Name}"
-                            + Style.RESET_ALL
-                        )
                         item.item.Delete()
 
-                    new_name = img_path.with_stem(str(uuid1()))
-                    img_path.rename(new_name)
-
-                    # else:
-                    #     image = face_recognition.load_image_file(
-                    #         img_path.as_posix()
-                    #     )
-                    #     face_location = face_recognition.face_locations(image)
-                    #     if len(face_location) > 0:
-                    #         self.doc.ActiveLayer = item.item
-                    #         desc234 = Dispatch("Photoshop.ActionDescriptor")
-                    #         desc234.PutUnitDouble(
-                    #             s(self.app, "radius"),
-                    #             s(self.app, "pixelsUnit"),
-                    #             50.000000,
-                    #         )
-                    #         self.app.ExecuteAction(
-                    #             s(self.app, "gaussianBlur"), desc234, dialog()
-                    #         )
+                    new_name = img_path.with_stem(stem=str(uuid1()))
+                    img_path.rename(target=new_name)
 
         # 导出PNG
         save_path = Path(self.ps_path)
-        print(f'导出PNG:\t{save_path.with_suffix(".png")}')
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
-
         # 插入广告
         fun_插入广告(self.app, self.doc, self.tb_name, self.ad_layer_name)
-
-        print(f"保存：\t{save_path.as_posix()}")
         self.doc.Save()
-
-        print(f"关闭：\t{save_path.as_posix()}")
         self.doc.Close(2)
 
-    def run_导出图片添加广告(self):
+    def run_导出图片添加广告(self) -> None:
+        """导出图片 添加二维码广告."""
         save_path = Path(self.ps_path)
-        print(f'导出PNG:\t{save_path.with_suffix(".png")}')
-
         if self.doc.ArtLayers.Count > 0:
             first_layer = self.doc.ArtLayers[0]
             if first_layer.Name in ["SY"]:
@@ -222,28 +180,17 @@ class PSFile:
 
         # 插入广告
         fun_插入广告(self.app, self.doc, self.tb_name, self.pwd.hash("1221"))
-
-        print(f"保存：\t{save_path.as_posix()}")
         self.doc.Save()
-
-        print(f"关闭：\t{save_path.as_posix()}")
         self.doc.Close(2)
 
-    def run_导出图片(self):
+    def run_导出图片(self) -> None:
+        """导出PNG图片."""
         save_path = Path(self.ps_path)
-        print(f'导出PNG:\t{save_path.with_suffix(".png")}')
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
-
-        # 插入广告
-        # fun_插入广告(self.app, self.doc, self.tb_name, self.ad_layer_name)
-
-        # print(f"保存：\t{save_path.as_posix()}")
-        # self.doc.Save()
-
-        print(f"关闭：\t{save_path.as_posix()}")
         self.doc.Close(2)
 
-    def run_图层改名_导出图片(self):
+    def run_图层改名_导出图片(self) -> None:
+        """修改所有图层名称 导出图片."""
         save_path = Path(self.ps_path)
         all_layer_sets = self.get_all_layer_set(self.doc)
         all_layers = self.get_all_layer(self.doc)
@@ -268,12 +215,9 @@ class PSFile:
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
 
         # 插入广告
-        fun_插入广告(self.app, self.doc, self.tb_name, self.pwd.hash(secret="1221"))
-
-        print(f"保存：\t{save_path.as_posix()}")
+        sec_pass = "1221"  # noqa: S105
+        fun_插入广告(self.app, self.doc, self.tb_name, self.pwd.hash(secret=sec_pass))
         self.doc.Save()
-
-        print(f"关闭：\t{save_path.as_posix()}")
         self.doc.Close(2)
 
 
