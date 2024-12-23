@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import math
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
@@ -92,7 +93,8 @@ class ClassMakeXQ2:
         return obj_list
 
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
-        print(f"制作单行:{image_list}")  # noqa: T201
+        msg = f"制作单行:{image_list}"
+        logging.info(msg=msg)
         width = math.floor((self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list))
 
         im_list = []

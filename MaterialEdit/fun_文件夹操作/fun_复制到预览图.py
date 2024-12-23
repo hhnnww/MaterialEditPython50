@@ -1,3 +1,6 @@
+"""把素材文件夹图片复制到预览图."""
+
+import logging
 import shutil
 from pathlib import Path
 
@@ -6,12 +9,12 @@ from tqdm import tqdm
 from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
     image_make_web_thumbnail,
 )
-
-from ..setting import IMAGE_SUFFIX
+from MaterialEdit.setting import IMAGE_SUFFIX
 
 
 class ImageCopyToPreview:
     def __init__(self, folder_path: str, preview_path: str) -> None:
+        """素材文件夹，预览图文件夹."""
         self.folder_path_obj = Path(folder_path)
         self.preview_path_obj = Path(preview_path)
 
@@ -22,11 +25,11 @@ class ImageCopyToPreview:
             list[Path]: _description_
 
         """
-        pic_list = []
-        for in_file in self.folder_path_obj.rglob("*"):
-            if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
-                pic_list.append(in_file)
-        return pic_list
+        return [
+            in_file
+            for in_file in self.folder_path_obj.rglob("*")
+            if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX
+        ]
 
     def image_to_preview_image(self, image_path: Path) -> Path:
         """单个图片转换成预览图图片路径
@@ -45,28 +48,31 @@ class ImageCopyToPreview:
             ),
         )
 
-    def main(self):
+    def main(self) -> None:
+        """开始移动."""
         for image_file in tqdm(self.all_image(), desc="复制图片到预览图", ncols=100):
             preview_file = self.image_to_preview_image(image_file)
 
-            # AI 文件中的 link 文件
-            # 不复制
             if image_file.parent.stem.lower() == "links":
-                print(f"图片是AI文件夹内的link图片,不复制:{image_file}")
+                msg = f"图片是AI文件夹内的link图片,不复制:{image_file}"
+                logging.info(msg=msg)
                 continue
 
             # 图片已经存在
             if preview_file.exists() is True:
-                print(f"图片纯在不复制:{image_file}")
+                msg = f"图片纯在不复制:{image_file}"
+                logging.info(msg=msg)
                 continue
 
             # 图片在子文件夹内
             # 先创建父文件夹
             if preview_file.parent.exists() is False:
-                print(f"预览图需要创建父文件夹:{preview_file.parent}")
+                msg = f"预览图需要创建父文件夹:{preview_file.parent}"
+                logging.info(msg=msg)
                 preview_file.parent.mkdir(parents=True)
 
-            print(f"复制到预览图:{image_file}\t->\t{preview_file}")
+            msg = f"复制到预览图:{image_file}\t->\t{preview_file}"
+            logging.info(msg=msg)
 
-            shutil.copy(image_file, preview_file)
+            shutil.copy(src=image_file, dst=preview_file)
             image_make_web_thumbnail(image_path=preview_file)

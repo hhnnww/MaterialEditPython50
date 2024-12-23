@@ -48,7 +48,7 @@ class Layout列固定尺寸(LayoutInit):
         sm_width = self.fun_small_width
         sm_height = self.fun_small_height
 
-        for num, im_file in enumerate(cycle(self.image_list)):
+        for im_file in cycle(self.image_list):
             im = Image.open(im_file.path)
 
             if im.mode.lower() != "rgba":
@@ -60,11 +60,6 @@ class Layout列固定尺寸(LayoutInit):
                 height=sm_height,
                 position="center",
             )
-
-            if self.design_path is not None:
-                if Path(self.design_path).exists() is not True:
-                    Path(self.design_path).mkdir()
-                im.save((Path(self.design_path) / f"{num+1}.png").as_posix())
 
             line_list.append(im.copy())
 
@@ -88,5 +83,9 @@ class Layout列固定尺寸(LayoutInit):
             align_item="start",
             background_color=(255, 255, 255, 0),
         )
+
+        if Path(self.design_path).exists() is not True:
+            Path(self.design_path).mkdir()
+
         bg.save(fp=(Path(self.design_path) / "0.png").as_posix())
         return bg.crop((0, 0, self.xq_width, self.xq_height))

@@ -1,5 +1,6 @@
 """素材编辑程序."""
 
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -15,6 +16,10 @@ from router_打开百度网盘下载链接 import router as router_打开百度�
 
 Image.MAX_IMAGE_PIXELS = None
 app = FastAPI()
+
+logging.basicConfig(
+    level=logging.INFO,
+)
 
 
 origins = ["*"]
