@@ -1,3 +1,5 @@
+"""制作淘宝详情."""
+
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -46,7 +48,7 @@ class MakeProductImageRequestModel(BaseModel):
     has_water: int
 
 
-def fun_制作详情2(item: MakeProductImageRequestModel):
+def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901, PLR0912
     """制作详情"""
     if item.clear_upload_path:
         fun_清空桌面上传文件夹图片("xq")
@@ -90,7 +92,9 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
         image_list = [
             obj
             for obj in fun_遍历图片(
-                folder=item.effect_image_path, used_image_number=0, image_sort=True
+                folder=item.effect_image_path,
+                used_image_number=0,
+                image_sort=True,
             )
             if "_thumb" not in Path(obj).stem
         ]
@@ -138,15 +142,8 @@ def fun_制作详情2(item: MakeProductImageRequestModel):
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(title="素材预览图", desc="* 预览图与源文件对应")
 
-            if item.preview_image_sort == 1:
-                sort = True
-            else:
-                sort = False
-
-            if item.preview_has_material_info == 1:
-                has_name = True
-            else:
-                has_name = False
+            sort = item.preview_image_sort == 1
+            has_name = item.preview_has_material_info == 1
 
             preview_image = ClassMakeXQ2(
                 image_list=[Path(image) for image in image_list],

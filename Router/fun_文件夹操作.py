@@ -1,15 +1,17 @@
 """素材文件夹操作"""
 
-import os
+import contextlib
+import logging
 import shutil
+import subprocess
 from pathlib import Path
-from pprint import pprint
 
 import pythoncom
+from colorama import Fore, Style
 from PIL import Image
 from pydantic import BaseModel
 from tqdm import tqdm
-from win10toast import ToastNotifier  # type: ignore
+from win10toast import ToastNotifier
 from win32com.client import Dispatch
 
 from MaterialEdit import AIFile, PSFile
@@ -76,7 +78,7 @@ class RequestMaterialPathActionModel(BaseModel):
 
 def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, str]:
     """操作素材文件夹函数."""
-    pprint(item)
+    logging.info(item)
 
     material_structure = fun_文件夹初始化(root_path=item.root_path)
 
@@ -85,17 +87,17 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             open_sub_path(material_path=material_structure.material_path)
 
         case "打开素材文件夹":
-            os.startfile(material_structure.material_path)
+            subprocess.run(args=f"start {material_structure.material_path}", check=False, shell=True)
 
         case "打开预览图文件夹":
-            os.startfile(material_structure.preview_path)
+            subprocess.run(args=f"start {material_structure.preview_path}", check=False, shell=True)
 
         case "打开效果图文件夹":
             if Path(material_structure.effect_path) is True:
-                os.startfile(material_structure.effect_path)
+                subprocess.run(args=f"start {material_structure.effect_path}", check=False, shell=True)
 
         case "打开桌面上传文件夹":
-            os.startfile(HOME_UPDATE_FOLDER.as_posix())
+            subprocess.run(args=f"start {HOME_UPDATE_FOLDER.as_posix()}", check=False, shell=True)
 
         case "删除效果图":
             fun_删除文件夹(folder=material_structure.effect_path)
@@ -154,7 +156,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             all_file = []
             all_file.extend(rglob(material_structure.material_path, [".ai", ".eps"]))
 
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             app = Dispatch("Illustrator.Application")
             for in_file in tqdm(all_file, ncols=100, desc="处理AI文件"):
                 pic_state = False
@@ -179,9 +181,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 if pic_state is False:
                     AIFile(in_file.as_posix(), app, shop_name=item.shop_name).fun_导出PNG()
 
-            # app.Quit()
-
-            pythoncom.CoUninitialize()  # type: ignore
+            pythoncom.CoUninitialize()
 
             for in_file in Path(material_structure.material_path).rglob("*"):
                 if in_file.is_dir() and in_file.name in ["3000w", "2000w"]:
@@ -199,20 +199,20 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 else:
                     shutil.rmtree(in_file.as_posix())
 
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             ad_pic_list = fun_所有广告图片()
             for in_file in tqdm(all_file, ncols=100, desc="删除广告导出图片\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
                     # 如果是4KB的PSD不处理
-                    if in_file.stat().st_size == 4096:
-                        print("错误PSD文件", in_file)
+                    min_size = 4096
+                    if in_file.stat().st_size == min_size:
                         continue
 
-                    # 大小判断，超大的不处理
+                    # 大小判断 超大的不处理
                     size = in_file.stat().st_size / 1024 / 1024
-                    if size > 300:
-                        print(f"{in_file}:\t文件尺寸:\t{size},太大，不处理。")
+                    max_size = 300
+                    if size > max_size:
                         continue
 
                     PSFile(
@@ -220,19 +220,17 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         tb_name=item.shop_name,
                         ad_pic_list=ad_pic_list,
                     ).run_删除广告导出PNG()
-            # app = Dispatch("photoshop.application")
-            # app.Quit()
 
-            pythoncom.CoUninitialize()  # type: ignore
+            pythoncom.CoUninitialize()
 
         case "PSD-导出图片-添加广告":
             # 获取所有PSD
             all_file = []
             all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
 
-            for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
+            for in_file in tqdm(all_file, ncols=100, desc="导出图片 添加广告\t"):
                 pic_exists = False
                 for pic_suffix in [".jpg", ".png"]:
                     png_path = in_file.with_suffix(pic_suffix)
@@ -240,8 +238,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         pic_exists = True
 
                 if pic_exists is False:
-                    if in_file.stat().st_size == 4096:
-                        print("错误PSD文件", in_file)
+                    min_size = 4096
+                    if in_file.stat().st_size == min_size:
                         continue
 
                     PSFile(
@@ -249,21 +247,19 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         tb_name=item.shop_name,
                         ad_pic_list=[],
                     ).run_导出图片添加广告()
-            # app = Dispatch("photoshop.application")
-            # app.Quit()
 
-            pythoncom.CoUninitialize()  # type: ignore
+            pythoncom.CoUninitialize()
 
         case "PSD-图层改名-导出图片-添加广告":
-            # 获取所有PSD
             all_file = []
             all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             for in_file in tqdm(all_file, ncols=100, desc="导出图片，添加广告\t"):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-                    if in_file.stat().st_size == 4096:
+                    min_size = 4096
+                    if in_file.stat().st_size == min_size:
                         print("错误PSD文件", in_file)
                         continue
                     PSFile(
@@ -278,31 +274,28 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             pythoncom.CoUninitialize()  # type: ignore
 
         case "PSD-导出图片":
-            # 获取所有PSD
             all_file = []
             all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
 
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
 
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
-                    if in_file.stat().st_size == 4096:
-                        print("错误PSD文件", in_file)
+                    min_size = 4096
+                    if in_file.stat().st_size == min_size:
+                        msg = f"{Fore.RED}错误的PSD文件{Style.RESET_ALL} {in_file}"
+                        logging.info(msg=msg)
                         continue
-                    try:
+
+                    with contextlib.suppress(Exception):
                         PSFile(
                             ps_path=in_file.as_posix(),
                             tb_name=item.shop_name,
                             ad_pic_list=[],
                         ).run_导出图片()
-                    except Exception as e:
-                        print(f"错误的PSD文件{e}")
 
-            # app = Dispatch("photoshop.application")
-            # app.Quit()
-
-            pythoncom.CoUninitialize()  # type: ignore
+            pythoncom.CoUninitialize()
 
         case "删除EPS文件":
             fun_删除EPS文件(material_path=material_structure.material_path)
@@ -340,7 +333,6 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 ncols=100,
                 desc="删除ZIP文件",
             ):
-                print(in_file.as_posix())
                 in_file.unlink()
 
         case "AI文件重命名":
@@ -363,21 +355,20 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is not True:
-                    os.startfile(in_file.as_posix())
+                    subprocess.run(args=in_file.as_posix(), check=False)
 
         case "打开没有预览图的SKP":
             all_file = rglob(folder=material_structure.material_path, suffix=[".skp"])
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is not True:
-                    os.startfile(in_file.as_posix())
+                    subprocess.run(args=in_file.as_posix(), check=False)
 
         case "eps转ai":
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             app = Dispatch("Illustrator.Application")
             for in_file in Path(material_structure.material_path).rglob("*"):
                 if in_file.suffix.lower() in [".eps"] and in_file.is_file():
-                    print(in_file.as_posix())
                     ai_path = in_file.with_suffix(".ai")
 
                     doc = app.Open(in_file.as_posix())
@@ -446,7 +437,6 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 folder=material_structure.effect_path,
                 suffix=[".webp"],
             ):
-                print(in_file)
                 im = Image.open(in_file.as_posix())
                 if im.mode != "RGBA":
                     im = im.convert("RGBA")
@@ -474,13 +464,13 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             sd_rename.main()
 
         case "打开没有预览图的AI文件":
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             OpenNoPngAIFile(in_path=material_structure.material_path).main()
 
         case "打开没有预览图的PSD文件":
-            pythoncom.CoInitialize()  # type: ignore
+            pythoncom.CoInitialize()
             OpenNoImagePsdFiles(material_path=material_structure.material_path).main()
 
     fun_通知(msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。")
 
-    return dict(msg="ok")
+    return {"msg": "ok"}

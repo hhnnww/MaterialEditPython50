@@ -246,7 +246,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             xq_width=xq_width,
             spacing=item.spacing,
             crop_position=item.crop_position,
-            bg_color=bg_color,
+            design_path=path_jiegou.design_path,
         )
 
     elif item.first_image_layout == "1大2行2列":
@@ -426,6 +426,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             crop_position=item.crop_position,
             xq_width=xq_width,
             xq_height=xq_height,
+            design_path=path_jiegou.design_path,
         )
 
     # ---------------- 水印 ----------------

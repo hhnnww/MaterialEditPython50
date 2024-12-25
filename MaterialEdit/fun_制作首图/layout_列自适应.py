@@ -1,5 +1,6 @@
 import math
 from itertools import cycle
+from pathlib import Path
 
 from PIL import Image
 
@@ -16,10 +17,11 @@ def layout_列自适应(
     xq_height: int,
     spacing: int,
     crop_position: ALIGNITEM,
-    bg_color: tuple,
-):
+    design_path: str,
+) -> Image.Image:
+    """列自适应首图."""
     spacing = spacing - 4
-
+    bg_color = (255, 255, 255, 0)
     col_width = math.ceil((xq_width - ((col - 1) * spacing)) / col)
 
     in_line = []
@@ -29,7 +31,7 @@ def layout_列自适应(
         # 处理小图
         im = Image.open(image.path)
         if im.mode.lower() != "rgba":
-            im = im.convert("RGBA")
+            im = im.convert(mode="RGBA")
 
         im = fun_图片裁剪(
             im=im,
@@ -37,8 +39,6 @@ def layout_列自适应(
             height=math.ceil(col_width / (im.width / im.height)),
             position=crop_position,
         )
-
-        # im.thumbnail((col_width, bg_height))
 
         in_line.append(im.copy())
 
@@ -51,7 +51,7 @@ def layout_列自适应(
                 align_item="start",
                 background_color=bg_color,
             )
-            inline_im = inline_im.crop((0, 0, inline_im.width, xq_height))
+
             in_line_pil.append(inline_im.copy())
             in_line = []
 
@@ -66,15 +66,10 @@ def layout_列自适应(
         background_color=bg_color,
     )
 
-    bg = fun_图片裁剪(im=bg, width=xq_width, height=xq_height, position="start")
+    if Path(design_path).exists() is not True:
+        Path(design_path).mkdir()
 
-    # bg = fun_图片扩大粘贴(
-    #     im=bg,
-    #     width=xq_width,
-    #     height=xq_height,
-    #     left="center",
-    #     top="end",
-    #     background_color=(255, 255, 255, 255),
-    # )
+    design_img = f"{len(list(Path(design_path).iterdir()))}.png"
+    bg.save((Path(design_path) / f"{design_img}").as_posix())
 
-    return bg
+    return fun_图片裁剪(im=bg, width=xq_width, height=xq_height, position="start")

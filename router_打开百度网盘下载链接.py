@@ -1,5 +1,7 @@
-import os
+"""打开百度网盘下载链接."""
+
 import re
+import subprocess
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -12,19 +14,20 @@ class ItemIn(BaseModel):
 
 
 @router.post("/open_link")
-def open_baidu_link(item_in: ItemIn):
+def open_baidu_link(item_in: ItemIn) -> None:
+    """打开网盘下载链接."""
     text = item_in.md_text
     link_list = re.findall(r"(https://pan.baidu.com.*?)\n", text)
+
     for link in link_list:
-        link: str
-        link = re.sub(r"\s", "", link)
+        re_link = re.sub(r"\s", "", link)
 
-        if "提取码" in link:
-            link = re.sub("提取码:.*", "", link)
+        if "提取码" in re_link:
+            re_link = re.sub("提取码:.*", "", re_link)
 
-        if "?pwd" not in link:
-            tqm: str = re.findall(rf"{link}[\s\S]*?提取码：(.*?)\n", text)[0]
+        if "?pwd" not in re_link:
+            tqm: str = re.findall(rf"{re_link}[\s\S]*?提取码：(.*?)\n", text)[0]  # noqa: RUF001
             tqm = re.sub(r"\s", "", tqm)
-            link = f"{link}?pwd={tqm}"
+            re_link = f"{re_link}?pwd={tqm}"
 
-        os.startfile(link)
+        subprocess.run(args=[re_link], check=False)

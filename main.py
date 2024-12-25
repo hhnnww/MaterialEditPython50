@@ -3,6 +3,7 @@
 import logging
 from pathlib import Path
 
+from colorama import Fore, Style
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -19,6 +20,7 @@ app = FastAPI()
 
 logging.basicConfig(
     level=logging.INFO,
+    format=f"{Fore.YELLOW}%(levelname)s{Style.RESET_ALL}:\t%(asctime)s - %(message)s",
 )
 
 

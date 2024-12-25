@@ -1,5 +1,6 @@
 """PPT导出PNG图片"""
 
+import contextlib
 import shutil
 from pathlib import Path
 
@@ -20,6 +21,7 @@ class PPT导出图片:
         self,
         ppt_path: Path,
     ) -> None:
+        """PPT导出图片."""
         self.ppt_path = ppt_path
         self.ppt_dir = ppt_path.parent / ppt_path.stem
         self.png_path = ppt_path.with_suffix(".png")
@@ -35,7 +37,7 @@ class PPT导出图片:
         return self.pic_width - self.spacing * 2
 
     @property
-    def small_width(self):
+    def small_width(self) -> int:
         """小图宽度"""
         return int((self.pic_width - ((self.line_col + 1) * self.spacing)) / self.line_col)
 
@@ -46,46 +48,32 @@ class PPT导出图片:
         return im.width
 
     @property
-    def pic_files(self):
+    def pic_files(self) -> list[Path]:
         """获取所欲图片列表"""
         pic_files = rglob(
             folder=self.ppt_dir.as_posix(),
             suffix=[".png", ".jpeg", ".jpg"],
         )
-        if len(pic_files) < 13:
+        max_image_num = 13
+        if len(pic_files) < max_image_num:
             pic_files += pic_files
 
         return pic_files
 
-    def fun_ppt导出图片(self):
+    def fun_ppt导出图片(self) -> None:
         """使用win32com导出所有图片"""
-        pythoncom.CoInitialize()  # type: ignore
+        pythoncom.CoInitialize()
         ppt_app = DispatchEx("PowerPoint.Application")
         ppt_app.DisplayAlerts = 0
 
-        try:
+        with contextlib.suppress(pywintypes.com_error):
             ppt = ppt_app.Presentations.Open(self.ppt_path.as_posix())
-        except pywintypes.com_error:  # type: ignore
-            print(f"错误的PPT文件{self.ppt_path}")
-            return
-
-        try:
             ppt.SaveAs(self.ppt_dir, 17)
-        except pywintypes.com_error:  # type: ignore
-            print(f"图片导出错误{self.ppt_path}")
+            if self.ppt_path.suffix.lower() == ".ppt":
+                ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
+                self.ppt_path.unlink()
+            self.fun_图片合并()
             ppt.Close()
-            return
-
-        if self.ppt_path.suffix.lower() == ".ppt":
-            ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
-            self.ppt_path.unlink()
-
-        self.fun_图片合并()
-
-        try:
-            ppt.Close()
-        except pywintypes.com_error:  # type: ignore
-            ppt_app.Quit()
 
     def fun_图片合并(self) -> None:
         """合并所有小图片"""

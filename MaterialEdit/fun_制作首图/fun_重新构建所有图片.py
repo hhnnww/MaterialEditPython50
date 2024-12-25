@@ -1,17 +1,21 @@
+"""构建所有图片."""
+
+import logging
+
 from PIL import Image
 
-from ..type import ImageModel
+from MaterialEdit.type import ImageModel
 
 
-def fun_重新构建所有图片(image_list: list[ImageModel]):
-    list = []
+def fun_重新构建所有图片(image_list: list[ImageModel]) -> list[ImageModel]:
+    """构建所有图片."""
+    img_list = []
     for obj in image_list:
         with Image.open(obj.path) as im:
-            print(obj.path)
+            logging.info(msg=obj.path)
             ratio = im.width / im.height
-            if ratio < 0.2:
-                ratio = 0.2
+            ratio = max(ratio, 0.2)
 
-            list.append(ImageModel(path=obj.path, ratio=ratio))
+            img_list.append(ImageModel(path=obj.path, ratio=ratio))
 
-    return list
+    return img_list

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .type import _FolderStructure
+from MaterialEdit.type import _FolderStructure
 
 
 def fun_创建文件夹结构(root_path: str | Path) -> _FolderStructure:

@@ -95,6 +95,7 @@ class ClassMakeXQ2:
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
         msg = f"制作单行:{image_list}"
         logging.info(msg=msg)
+
         width = math.floor((self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list))
 
         im_list = []
@@ -135,7 +136,7 @@ class ClassMakeXQ2:
                 next_list = [*in_list, self.image_list[num + 1]]
 
             if (
-                break_num == 0
+                (break_num == 0 and len(in_list) == self.col - 1)
                 or len(in_list) == self.col
                 or self.__计算单行图片的比例(online_comb=next_list) >= self.oneline_ratio
                 or (num + 1 == len(self.image_list) and len(in_list) > 0)
@@ -151,12 +152,7 @@ class ClassMakeXQ2:
         return image_list
 
     def main(self) -> Image.Image:
-        """开始执行制作详情
-
-        Returns:
-            Image.Image: _description_
-
-        """
+        """开始执行制作详情"""
         im_list = [self.__fun_制作单行(image_list=line_image) for line_image in self.__fun_组合图片列表]
 
         spacing = 0 if self.has_name else self.space

@@ -1,18 +1,17 @@
-from typing import List
+import logging
 
 from colorama import Back, Fore, Style
 from win32com.client import CDispatch
 
-from .model import IncludeName, IsName, IsPhoto
+from .model import IncludeName, IsName
 
 
 def com_普通图层广告(
-    app: CDispatch,
     art_layer: CDispatch,
-    include_names: List[IncludeName],
-    is_names: List[IsName],
-    photo_names: List[IsPhoto],
+    include_names: list[IncludeName],
+    is_names: list[IsName],
 ):
+    """处理普通图层广告."""
     visible = art_layer.Visible
     layer_name: str = art_layer.Name
     layer_name = layer_name.lower()
@@ -22,41 +21,22 @@ def com_普通图层广告(
     if layer_state == 1:
         for in_name in include_names:
             if str(in_name.name).lower() in layer_name:
-                print(
-                    "\n"
-                    + Back.RED
-                    + Fore.BLACK
-                    + f"普通图层发现广告：\t{art_layer.Name}"
-                    + Style.RESET_ALL
-                )
+                msg = ("\n" + Back.RED + Fore.BLACK + f"普通图层发现广告:\t{art_layer.Name}" + Style.RESET_ALL,)
+                logging.info(msg=msg)
+
                 art_layer.Delete()
                 layer_state = 0
                 break
 
     # 删除等于字符
     if layer_state == 1:
-        for in_name in is_names:  # type:ignore
+        for in_name in is_names:
             if str(in_name.name).lower() == layer_name:
-                print(
-                    "\n"
-                    + Back.RED
-                    + Fore.BLACK
-                    + f"普通图层发现广告：\t{art_layer.Name}"
-                    + Style.RESET_ALL
-                )
+                msg = ("\n" + Back.RED + Fore.BLACK + f"普通图层发现广告:\t{art_layer.Name}" + Style.RESET_ALL,)
+                logging.info(msg=msg)
                 art_layer.Delete()
                 layer_state = 0
                 break
-
-    # 高斯模糊
-    # if layer_state == 1:
-    #     for in_name in photo_names:
-    #         if in_name.name in art_layer.Name:
-    #             print('\n' + Back.RED + Fore.BLACK + f"普通图层发现广告：\t{art_layer.Name}" + Style.RESET_ALL)
-    #             # 高斯模糊
-    #             desc234 = Dispatch("Photoshop.ActionDescriptor")
-    #             desc234.PutUnitDouble(app.StringIDToTypeID("radius"), app.StringIDToTypeID("pixelsUnit"), 50.000000)
-    #             app.ExecuteAction(app.StringIDToTypeID("gaussianBlur"), desc234, 3)
 
     # 修改名字
     if layer_state == 1:

@@ -1,16 +1,24 @@
+"""固定裁剪."""
+
+from __future__ import annotations
+
 import math
+from collections.abc import Generator
 from itertools import cycle
+from pathlib import Path
+from typing import TYPE_CHECKING
 
 from PIL import Image
 from tqdm import tqdm
 
+from MaterialEdit.fun_制作首图.fun_重新构建所有图片 import fun_重新构建所有图片
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
-from ..type import ALIGNITEM, ImageModel
-from .fun_重新构建所有图片 import fun_重新构建所有图片
+if TYPE_CHECKING:
+    from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
 def fun_layout_固定裁剪2(
@@ -20,20 +28,22 @@ def fun_layout_固定裁剪2(
     line: int,
     spacing: int,
     crop_position: ALIGNITEM,
-):
+    design_path: str,
+) -> Image.Image:
+    """固定裁剪."""
     spacing = spacing - 4
     image_list = fun_重新构建所有图片(image_list)
 
     # 计算所有图片的平均比例
     all_image_average_ratio = sum(
-        [image.ratio for image in image_list if image.ratio is not None]
+        [image.ratio for image in image_list if image.ratio is not None],
     ) / len(image_list)
 
-    image_list = cycle(image_list)  # type: ignore
+    image_list = cycle(image_list)  # type: ignore  # noqa: PGH003
 
     # 计算单行各种图片的比例
     oneline_num_ratio_list = list(
-        fun_计算单行所有图片数量的比例(line, xq_width, xq_height, spacing)
+        fun_计算单行所有图片数量的比例(line, xq_width, xq_height, spacing),
     )
 
     for obj in oneline_num_ratio_list:
@@ -51,38 +61,47 @@ def fun_layout_固定裁剪2(
 
     for comb_list in tqdm(image_comb_list, ncols=100, desc="制作首图\t"):
         one_line = []
-        for image in comb_list:
-            im = Image.open(image.path)
 
-            if im.mode != "RGBA":
-                im = im.convert("RGBA")
+        if comb_list:
+            for image in comb_list:
+                im = Image.open(image.path)
 
-            im = fun_图片裁剪(im, image_width, image_height, crop_position)
+                if im.mode != "RGBA":
+                    im = im.convert("RGBA")
 
-            # if spacing > 0:
-            #     im = fun_图片画边框(im, border_color=(240, 240, 240, 255))
-            #     im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
-
-            one_line.append(im)
+                im = fun_图片裁剪(im, image_width, image_height, crop_position)
+                one_line.append(im)
 
         one_line_im = fun_图片横向拼接(
-            one_line, spacing, "center", (255, 255, 255, 255)
+            one_line,
+            spacing,
+            "center",
+            (255, 255, 255, 0),
         )
 
         all_comb.append(one_line_im)
 
-    bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 255))
+    bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 0))
 
     bg = fun_图片扩大粘贴(
-        bg, xq_width, xq_height, "center", "center", (255, 255, 255, 255)
+        bg,
+        xq_width,
+        xq_height,
+        "center",
+        "center",
+        (255, 255, 255, 0),
     )
 
-    # bg = bg.resize((xq_width, xq_height), resample=Image.Resampling.LANCZOS)
+    if Path(design_path).exists() is not True:
+        Path(design_path).mkdir()
+
+    design_image_name = f"{len(list(Path(design_path).iterdir()))}.png"
+    bg.save(fp=f"{Path(design_path)}/{design_image_name}")
 
     return bg
 
 
-def fun_列表分段(image_list: list[ImageModel], row: int, col: int):
+def fun_列表分段(image_list: list[ImageModel], row: int, col: int) -> list[list[ImageModel]] | None:
     left = []
     inline = []
     for in_image in image_list:
@@ -94,10 +113,16 @@ def fun_列表分段(image_list: list[ImageModel], row: int, col: int):
         if len(left) == col:
             return left
 
+    return None
+
 
 def fun_计算单行所有图片数量的比例(
-    line: int, xq_width: int, xq_height: int, spacing: int
-):
+    line: int,
+    xq_width: int,
+    xq_height: int,
+    spacing: int,
+) -> Generator[list[int | float]]:
+    """计算图片比例."""
     oneline_height = int((xq_height - ((line + 1) * spacing)) / line)
     for x in range(1, 10):
         small_image_width = int((xq_width - ((x + 1) * spacing)) / x)

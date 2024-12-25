@@ -28,6 +28,7 @@ class ClassOneImage:
         all_material_file: list[Path],
         has_water: bool,
     ) -> None:
+        """处理单个图片."""
         self.image_pil = image_pil
         self.image_width = image_width
         self.background_color = background_color
@@ -42,11 +43,7 @@ class ClassOneImage:
 
     @cached_property
     def fun_获取对应源文件(self) -> Path:
-        """根据图片路径获取源文件路径
-
-        Returns:
-            _type_: _description_
-        """
+        """根据图片路径获取源文件路径"""
         for in_file in self.all_material_file:
             if in_file.stem in self.image_path.stem and self.shop_name in in_file.stem:
                 return in_file
@@ -55,11 +52,7 @@ class ClassOneImage:
 
     @cached_property
     def fun_图片比例(self) -> float:
-        """计算图片比例
-
-        Returns:
-            _type_: _description_
-        """
+        """计算图片比例"""
         return self.image_pil.width / self.image_pil.height
 
     @cached_property
@@ -120,7 +113,10 @@ class ClassOneImage:
         max_height = 5000
         if height > max_height:
             small_im = fun_图片裁剪(
-                im=ori_im, width=self.image_width, height=max_height, position="start"
+                im=ori_im,
+                width=self.image_width,
+                height=max_height,
+                position="start",
             )
 
         else:
@@ -133,7 +129,7 @@ class ClassOneImage:
         if self.has_water is True:
             for left in [
                 # 30,
-                int(((small_im.width - self.__fun_图片中间广告图片.width) / 2)),
+                int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
                 # small_im.width - self.__fun_图片中间广告图片.width - 30,
             ]:
                 for top in [
@@ -153,11 +149,16 @@ class ClassOneImage:
 
         return small_im
 
+    def __str__(self) -> str:
+        """打印名."""
+        return self.image_path.name
+
     def main(self) -> Image.Image:
         """生成详情中的单个图片
 
         Returns:
             Image.Image: _description_
+
         """
         if self.has_name:
             bottom_im = fun_图片竖向拼接(

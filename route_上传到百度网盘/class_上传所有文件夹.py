@@ -30,11 +30,13 @@ class UpAllFolderToBaiduWangPan:
 
     def __fun_所有需要上传的文件夹(self) -> list[UpOneFolderToBaiduWangPan]:
         """获取所有需要上传的文件夹."""
+        exp_point = self.__fun_获取资源管理器的文件夹坐标()
+        baidu_pint = self.__fun_获取网盘的坐标()
         return [
             UpOneFolderToBaiduWangPan(
                 folder=folder,
-                exp_point=self.__fun_获取资源管理器的文件夹坐标(),
-                baidu_point=self.__fun_获取网盘的坐标(),
+                exp_point=exp_point,
+                baidu_point=baidu_pint,
             )
             for folder in Path(self.parent_path).iterdir()
             if folder.is_dir() and self.start_stem <= get_path_num(stem=folder.stem) <= self.end_stem
@@ -48,7 +50,7 @@ class UpAllFolderToBaiduWangPan:
             time.sleep(2)
             win.resizeTo(
                 newWidth=int(self.win_width / 2),
-                newHeight=self.win_height,
+                newHeight=int(self.win_height / 2),
             )
             win.moveTo(newLeft=int(self.win_width / 2), newTop=0)
             time.sleep(2)
@@ -64,7 +66,7 @@ class UpAllFolderToBaiduWangPan:
             time.sleep(2)
             win.resizeTo(
                 newWidth=int(self.win_width / 2),
-                newHeight=self.win_height,
+                newHeight=int(self.win_height / 2),
             )
             win.moveTo(newLeft=0, newTop=0)
             time.sleep(2)
@@ -94,8 +96,9 @@ class UpAllFolderToBaiduWangPan:
             )
 
     def main(self) -> None:
-        """遍历需要传输的文件夹开始操作."""
+        """开始上传."""
         self.__fun_隐藏当前所有窗口()
+        time.sleep(2)
 
         with contextlib.suppress(pygetwindow.PyGetWindowException):
             self.__fun_打开百度网盘并移动到置顶位置()

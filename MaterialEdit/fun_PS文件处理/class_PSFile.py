@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import logging
 import time
 from pathlib import Path
 from uuid import uuid1
 
+from colorama import Fore, Style
 from passlib.context import CryptContext
 from win32com.client import CDispatch, Dispatch
 
@@ -16,7 +18,7 @@ from .fun_插入广告 import fun_插入广告
 from .fun_文字图层替换广告 import com_文字图层广告
 from .fun_普通图层替换广告 import com_普通图层广告
 from .fun_清理注释 import fun_清理注释
-from .model import IncludeName, IsName, IsPhoto, TextReplaceName, database
+from .model import IncludeName, IsName, TextReplaceName, database
 
 
 class LayerType:
@@ -50,6 +52,9 @@ class PSFile:
         self.pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
         fun_清理注释(self.app)
+
+        msg = f"{Fore.GREEN}处理PSD{Style.RESET_ALL}:{ps_path}"
+        logging.info(msg=msg)
 
     @staticmethod
     def get_all_layer(in_object: CDispatch) -> list:
@@ -90,17 +95,14 @@ class PSFile:
             include_names: list[IncludeName] = list(IncludeName.select())
             is_names: list[IsName] = list(IsName.select())
             text_replace: list[TextReplaceName] = list(TextReplaceName.select())
-            photo_names: list[IsPhoto] = list(IsPhoto.select())
 
         for in_layer in all_layers:
             # 普通图层
             if in_layer.Kind != ArtLayerKind.TextLayer:
                 com_普通图层广告(
-                    app=self.app,
                     art_layer=in_layer,
                     include_names=include_names,
                     is_names=is_names,
-                    photo_names=photo_names,
                 )
                 normal_kind = 17
                 if in_layer.Kind == normal_kind:
@@ -155,6 +157,8 @@ class PSFile:
                     img_1 = fun_打开图片(img_path=img_path.as_posix())
                     res = run_对比所有图片(img=img_1, ad_img_list=self.ad_pic_list)
                     if res is True:
+                        msg = f"{Fore.GREEN}图层对比发现广告{Style.RESET_ALL},{item.item}"
+                        logging.info(msg=msg)
                         item.item.Delete()
 
                     new_name = img_path.with_stem(stem=str(uuid1()))
