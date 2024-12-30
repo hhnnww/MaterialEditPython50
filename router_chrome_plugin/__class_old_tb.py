@@ -1,13 +1,16 @@
+from collections.abc import Generator
+
 from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
-from router_chrome_plugin.__class_scrapy_init import ScrapyInit
+from router_chrome_plugin.scrapy_base import ScrapyBase
 
 
-class OldTbScrapy(ScrapyInit):
-    def fun_get_old_tb(self):
+class OldTbScrapy(ScrapyBase):
+    def fun_get_old_tb(self) -> Generator[MaterialModel]:
+        """采集老版本淘宝页面."""
         ma_list = self.html.find(
-            "#J_ShopSearchResult > div > div.shop-hesper-bd.grid > div > dl"
+            "#J_ShopSearchResult > div > div.shop-hesper-bd.grid > div > dl",
         )
-        for ma in ma_list:  # type: ignore
+        for ma in ma_list:  # type: ignore  # noqa: PGH003
             link = "https:" + ma.find("a", first=True).attrs.get("href")
             img = "https:" + ma.find("img", first=True).attrs.get("src")
             yield MaterialModel(url=link, img=img, state=False)

@@ -468,6 +468,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             format_title=item.format_title,
             shop_name=item.shop_name,
             material_id=item.material_id,
+            bg_color=fun_转换COLOR(bg_color=item.bg_color),
         )
 
     elif item.first_image_style == "黑鲸":

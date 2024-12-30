@@ -21,8 +21,8 @@ class DelPILBorder:
 
     @cached_property
     def left(self) -> int:
-        for left in range(0, self.img.width):
-            for top in range(0, self.img.height):
+        for left in range(self.img.width):
+            for top in range(self.img.height):
                 if self.img.getpixel((left, top)) != self.fun_边框颜色:
                     if left > 0:
                         left -= 1
@@ -32,8 +32,8 @@ class DelPILBorder:
 
     @cached_property
     def upper(self) -> int:
-        for top in range(0, self.img.height):
-            for left in range(0, self.img.width):
+        for top in range(self.img.height):
+            for left in range(self.img.width):
                 if self.img.getpixel(xy=(left, top)) != self.fun_边框颜色:
                     if top > 1:
                         top -= 1
@@ -43,7 +43,7 @@ class DelPILBorder:
     @cached_property
     def right(self) -> int:
         for right in range(self.img.width - 1, 0, -1):
-            for top in range(0, self.img.height):
+            for top in range(self.img.height):
                 if self.img.getpixel(xy=(right, top)) != self.fun_边框颜色:
                     if right < self.img.width:
                         right += 1
@@ -54,7 +54,7 @@ class DelPILBorder:
     @cached_property
     def bottom(self) -> int:
         for bottom in range(self.img.height - 1, 0, -1):
-            for left in range(0, self.img.width):
+            for left in range(self.img.width):
                 if self.img.getpixel((left, bottom)) != self.fun_边框颜色:
                     if bottom < self.img.height:
                         bottom += 1

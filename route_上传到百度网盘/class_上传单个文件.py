@@ -34,11 +34,7 @@ class UpOneFolderToBaiduWangPan:
         pyautogui.hotkey("enter")
 
     def __移动文件夹(self) -> None:
-        """拖动素材文件夹到百度网盘.
-
-        1.点击 click
-        2.移动 holdclick
-        """
+        """拖动素材文件夹到百度网盘."""
         pyautogui.leftClick(x=self.exp_point.x, y=self.exp_point.y + 50)
         time.sleep(2)
         pyautogui.dragTo(x=self.baidu_point.x, y=self.baidu_point.y, duration=1)

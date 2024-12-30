@@ -54,8 +54,8 @@ def fun_layout_固定裁剪2(
     row = oneline_num_ratio_list[0][0]
     image_comb_list = fun_列表分段(image_list, row, line)
 
-    image_height = math.ceil((xq_height - ((line + 1) * spacing)) / line)
-    image_width = math.ceil((xq_width - ((row + 1) * spacing)) / row)
+    image_height = math.floor((xq_height - ((line + 1) * spacing)) / line)
+    image_width = math.floor((xq_width - ((row + 1) * spacing)) / row)
 
     all_comb = []
 

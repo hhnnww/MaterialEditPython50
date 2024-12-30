@@ -88,7 +88,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
 
     # ---------------- 制作效果图 ----------------
 
-    if item.has_effect_image == 1 and Path(item.effect_image_path).exists() is True:
+    if item.has_effect_image and Path(item.effect_image_path).exists() is True:
         image_list = [
             obj
             for obj in fun_遍历图片(

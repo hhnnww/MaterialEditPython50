@@ -87,17 +87,23 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             open_sub_path(material_path=material_structure.material_path)
 
         case "打开素材文件夹":
-            subprocess.run(args=f"start {material_structure.material_path}", check=False, shell=True)
+            subprocess.Popen(args=f"explorer {material_structure.material_path.replace('/','\\')}", shell=True)
 
         case "打开预览图文件夹":
-            subprocess.run(args=f"start {material_structure.preview_path}", check=False, shell=True)
+            subprocess.run(
+                args=f"explorer {material_structure.preview_path.replace('/','\\')}", check=False, shell=True
+            )
 
         case "打开效果图文件夹":
             if Path(material_structure.effect_path) is True:
-                subprocess.run(args=f"start {material_structure.effect_path}", check=False, shell=True)
+                subprocess.run(
+                    args=f"explorer {material_structure.effect_path.replace('/','\\')}",
+                    check=False,
+                    shell=True,
+                )
 
         case "打开桌面上传文件夹":
-            subprocess.run(args=f"start {HOME_UPDATE_FOLDER.as_posix()}", check=False, shell=True)
+            subprocess.run(args=f"explorer {HOME_UPDATE_FOLDER.as_posix().replace('/','\\')}", check=False, shell=True)
 
         case "删除效果图":
             fun_删除文件夹(folder=material_structure.effect_path)

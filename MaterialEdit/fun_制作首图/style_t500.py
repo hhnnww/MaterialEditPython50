@@ -6,15 +6,23 @@ from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转
 )
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_画一个圆形横框 import fun_画一个圆形横框
 from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一个圆角矩形
 
-from ..fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
-
 
 def fun_T500首图(
-    im: Image.Image, title: str, format_title: str, shop_name: str, material_id: str
-):
+    im: Image.Image,
+    title: str,
+    format_title: str,
+    shop_name: str,
+    material_id: str,
+    bg_color: tuple[int, ...] = (255, 255, 255, 255),
+) -> Image.Image:
+    im_bg = Image.new("RGBA", im.size, bg_color)
+    im_bg.paste(im, (0, 0), im)
+    im = im_bg
+
     circle = fun_画一个圆角矩形(
         width=550,
         height=550,
@@ -42,10 +50,16 @@ def fun_T500首图(
         background_color=(0, 0, 0, 255),
     )
     water_pil_shop_name = fun_图片竖向拼接(
-        [water_pil_shop_name, water_pil_shop_english], 5, "center", (0, 0, 0, 255)
+        [water_pil_shop_name, water_pil_shop_english],
+        5,
+        "center",
+        (0, 0, 0, 255),
     )
     water_pil = fun_图片竖向拼接(
-        [water_pil, water_pil_shop_name], 10, "center", (0, 0, 0, 255)
+        [water_pil, water_pil_shop_name],
+        10,
+        "center",
+        (0, 0, 0, 255),
     )
     circle.paste(
         water_pil,
@@ -76,15 +90,16 @@ def fun_T500首图(
         en_size_expand_ratio=1,
     )
     bottom_pil = fun_图片竖向拼接(
-        [ad_2_pil, material_id_pil], 20, "center", (0, 0, 0, 255)
+        [ad_2_pil, material_id_pil],
+        20,
+        "center",
+        (0, 0, 0, 255),
     )
     circle.paste(
         bottom_pil,
         (
             int((circle.width - bottom_pil.width) / 2),
-            int((((circle.height - 250) / 2) - bottom_pil.height) / 2)
-            + int(((circle.height - 250) / 2) + 250)
-            - 10,
+            int((((circle.height - 250) / 2) - bottom_pil.height) / 2) + int(((circle.height - 250) / 2) + 250) - 10,
         ),
         bottom_pil,
     )
@@ -137,7 +152,9 @@ def fun_T500首图(
         en_size_expand_ratio=1,
     )
     format_title_pil.thumbnail(
-        (format_circle_pil.width, format_circle_pil.height), Image.Resampling.LANCZOS, 3
+        (format_circle_pil.width, format_circle_pil.height),
+        Image.Resampling.LANCZOS,
+        3,
     )
     format_circle_pil.paste(
         format_title_pil,
@@ -161,7 +178,9 @@ def fun_T500首图(
         en_size_expand_ratio=1,
     )
     big_circle.paste(
-        ad_title_pil, (80 + format_circle_pil.width + 30, 180), ad_title_pil
+        ad_title_pil,
+        (80 + format_circle_pil.width + 30, 180),
+        ad_title_pil,
     )
 
     im = fun_图片扩大粘贴(
