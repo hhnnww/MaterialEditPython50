@@ -1,5 +1,6 @@
 """打开百度网盘下载链接."""
 
+import logging
 import re
 import subprocess
 
@@ -17,7 +18,7 @@ class ItemIn(BaseModel):
 def open_baidu_link(item_in: ItemIn) -> None:
     """打开网盘下载链接."""
     text = item_in.md_text
-    link_list = re.findall(r"(https://pan.baidu.com.*?)\n", text)
+    link_list = re.findall("(https://pan.baidu.com.*?)\n", text)
 
     for link in link_list:
         re_link = re.sub(r"\s", "", link)
@@ -26,8 +27,17 @@ def open_baidu_link(item_in: ItemIn) -> None:
             re_link = re.sub("提取码:.*", "", re_link)
 
         if "?pwd" not in re_link:
-            tqm: str = re.findall(rf"{re_link}[\s\S]*?提取码：(.*?)\n", text)[0]  # noqa: RUF001
+            tqm: str = re.findall(rf"{re_link}[\s\S]*?提取码：(.*?)\n", text)[0]
             tqm = re.sub(r"\s", "", tqm)
             re_link = f"{re_link}?pwd={tqm}"
 
-        subprocess.run(args=[re_link], check=False)
+        msg = f"打开链接: {re_link}"
+        logging.info(msg)
+        subprocess.Popen(
+            args=[
+                "start",
+                "msedge",
+                re_link,
+            ],
+            shell=True,
+        )

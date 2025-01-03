@@ -3,8 +3,8 @@ from pathlib import Path
 from PIL import Image
 from tqdm import tqdm
 
-from ..fun_图片编辑 import ImageEdit
-from .fun_遍历指定文件 import rglob
+from MaterialEdit.fun_图片编辑 import ImageEdit
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
 class MakeCalenderPic:
@@ -27,7 +27,8 @@ class MakeCalenderPic:
     @staticmethod
     def fun_获取文件夹所有图片(sub_path: Path) -> list[Image.Image]:
         png_file_list = [
-            Image.open(obj.as_posix()) for obj in rglob(folder=sub_path.as_posix(), suffix=[".png"])
+            Image.open(obj.as_posix())
+            for obj in rglob(folder=sub_path.as_posix(), suffix=[".png"])
         ]
         png_file_list.sort(key=lambda k: k.width / k.height, reverse=True)
 
@@ -58,7 +59,9 @@ class MakeCalenderPic:
         col_width = ori_width / all_ratio
         small_height = int(ori_width / all_ratio)
 
-        pil_list = [self.fun_制作单个图片(obj, col_width, small_height) for obj in pil_list]
+        pil_list = [
+            self.fun_制作单个图片(obj, col_width, small_height) for obj in pil_list
+        ]
 
         return ImageEdit.fun_图片横向拼接(
             pil_list,

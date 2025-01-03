@@ -52,7 +52,6 @@ from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目�
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
-from MaterialEdit.fun_文件夹操作.fun_解压ZIP import fun_unzip_file
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
@@ -87,11 +86,16 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             open_sub_path(material_path=material_structure.material_path)
 
         case "打开素材文件夹":
-            subprocess.Popen(args=f"explorer {material_structure.material_path.replace('/','\\')}", shell=True)
+            subprocess.Popen(
+                args=f"explorer {material_structure.material_path.replace('/','\\')}",
+                shell=True,
+            )
 
         case "打开预览图文件夹":
             subprocess.run(
-                args=f"explorer {material_structure.preview_path.replace('/','\\')}", check=False, shell=True
+                args=f"explorer {material_structure.preview_path.replace('/','\\')}",
+                check=False,
+                shell=True,
             )
 
         case "打开效果图文件夹":
@@ -103,7 +107,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 )
 
         case "打开桌面上传文件夹":
-            subprocess.run(args=f"explorer {HOME_UPDATE_FOLDER.as_posix().replace('/','\\')}", check=False, shell=True)
+            subprocess.run(
+                args=f"explorer {HOME_UPDATE_FOLDER.as_posix().replace('/','\\')}",
+                check=False,
+                shell=True,
+            )
 
         case "删除效果图":
             fun_删除文件夹(folder=material_structure.effect_path)
@@ -112,12 +120,18 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             fun_删除文件夹(folder=material_structure.preview_path)
 
         case "解压ZIP":
-            for in_file in tqdm(
-                rglob(folder=material_structure.material_path, suffix=[".zip"]),
-                ncols=100,
-                desc="解压ZIP\t",
-            ):
-                fun_unzip_file(file_path=in_file)
+            in_file_list = [
+                zippath.absolute().as_posix()
+                for zippath in rglob(
+                    folder=material_structure.material_path,
+                    suffix=[".zip", ".rar", ".7z"],
+                )
+            ]
+            args = ["C:\\Program Files\\Bandizip\\Bandizip.exe", "bx", "-target:name"]
+            args.extend(in_file_list)
+            subprocess.Popen(
+                args=args,
+            )
 
         case "移动到根目录":
             fun_移动到根目录(folder=material_structure.material_path)
@@ -152,7 +166,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             )
 
         case "素材图水印":
-            fun_素材图水印(material_path=material_structure.material_path, shop_name=item.shop_name)
+            fun_素材图水印(
+                material_path=material_structure.material_path, shop_name=item.shop_name
+            )
 
         case "按数字分类":
             fun_按数字分类(material_path=material_structure.material_path)
@@ -185,7 +201,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                             pic_state = True
 
                 if pic_state is False:
-                    AIFile(in_file.as_posix(), app, shop_name=item.shop_name).fun_导出PNG()
+                    AIFile(
+                        in_file.as_posix(), app, shop_name=item.shop_name
+                    ).fun_导出PNG()
 
             pythoncom.CoUninitialize()
 
@@ -477,6 +495,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             pythoncom.CoInitialize()
             OpenNoImagePsdFiles(material_path=material_structure.material_path).main()
 
-    fun_通知(msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。")
+    fun_通知(
+        msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
+    )
 
     return {"msg": "ok"}
