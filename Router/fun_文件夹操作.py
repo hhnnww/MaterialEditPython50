@@ -167,7 +167,8 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
         case "素材图水印":
             fun_素材图水印(
-                material_path=material_structure.material_path, shop_name=item.shop_name
+                material_path=material_structure.material_path,
+                shop_name=item.shop_name,
             )
 
         case "按数字分类":
@@ -202,7 +203,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
                 if pic_state is False:
                     AIFile(
-                        in_file.as_posix(), app, shop_name=item.shop_name
+                        in_file.as_posix(),
+                        app,
+                        shop_name=item.shop_name,
                     ).fun_导出PNG()
 
             pythoncom.CoUninitialize()
@@ -496,7 +499,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             OpenNoImagePsdFiles(material_path=material_structure.material_path).main()
 
     fun_通知(
-        msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。"
+        msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",
     )
 
     return {"msg": "ok"}
