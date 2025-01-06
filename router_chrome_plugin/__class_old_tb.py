@@ -1,7 +1,7 @@
 from collections.abc import Generator
 
 from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
-from router_chrome_plugin.scrapy_base import ScrapyBase
+from router_chrome_plugin.class_爬虫INIT import ScrapyBase
 
 
 class OldTbScrapy(ScrapyBase):

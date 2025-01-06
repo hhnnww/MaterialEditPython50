@@ -6,7 +6,7 @@ from pathlib import Path
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from router_chrome_plugin.material_scrapy_action import MaterialScrapyAction
+from router_chrome_plugin.class_采集素材到数据库 import MaterialScrapyAction
 
 router = APIRouter()
 

@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from router_chrome_plugin.class_make_tb_xq_str import MakeTaobaoXQStr
+from router_chrome_plugin.fun_制作淘宝详情 import MakeTaobaoXQStr
 
 router = APIRouter()
 

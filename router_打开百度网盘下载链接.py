@@ -33,11 +33,4 @@ def open_baidu_link(item_in: ItemIn) -> None:
 
         msg = f"打开链接: {re_link}"
         logging.info(msg)
-        subprocess.Popen(
-            args=[
-                "start",
-                "msedge",
-                re_link,
-            ],
-            shell=True,
-        )
+        subprocess.Popen(args=["start", "msedge", re_link], shell=True)
