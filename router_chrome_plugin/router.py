@@ -2,7 +2,11 @@
 
 from fastapi import APIRouter
 
-from router_chrome_plugin import route_制作淘宝详情, route_获取店铺名和素材网站, router_采集素材
+from router_chrome_plugin import (
+    route_制作淘宝详情,
+    route_获取店铺名和素材网站,
+    router_采集素材,
+)
 
 router = APIRouter(prefix="/chrome_plugin")
 

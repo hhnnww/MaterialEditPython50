@@ -1,7 +1,6 @@
 """chrome插件来采集淘宝素材."""
 
 import logging
-from pathlib import Path
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -30,8 +29,9 @@ class ResModel(BaseModel):
 def fun_scrapy_material(item: ReqModel) -> ResModel:
     """开始采集素材路由."""
     logging.info(item)
-    html_file = Path(__file__).parent / "test.html"
-    html_file.write_text(item.html, encoding="utf-8")
+    # html_file = Path(__file__).parent / "test.html"
+    # html_file.write_text(item.html, encoding="utf-8")
+
     chrome_scrapy = MaterialScrapyAction(
         shop_name=item.shop_name,
         material_site=item.material_site,
