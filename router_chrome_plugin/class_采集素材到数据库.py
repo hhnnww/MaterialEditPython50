@@ -28,7 +28,16 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
         for ma in ma_list:  # type: ignore  # noqa: PGH003
             img = ma.find("a img", first=True).attrs.get("src")
             img = re.sub(r"\?x-oss-process.*", "", img)
-            yield MaterialModel(url=ma.find("a", first=True).attrs.get("href"), img=img, state=False)
+
+            url = ma.find("a", first=True).attrs.get("href")
+            url = re.sub(r"\?inviteCode=.*", "", url)
+            url = url.replace("http://img.img5.com.cn", "https://www.design006.com")
+
+            yield MaterialModel(
+                url=url,
+                img=img,
+                state=False,
+            )
 
     def fun_insert_db(self) -> bool:
         """插入到数据库."""
@@ -44,7 +53,11 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
             ma_list = self.fun_享设计()
 
         for obj in ma_list:
-            fun_插入素材(shop_name=self.shop_name, material_site=self.material_site, material_model=obj)
+            fun_插入素材(
+                shop_name=self.shop_name,
+                material_site=self.material_site,
+                material_model=obj,
+            )
             state = True
 
         return state
