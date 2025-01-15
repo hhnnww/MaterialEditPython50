@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from requests_html import HTMLSession
 from tqdm import tqdm
 

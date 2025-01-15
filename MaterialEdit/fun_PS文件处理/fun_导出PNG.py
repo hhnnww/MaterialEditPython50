@@ -4,8 +4,7 @@ from win32com.client import Dispatch
 
 
 def com_psd导出png(ref_doc, file: Path, ad_layer_name: str, del_ad_layer: bool = False):
-    """
-    导出PNG图片
+    """导出PNG图片
     可以选择是否删除自己的广告
 
     :param ref_doc: 当前PS打开的文档

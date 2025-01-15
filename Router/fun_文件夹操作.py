@@ -87,13 +87,13 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
         case "打开素材文件夹":
             subprocess.Popen(
-                args=f"explorer {material_structure.material_path.replace('/','\\')}",
+                args=f"explorer {material_structure.material_path.replace('/', '\\')}",
                 shell=True,
             )
 
         case "打开预览图文件夹":
             subprocess.run(
-                args=f"explorer {material_structure.preview_path.replace('/','\\')}",
+                args=f"explorer {material_structure.preview_path.replace('/', '\\')}",
                 check=False,
                 shell=True,
             )
@@ -101,14 +101,14 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
         case "打开效果图文件夹":
             if Path(material_structure.effect_path) is True:
                 subprocess.run(
-                    args=f"explorer {material_structure.effect_path.replace('/','\\')}",
+                    args=f"explorer {material_structure.effect_path.replace('/', '\\')}",
                     check=False,
                     shell=True,
                 )
 
         case "打开桌面上传文件夹":
             subprocess.run(
-                args=f"explorer {HOME_UPDATE_FOLDER.as_posix().replace('/','\\')}",
+                args=f"explorer {HOME_UPDATE_FOLDER.as_posix().replace('/', '\\')}",
                 check=False,
                 shell=True,
             )
@@ -127,11 +127,28 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     suffix=[".zip", ".rar", ".7z"],
                 )
             ]
-            args = ["C:\\Program Files\\Bandizip\\Bandizip.exe", "bx", "-target:name"]
+            args = [
+                "C:\\Program Files\\Bandizip\\Bandizip.exe",
+                "bx",
+                "-y",
+                "-target:name",
+            ]
             args.extend(in_file_list)
-            subprocess.Popen(
+            res = subprocess.run(
                 args=args,
+                check=False,
             )
+            msg = "解压文件成功" if res.returncode == 0 else "解压文件失败"
+            logging.info("Process completed successfully.")
+
+            for infile in in_file_list:
+                msg = (
+                    f"删除文件{infile}"
+                    if Path(infile).exists() is True
+                    else f"文件不存在{infile}"
+                )
+                logging.info(msg)
+                Path(infile).unlink()
 
         case "移动到根目录":
             fun_移动到根目录(folder=material_structure.material_path)

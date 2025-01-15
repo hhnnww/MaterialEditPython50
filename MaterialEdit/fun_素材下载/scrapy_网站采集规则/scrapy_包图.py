@@ -1,12 +1,12 @@
-from ..fun_session import fun_session
-from ..model_素材格式 import MaterialModel
+from MaterialEdit.fun_素材下载.fun_session import fun_session
+from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
 
 
 def scrapy_包图(single_url: str, cookie: str):
     html = fun_session(url=single_url, cookie=cookie)
 
     material_element_list = html.find(
-        "body > div.page-body.skin-wrap.body-background-gradient > div.bt-body.search.clearfix.search-main > div.search-list.w-search-list.box-bottom-gradient.clearfix > div.result-list.media-list > div > dl > dt"
+        "body > div.page-body.skin-wrap.body-background-gradient > div.bt-body.search.clearfix.search-main > div.search-list.w-search-list.box-bottom-gradient.clearfix > div.result-list.media-list > div > dl > dt",
     )
 
     for obj in material_element_list:
