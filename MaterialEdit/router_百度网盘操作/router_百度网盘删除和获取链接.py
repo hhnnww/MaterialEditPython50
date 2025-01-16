@@ -1,3 +1,5 @@
+"""百度网盘操作的路由"""
+
 import re
 
 import pyperclip
@@ -5,9 +7,13 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from requests_html import HTMLSession
 
-from .fun_从百度网盘文件列表JSON中构建列表 import fun_构建网盘文件列表
-from .fun_构建HEADER import fun_构建header
-from .fun_获取自动发货中的商家编码 import fun_获取自动发货中的商家编码
+from MaterialEdit.router_百度网盘操作.fun_从百度网盘文件列表JSON中构建列表 import (
+    fun_构建网盘文件列表,
+)
+from MaterialEdit.router_百度网盘操作.fun_构建HEADER import fun_构建header
+from MaterialEdit.router_百度网盘操作.fun_获取自动发货中的商家编码 import (
+    fun_获取自动发货中的商家编码,
+)
 
 router = APIRouter()
 
@@ -21,8 +27,8 @@ class GetMateialIdItem(BaseModel):
 
 @router.post("/get_material_id")
 def fun_获取商家编码(item_in: GetMateialIdItem) -> list[str]:
-    """
-    获取千牛和自动发货的商家编码
+    """获取千牛和自动发货的商家编码.
+
     千牛的商家编码可以删除仓库中的产品对应的网盘文件
     自动发货的商家编码可以用来获取网盘链接
     """
@@ -39,8 +45,7 @@ class DelBaiduFolder(BaseModel):
 
 @router.post("/del_baidu_folder")
 def fun_删除网盘文件夹(item_in: DelBaiduFolder):
-    """
-    1 获取需要删除的产品的商家编码
+    """1 获取需要删除的产品的商家编码
     2 构建成百度网盘的路径
     3 发送请求删除这个路径
     """
@@ -70,8 +75,7 @@ class GetBaiduShareLinkItem(BaseModel):
 
 @router.post("/get_baidu_share_link")
 def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
-    """
-    获取网盘分享链接
+    """获取网盘分享链接
     1 先从百度网盘的请求中返回的JSON获取文件夹ID
     2 获取分享文件夹的接口和HEADER
     3 从自动发货后台获取需要获取的产品ID
@@ -94,7 +98,7 @@ def fun_获取网盘分享链接(item_in: GetBaiduShareLinkItem):
 
         if len(fs_id) > 0:
             with session.post(
-                url=f'https://pan.baidu.com{item_in.header.split("\n")[0].split(" ")[1]}',
+                url=f"https://pan.baidu.com{item_in.header.split('\n')[0].split(' ')[1]}",
                 data={
                     "period": 0,
                     "pwd": "8888",

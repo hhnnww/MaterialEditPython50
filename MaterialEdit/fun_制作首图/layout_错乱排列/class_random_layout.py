@@ -1,6 +1,7 @@
+"""制作随机布局的首图"""
+
 import re
 from pathlib import Path
-from typing import List, Literal
 
 from PIL import Image
 from tqdm import tqdm
@@ -11,28 +12,23 @@ from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 impor
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+from MaterialEdit.type import ALIGNITEM
 
 
 class LayoutRandomLayoug:
     def __init__(
         self,
-        image_list: List[str],
+        image_list: list[str],
         layout_str: str,
         width: int,
         height: int,
-        crop_position: Literal["start", "center", "end"],
+        crop_position: ALIGNITEM,
     ) -> None:
-        """
-        :param List[str] image_list: 图片列表
-        :param str layout_str: 布局本文 4-5-shadow这样的
-        :param int width: 大图宽度
-        :param int height: 大图高度
-        :param Literal[start, center, end] crop_position: 图片裁剪模式
-        """
+        """制作随机布局的首图"""
         self.image_list = image_list
         self.width = width
         self.height = height
-        self.crop_position = crop_position
+        self.crop_position: ALIGNITEM = crop_position
         self.line_col = int(self._fun_构建布局(layout=layout_str)[0])
         self.line_row = int(self._fun_构建布局(layout=layout_str)[1])
 
@@ -40,41 +36,32 @@ class LayoutRandomLayoug:
         self.shadow = False
         if "shadow" in layout_str:
             self.shadow = True
-            # self.gutter = 0
 
         self.small_width = int(
-            (self.width - ((self.line_col + 1) * self.gutter)) / self.line_col
+            (self.width - ((self.line_col + 1) * self.gutter)) / self.line_col,
         )
         self.small_height = int(
-            (self.height - ((self.line_row + 1) * self.gutter)) / self.line_row
+            (self.height - ((self.line_row + 1) * self.gutter)) / self.line_row,
         )
 
     @staticmethod
-    def _fun_构建布局(layout: str) -> List[str]:
+    def _fun_构建布局(layout: str) -> list[str]:
         return re.findall(r"\d", layout)
 
     def _fun_阴影图片(self) -> Image.Image:
-        """
-        获取阴影图片路径
-        然后打开并返回
-
-        :return Image.Image: _description_
-        """
+        """获取阴影图片"""
         shadow_path = (
             Path(__file__).parent / f"{self.line_col}-{self.line_row}-item.png"
         )
-        im = Image.open(shadow_path.as_posix())
-        return im
+        return Image.open(shadow_path.as_posix())
 
-    def _fun_构建图片列表(self):
-        """
-        图片如果长度不够 则自动增加
-        """
+    def _fun_构建图片列表(self) -> None:
+        """图片如果长度不够 则自动增加"""
         while len(self.image_list) < (self.line_col + 1) * self.line_row:
             self.image_list += self.image_list
         self.image_list = self.image_list[: (self.line_col + 1) * self.line_row]
 
-    def _fun_构建PIL列表(self) -> List[List[Image.Image]]:
+    def _fun_构建PIL列表(self) -> list[list[Image.Image]]:
         self._fun_构建图片列表()
 
         pil_list = []
@@ -88,11 +75,13 @@ class LayoutRandomLayoug:
                 position=self.crop_position,
             )
 
-            # 如果没有阴影，则添加边框和圆角
+            # 如果没有阴影 则添加边框和圆角
             if self.shadow is False and self.gutter > 0:
                 im = fun_图片画边框(im=im, border_color=(230, 230, 250, 255))
                 im = fun_图片切换到圆角(
-                    im=im, border_radius=8, background_color=(255, 255, 255, 255)
+                    im=im,
+                    border_radius=8,
+                    background_color=(255, 255, 255, 255),
                 )
 
             inline_list.append(im)
@@ -106,13 +95,15 @@ class LayoutRandomLayoug:
 
         return pil_list
 
-    def _fun_增加阴影(self, im: Image.Image):
+    def _fun_增加阴影(self, im: Image.Image) -> Image.Image:
+        """增加阴影"""
         shadow_im = self._fun_阴影图片()
-
-        if self.line_row == 3:
+        line_3 = 3
+        line_2 = 2
+        if self.line_row == line_3:
             left_dis = 24
             top_dis = 22
-        elif self.line_row == 2:
+        elif self.line_row == line_2:
             left_dis = 40 - self.gutter
             top_dis = 17
 
@@ -143,23 +134,15 @@ class LayoutRandomLayoug:
         return im
 
     def main(self) -> Image.Image:
+        """制作首图"""
         pil_list = []
-        for num, line_list in enumerate(self._fun_构建PIL列表()):
+        for _num, line_list in enumerate(self._fun_构建PIL列表()):
             line_im = fun_图片横向拼接(
                 image_list=line_list,
                 spacing=self.gutter,
                 align_item="center",
                 background_color=(255, 255, 255, 255),
             )
-
-            # if self.line_row > 3:
-            #     left = 0 - (self.gutter + 2)
-            #     if num % 2 == 0:
-            #         left = int((line_im.width - self.width) / 2)
-            #     line_im = line_im.crop((left, 0, left + self.width, line_im.height))
-            # else:
-            #     left = int((line_im.width - self.width) / 2)
-            #     line_im = line_im.crop((left, 0, left + self.width, line_im.height))
 
             left = int((line_im.width - self.width) / 2)
             line_im = line_im.crop((left, 0, left + self.width, line_im.height))

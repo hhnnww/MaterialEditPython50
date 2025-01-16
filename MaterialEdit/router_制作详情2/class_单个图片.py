@@ -24,9 +24,9 @@ class ClassOneImage:
         image_width: int,
         background_color: tuple[int, int, int, int],
         shop_name: str,
-        has_name: bool,
         all_material_file: list[Path],
         has_water: bool,
+        has_name: bool,
     ) -> None:
         """处理单个图片."""
         self.image_pil = image_pil

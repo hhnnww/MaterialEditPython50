@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Generator
 from itertools import cycle
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -21,7 +20,7 @@ if TYPE_CHECKING:
     from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
-def fun_layout_固定裁剪2(
+def fun_layout_固定裁剪2(  # noqa: PLR0913
     xq_width: int,
     xq_height: int,
     image_list: list[ImageModel],
@@ -42,8 +41,11 @@ def fun_layout_固定裁剪2(
     image_list = cycle(image_list)  # type: ignore  # noqa: PGH003
 
     # 计算单行各种图片的比例
-    oneline_num_ratio_list = list(
-        fun_计算单行所有图片数量的比例(line, xq_width, xq_height, spacing),
+    oneline_num_ratio_list = fun_计算单行所有图片数量的比例(
+        line,
+        xq_width,
+        xq_height,
+        spacing,
     )
 
     for obj in oneline_num_ratio_list:
@@ -101,7 +103,12 @@ def fun_layout_固定裁剪2(
     return bg
 
 
-def fun_列表分段(image_list: list[ImageModel], row: int, col: int) -> list[list[ImageModel]] | None:
+def fun_列表分段(
+    image_list: list[ImageModel],
+    row: float,
+    col: int,
+) -> list[list[ImageModel]] | None:
+    """列表分段."""
     left = []
     inline = []
     for in_image in image_list:
@@ -121,10 +128,12 @@ def fun_计算单行所有图片数量的比例(
     xq_width: int,
     xq_height: int,
     spacing: int,
-) -> Generator[list[int | float]]:
+) -> list[list[int | float]]:
     """计算图片比例."""
+    comb_list = []
     oneline_height = int((xq_height - ((line + 1) * spacing)) / line)
     for x in range(1, 10):
         small_image_width = int((xq_width - ((x + 1) * spacing)) / x)
         ratio = small_image_width / oneline_height
-        yield [x, ratio]
+        comb_list.append([x, ratio])
+    return comb_list

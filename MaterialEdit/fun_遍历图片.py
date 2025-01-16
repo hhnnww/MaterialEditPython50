@@ -9,7 +9,9 @@ from MaterialEdit.setting import IMAGE_SUFFIX
 def fun_遍历图片(folder: str, used_image_number: int, image_sort: bool) -> list[str]:  # noqa: FBT001
     """遍历文件夹图片."""
     image_list = [
-        in_file for in_file in Path(folder).rglob("*") if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX
+        in_file
+        for in_file in Path(folder).rglob("*")
+        if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX
     ]
     image_list.sort(key=lambda k: get_path_num(k.stem), reverse=not image_sort)
     if used_image_number > 0:

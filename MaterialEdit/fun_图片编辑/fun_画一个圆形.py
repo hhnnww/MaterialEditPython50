@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 
-from ..type import _COLOR
+from MaterialEdit.type import _COLOR
 
 
 def fun_画一个圆(
@@ -15,5 +15,5 @@ def fun_画一个圆(
     im = Image.new("RGBA", (large_width, large_height), background_color)
     draw = ImageDraw.Draw(im)
     draw.ellipse(xy=(0, 0, large_width, large_height), fill=fill_color)
-    im.thumbnail((width, height), resample=Image.LANCZOS, reducing_gap=3)
+    im.thumbnail((width, height), resample=Image.Resampling.LANCZOS, reducing_gap=3)
     return im

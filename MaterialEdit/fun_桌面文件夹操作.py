@@ -1,9 +1,12 @@
+"""桌面文件夹操作."""
+
 from pathlib import Path
 
 from PIL import Image
 
 
-def fun_保存图片(im: Image.Image, stem: str, material_id: str = ""):
+def fun_保存图片(im: Image.Image, stem: str, material_id: str = "") -> None:
+    """保存图片."""
     if im.mode != "RGB":
         im = im.convert("RGB")
 
@@ -21,7 +24,8 @@ def fun_保存图片(im: Image.Image, stem: str, material_id: str = ""):
     im.close()
 
 
-def fun_清空桌面上传文件夹图片(in_stem: str):
+def fun_清空桌面上传文件夹图片(in_stem: str) -> None:
+    """清空桌面上传文件夹图片."""
     ma_path = Path.home() / "Desktop" / "UPLOAD"
 
     if ma_path.exists() is not True:

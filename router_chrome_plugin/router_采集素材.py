@@ -29,8 +29,6 @@ class ResModel(BaseModel):
 def fun_scrapy_material(item: ReqModel) -> ResModel:
     """开始采集素材路由."""
     logging.info(item)
-    # html_file = Path(__file__).parent / "test.html"
-    # html_file.write_text(item.html, encoding="utf-8")
 
     chrome_scrapy = MaterialScrapyAction(
         shop_name=item.shop_name,

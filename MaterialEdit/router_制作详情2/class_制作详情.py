@@ -36,6 +36,7 @@ class ClassMakeXQ2:
         has_water: bool,
         oneline_ratio: float,
     ) -> None:
+        """初始化."""
         self.col = col
         self.shop_name = shop_name
         self.has_name = has_name
@@ -57,7 +58,10 @@ class ClassMakeXQ2:
     @cached_property
     def __fun_所有源文件(self) -> list[Path]:
         """构建所有源文件"""
-        return rglob(folder=self.material_path.as_posix(), suffix=MATERIAL_SOURCE_SUFFIX)
+        return rglob(
+            folder=self.material_path.as_posix(),
+            suffix=MATERIAL_SOURCE_SUFFIX,
+        )
 
     def __fun_获取仅使用的图片(self, image_list: list[Path]) -> list[Path]:
         if self.pic_sort:
@@ -96,7 +100,9 @@ class ClassMakeXQ2:
         msg = f"制作单行:{image_list}"
         logging.info(msg=msg)
 
-        width = math.floor((self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list))
+        width = math.floor(
+            (self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list),
+        )
 
         im_list = []
         for image in image_list:
@@ -119,7 +125,10 @@ class ClassMakeXQ2:
             background_color=self.background_color,
         )
 
-    def __计算单行图片的比例(self, online_comb: list[ClassOneImage]) -> float | Literal[0]:
+    def __计算单行图片的比例(
+        self,
+        online_comb: list[ClassOneImage],
+    ) -> float | Literal[0]:
         return sum([comb.fun_图片比例 for comb in online_comb])
 
     @cached_property
@@ -138,7 +147,8 @@ class ClassMakeXQ2:
             if (
                 (break_num == 0 and len(in_list) == self.col - 1)
                 or len(in_list) == self.col
-                or self.__计算单行图片的比例(online_comb=next_list) >= self.oneline_ratio
+                or self.__计算单行图片的比例(online_comb=next_list)
+                >= self.oneline_ratio
                 or (num + 1 == len(self.image_list) and len(in_list) > 0)
             ):
                 image_list.append(in_list.copy())
@@ -153,7 +163,10 @@ class ClassMakeXQ2:
 
     def main(self) -> Image.Image:
         """开始执行制作详情"""
-        im_list = [self.__fun_制作单行(image_list=line_image) for line_image in self.__fun_组合图片列表]
+        im_list = [
+            self.__fun_制作单行(image_list=line_image)
+            for line_image in self.__fun_组合图片列表
+        ]
 
         spacing = 0 if self.has_name else self.space
 

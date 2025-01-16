@@ -1,3 +1,6 @@
+"""Module for generating images from text using a specified font."""
+
+import contextlib
 import math
 from functools import cached_property
 
@@ -6,6 +9,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 class FontToPNG:
     def __init__(self, font_path: str, text: str) -> None:
+        """Initialize the FontToPNG.
+
+        :param font_path: Path to the font file.
+        :param text: Text to be rendered into an image.
+        """
         self.font_path = font_path
         self.text = text
         self.size = 1000
@@ -20,20 +28,15 @@ class FontToPNG:
         return (math.ceil(size[2]), math.ceil(size[3]))
 
     def _fun_bg(self) -> Image.Image:
-        bg = Image.new("RGBA", self._font_size, (255, 255, 255, 0))
-        return bg
+        return Image.new("RGBA", self._font_size, (255, 255, 255, 0))
 
-    def main(self):
+    def main(self) -> Image.Image:
+        """Generate the image."""
         bg = self._fun_bg()
         draw = ImageDraw.Draw(im=bg, mode="RGBA")
-        try:
+        with contextlib.suppress(Exception):
             draw.text((0, 0), self.text, fill=(0, 0, 0, 255), font=self._fun_true_font)
-        except:
-            pass
-        else:
-            return bg
-
-        return None
+        return bg
 
 
 if __name__ == "__main__":

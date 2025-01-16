@@ -1,3 +1,8 @@
+"""Module containing the AutoUploadProductToTaobao class.
+
+This class automates the process of uploading products to Taobao.
+"""
+
 from pathlib import Path
 
 import pyautogui
@@ -11,15 +16,18 @@ pyautogui.PAUSE = 3
 
 
 class AutoUploadProductToTaobao:
-    def __init__(self, start_stem: int):
+    def __init__(self, start_stem: int) -> None:
+        """初始化."""
         self.start_stem = start_stem
 
     path_name = "taobao_product_update"
-    # position = (1917, 0, 3839, 2159)
-    position = fun_获取窗口坐标("Edge")
+    res = fun_获取窗口坐标("Edge")
+    position = res if res is not None else (0, 0, 1920, 1080)
 
-    def fun_上传单个产品(self, material_update_path: Path):
-        # 新建标签，打开新建页面
+    MAX_IMAGES = 20
+
+    def fun_上传单个产品(self, material_update_path: Path) -> None:  # noqa: PLR0915
+        """上传单个产品."""
         pyautogui.hotkey("ctrl", "t")
         pyperclip.copy(
             "https://item.upload.taobao.com/sell/publish.htm?catId=201160807&smartRouter=true&keyProps=%7B%7D"
@@ -95,7 +103,6 @@ class AutoUploadProductToTaobao:
         pyautogui.click(fun_获取图片("pro_update", self.path_name, self.position))
         pyautogui.sleep(1)
         pyautogui.click(fun_获取图片("update_button_2", self.path_name, self.position))
-        # pyautogui.click(fun_获取图片("update_img_input", self.path_name, self.position))
 
         # 选择所有图片
         pyautogui.click(fun_获取图片("img1", self.path_name, self.position))
@@ -103,10 +110,11 @@ class AutoUploadProductToTaobao:
         pyautogui.hotkey("enter")
 
         # 便利图片
-        img_list = []
-        for in_file in material_update_path.iterdir():
-            if in_file.is_file() and in_file.suffix.lower() == ".jpg":
-                img_list.append(in_file)
+        img_list = [
+            in_file
+            for in_file in material_update_path.iterdir()
+            if in_file.is_file() and in_file.suffix.lower() == ".jpg"
+        ]
 
         pyautogui.sleep(len(img_list))
         pyautogui.click(fun_获取图片("pro_search", self.path_name, self.position))
@@ -122,9 +130,7 @@ class AutoUploadProductToTaobao:
             pyautogui.click(fun_获取图片("pro_close", self.path_name, self.position))
 
         pyautogui.sleep(2)
-        pyautogui.click(fun_获取图片("pro_img_submit", self.path_name, self.position))
-
-        if len(img_list) > 20:
+        if len(img_list) > self.MAX_IMAGES:
             pyautogui.click(fun_获取图片("up_img", self.path_name, self.position))
             pyautogui.click(fun_获取图片("pro_search", self.path_name, self.position))
             for in_file in img_list[20:]:

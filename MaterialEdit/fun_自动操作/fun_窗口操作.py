@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
+import contextlib
 import ctypes
+import ctypes.wintypes
 from typing import Any
 
 import win32gui
 
 
-def get_window_pos(hwnd):  # noqa: ANN001, ANN201
+def get_window_pos(hwnd: int) -> tuple[int, int, int, int] | None:
     """获取窗口坐标."""
-    try:
+    with contextlib.suppress(OSError):
         f = ctypes.windll.dwmapi.DwmGetWindowAttribute
         rect = ctypes.wintypes.RECT()
         f(
@@ -19,9 +21,9 @@ def get_window_pos(hwnd):  # noqa: ANN001, ANN201
             ctypes.byref(rect),
             ctypes.sizeof(rect),
         )
-        return rect.left, rect.top, rect.right, rect.bottom  # noqa: TRY300
-    except OSError as e:
-        return e
+        return rect.left, rect.top, rect.right, rect.bottom
+
+    return None
 
 
 def fun_获取窗口坐标(windows_name: str) -> tuple[int, int, int, int] | None:
@@ -33,8 +35,10 @@ def fun_获取窗口坐标(windows_name: str) -> tuple[int, int, int, int] | Non
         title = win32gui.GetWindowText(win)
 
         if windows_name in title:
-            left, top, right, bottom = get_window_pos(win)
-            return left, top, right, bottom
+            res = get_window_pos(win)
+            if res is not None:
+                left, top, right, bottom = res
+                return left, top, right, bottom
 
     return None
 
@@ -46,7 +50,6 @@ def fun_窗口置顶(windows_name: str) -> None:
 
     for win in win_list:
         title = win32gui.GetWindowText(win)
-        print(title)
         if windows_name in title:
             win32gui.SetForegroundWindow(win)
             return

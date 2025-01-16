@@ -1,15 +1,35 @@
+"""合并素材文件夹，将 ori_path 中的素材文件移动到 dst_path 中，并重命名文件。
+
+参数:
+    ori_path (str): 原始素材文件夹路径。
+    dst_path (str): 目标素材文件夹路径。
+    shop_name (str): 店铺名称，用于重命名文件。
+返回:
+    None
+功能:
+    - 创建原始和目标文件夹结构对象。
+    - 找到目标文件夹中最大的编号，并在此基础上递增编号。
+    - 遍历原始文件夹中的所有文件，检查文件后缀是否在 MATERIAL_SOURCE_SUFFIX 中。
+    - 将符合条件的文件移动到目标文件夹中，并根据店铺名称和编号重命名文件。
+    - 同时移动相关的图片文件和预览文件，并重命名。
+"""
+
 import shutil
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from tqdm import tqdm
 
-from .fun_创建文件夹结构 import fun_创建文件夹结构
-from .get_stem_num import get_path_num
-from .setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
-from .type import _FolderStructure
+from MaterialEdit.fun_创建文件夹结构 import fun_创建文件夹结构
+from MaterialEdit.get_stem_num import get_path_num
+from MaterialEdit.setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
+
+if TYPE_CHECKING:
+    from MaterialEdit.type import _FolderStructure
 
 
 def fun_素材文件夹合并(ori_path: str, dst_path: str, shop_name: str) -> None:
+    """合并素材文件夹."""
     ori_obj: _FolderStructure = fun_创建文件夹结构(root_path=ori_path)
     dst_obj: _FolderStructure = fun_创建文件夹结构(root_path=dst_path)
 

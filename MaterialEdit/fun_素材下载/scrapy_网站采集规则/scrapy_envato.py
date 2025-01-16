@@ -1,12 +1,22 @@
 import json
 import re
 
-from ..fun_session import fun_session
-from ..model_素材格式 import MaterialModel
+from MaterialEdit.fun_素材下载.fun_session import fun_session
+from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
 
 
 def fun_获取图片(img_dict: dict, reverse: bool = True):
-    size_list = ["w2740", "w2038", "w1370", "w1170", "w1019", "w900", "w710", "w632", "w433"]
+    size_list = [
+        "w2740",
+        "w2038",
+        "w1370",
+        "w1170",
+        "w1019",
+        "w900",
+        "w710",
+        "w632",
+        "w433",
+    ]
 
     if reverse is not True:
         size_list.reverse()
@@ -14,6 +24,7 @@ def fun_获取图片(img_dict: dict, reverse: bool = True):
     for obj in size_list:
         if img_dict.get(obj) is not None:
             return img_dict.get(obj)
+    return None
 
 
 def scrapy_envato(single_url: str, cookie: str):
@@ -27,7 +38,7 @@ def scrapy_envato(single_url: str, cookie: str):
             ma_obj = script_obj.replace("window.INITIAL_HYDRATION_DATA=", "")
             ma_obj = ma_obj.replace(";", "")
 
-            # 转换成JSON后，找到素材列表
+            # 转换成JSON后 找到素材列表
             json_text = json.loads(ma_obj)
             ma_list = json_text.get("page").get("data").get("items")
 
@@ -37,10 +48,17 @@ def scrapy_envato(single_url: str, cookie: str):
 
                 name = obj.get("slug")
 
-                img = fun_获取图片(obj.get("coverImageUrls"), False)
+                img = fun_获取图片(obj.get("coverImageUrls"), reverse=False) or ""
 
                 all_list = [fun_获取图片(obj.get("coverImageUrls"))]
                 for img_list in obj.get("previewImagesUrls"):
-                    all_list.append(fun_获取图片(img_list))
+                    all_list.extend([fun_获取图片(img) for img in img_list])
+                all_list = [img for img in all_list if img is not None]
 
-                yield MaterialModel(url=url, img=img, name=name, img_list=all_list, state=False)
+                yield MaterialModel(
+                    url=url,
+                    img=img,
+                    name=name,
+                    img_list=all_list,
+                    state=False,
+                )

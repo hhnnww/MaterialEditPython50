@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 
-from ..type import _COLOR
+from MaterialEdit.type import _COLOR
 
 
 def fun_画一个圆角矩形(
@@ -22,5 +22,5 @@ def fun_画一个圆角矩形(
         fill=fill_color,
     )
 
-    im.thumbnail((width, height), resample=Image.LANCZOS, reducing_gap=3)
+    im.thumbnail((width, height), resample=Image.Resampling.LANCZOS, reducing_gap=3)
     return im

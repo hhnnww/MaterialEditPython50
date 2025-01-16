@@ -11,14 +11,22 @@ from colorama import Fore, Style
 from passlib.context import CryptContext
 from win32com.client import CDispatch, Dispatch
 
-from .fun_对比所有导出的图片 import fun_打开图片, run_对比所有图片
-from .fun_导出PNG import com_psd导出png
-from .fun_导出图层PNG import run_导出所有图层
-from .fun_插入广告 import fun_插入广告
-from .fun_文字图层替换广告 import com_文字图层广告
-from .fun_普通图层替换广告 import com_普通图层广告
-from .fun_清理注释 import fun_清理注释
-from .model import IncludeName, IsName, TextReplaceName, database
+from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import (
+    fun_打开图片,
+    run_对比所有图片,
+)
+from MaterialEdit.fun_PS文件处理.fun_导出PNG import com_psd导出png
+from MaterialEdit.fun_PS文件处理.fun_导出图层PNG import run_导出所有图层
+from MaterialEdit.fun_PS文件处理.fun_插入广告 import fun_插入广告
+from MaterialEdit.fun_PS文件处理.fun_文字图层替换广告 import com_文字图层广告
+from MaterialEdit.fun_PS文件处理.fun_普通图层替换广告 import com_普通图层广告
+from MaterialEdit.fun_PS文件处理.fun_清理注释 import fun_清理注释
+from MaterialEdit.fun_PS文件处理.model import (
+    IncludeName,
+    IsName,
+    TextReplaceName,
+    database,
+)
 
 
 class LayerType:
@@ -157,7 +165,9 @@ class PSFile:
                     img_1 = fun_打开图片(img_path=img_path.as_posix())
                     res = run_对比所有图片(img=img_1, ad_img_list=self.ad_pic_list)
                     if res is True:
-                        msg = f"{Fore.GREEN}图层对比发现广告{Style.RESET_ALL},{item.item}"
+                        msg = (
+                            f"{Fore.GREEN}图层对比发现广告{Style.RESET_ALL},{item.item}"
+                        )
                         logging.info(msg=msg)
                         item.item.Delete()
 
