@@ -19,6 +19,7 @@ def fun_get_shop_name_material_site() -> ShopNameModel:
     return ShopNameModel(
         shop_name_list=["小夕素材", "饭桶设计", "泡泡素材", "松子素材"],
         material_site_list=[
+            "freepik",
             "千图",
             "包图",
             "摄图",

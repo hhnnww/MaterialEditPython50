@@ -41,8 +41,12 @@ class MakeTaobaoXQStr:
             max_num = 0
             if "xq_" in name:
                 name_int = int("".join(re.findall(r"\d", name)))
-                img = obj.find("img", first=True).attrs.get("src").replace("_100x100", "")
-                self.image_mode_list.append(ImageModel(name=name, name_number=name_int, img=img))
+                img = (
+                    obj.find("img", first=True).attrs.get("src").replace("_100x100", "")
+                )
+                self.image_mode_list.append(
+                    ImageModel(name=name, name_number=name_int, img=img)
+                )
                 max_num = max([obj.name_number for obj in self.image_mode_list])
                 if len(self.image_mode_list) == max_num:
                     break

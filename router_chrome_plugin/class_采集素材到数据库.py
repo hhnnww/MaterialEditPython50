@@ -3,6 +3,8 @@
 import re
 from collections.abc import Generator
 
+from requests_html import Element
+
 from MaterialEdit.fun_素材下载.fun_插入素材 import fun_插入素材
 from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
 from router_chrome_plugin.__class_new_tb import NewTbScrapy
@@ -39,6 +41,21 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
                 state=False,
             )
 
+    def fun_freepik(self) -> Generator[MaterialModel]:
+        """freepik采集."""
+        ma_list = self.html.find("figure")
+        if ma_list is not None and isinstance(ma_list, list):
+            for ma in ma_list:
+                find = ma.find("a", first=True)
+                if find is not None and isinstance(find, Element):
+                    url = find.attrs.get("href", "")
+
+                find = ma.find("img", first=True)
+                if find is not None and isinstance(find, Element):
+                    img = find.attrs.get("src", "")
+
+                yield MaterialModel(url=url, img=img, state=False)
+
     def fun_insert_db(self) -> bool:
         """插入到数据库."""
         state = False
@@ -51,6 +68,8 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
             ma_list = self.fun_千库()
         elif self.material_site == "享设计":
             ma_list = self.fun_享设计()
+        elif self.material_site == "freepik":
+            ma_list = self.fun_freepik()
 
         for obj in ma_list:
             fun_插入素材(
