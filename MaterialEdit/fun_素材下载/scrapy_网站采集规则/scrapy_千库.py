@@ -14,16 +14,14 @@ def scrapy_千库(single_url: str, cookie: str) -> Generator[MaterialModel]:
 
     for obj in material_list:  # type: ignore  # noqa: PGH003
         center_box = obj.find(".center-box", first=True)
-        if center_box is None:
-            continue
+        if center_box is not None:
+            url = "https:" + obj.find(".center-box", first=True).find(
+                "a",
+                first=True,
+            ).attrs.get("href")
+            img = "https:" + obj.find(".center-box a", first=True).find(
+                "img",
+                first=True,
+            ).attrs.get("data-original")
 
-        url = "https:" + obj.find(".center-box", first=True).find(
-            "a.img-box",
-            first=True,
-        ).attrs.get("href")
-        img = "https:" + obj.find(".center-box a.img-box", first=True).find(
-            "img",
-            first=True,
-        ).attrs.get("data-original")
-
-        yield MaterialModel(url=url, img=img, state=False)
+            yield MaterialModel(url=url, img=img, state=False)

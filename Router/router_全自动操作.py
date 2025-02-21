@@ -13,8 +13,10 @@ from MaterialEdit.fun_自动操作 import (
     DownPathMoveToMaterialPath,
 )
 from MaterialEdit.get_stem_num import get_path_num
-
-from .fun_文件夹操作 import RequestMaterialPathActionModel, fun_material_path_action
+from Router.fun_文件夹操作 import (
+    RequestMaterialPathActionModel,
+    fun_material_path_action,
+)
 
 router = APIRouter(prefix="/AutoAction")
 
@@ -121,7 +123,8 @@ class DownItem(BaseModel):
 
 
 @router.post("/down_path_move_to_material_path")
-def down_path_move_to_material_path(item: DownItem):
+def down_path_move_to_material_path(item: DownItem) -> None:
+    """下载目录移动到素材目录."""
     DownPathMoveToMaterialPath(
         down_path=item.ori_path,
         material_parent_path=item.dst_path,
@@ -145,7 +148,7 @@ class EditItem(BaseModel):
 
 
 @router.post(path="/auto_edit_material")
-def auto_edit_material(item: EditItem):
+def auto_edit_material(item: EditItem) -> None:
     """自动编辑素材
 
     Args:
@@ -154,29 +157,29 @@ def auto_edit_material(item: EditItem):
     """
     # 构建所有需要处理的文件夹
     all_file = list(Path(item.parent_path).iterdir())
-    used_folder = []
-    for in_file in all_file:
-        if in_file.is_dir() and get_path_num(in_file.stem) >= item.start_stem:
-            used_folder.append(in_file.as_posix())
+    used_folder = [
+        in_file.as_posix()
+        for in_file in all_file
+        if in_file.is_dir() and get_path_num(in_file.stem) >= item.start_stem
+    ]
     used_folder.sort(key=lambda k: get_path_num(Path(k).stem))
 
     for root_path in used_folder:
-        print(root_path)
         actions = []
 
         if item.shop_name == "饭桶设计":
             actions = [
-                "解压ZIP",
-                "移动到效果图",
-                "删除素材文件夹内所有图片",
+                # "解压ZIP",
+                # "移动到效果图",
+                # "删除素材文件夹内所有图片",
                 # "删除EPS文件",
-                "移动到根目录",
-                "文件重命名",
-                "删除广告文件",
+                # "移动到根目录",
+                # "文件重命名",
+                # "删除广告文件",
                 # "PSD-导出图片-添加广告",
-                "PSD-导出图片",
-                # "AI-导出图片",
-                # "AI批量导出图片重命名",
+                # "PSD-导出图片",
+                "AI-导出图片",
+                "AI批量导出图片重命名",
                 "复制图片到预览图",
                 "素材图水印",
             ]

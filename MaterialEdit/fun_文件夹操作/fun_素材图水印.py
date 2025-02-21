@@ -1,21 +1,24 @@
+"""素材图水印"""
+
 from pathlib import Path
 
 from PIL import Image
+from tomorrow3 import threads
 from tqdm import tqdm
 
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import (
+    fun_单行文字转图片,
+)
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_文件夹操作.fun_获取二维码 import fun_获取二维码
-
-from ..fun_图片编辑.fun_单行文字转图片.fun_单行文字转图片 import fun_单行文字转图片
-from ..fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
-from ..fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from ..fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
-from ..fun_遍历图片 import fun_遍历图片
+from MaterialEdit.fun_遍历图片 import fun_遍历图片
 
 
-def fun_素材图水印(material_path: str, shop_name: str):
+def __单个水印(shop_name: str) -> Image.Image:
     erweima_pil = fun_获取二维码(shop_name=shop_name)
-
-    water_pix_color = int(255)
+    water_pix_color = 255
     shop_name_pil = fun_单行文字转图片(
         text=shop_name,
         chinese_font_name="noto",
@@ -64,35 +67,53 @@ def fun_素材图水印(material_path: str, shop_name: str):
     )
 
     shop_name_pil = fun_图片竖向拼接(
-        [shop_name_pil, t2_pil, t3_pil], spacing, "start", (255, 255, 255, 0)
+        [shop_name_pil, t2_pil, t3_pil],
+        spacing,
+        "start",
+        (255, 255, 255, 0),
     )
     water_pil = fun_获取单个水印(
-        600, (water_pix_color, water_pix_color, water_pix_color, water_pix_color)
+        600,
+        (water_pix_color, water_pix_color, water_pix_color, water_pix_color),
     )
-    water_pil = fun_图片竖向拼接([water_pil, shop_name_pil], spacing, "start", (255, 255, 255, 0))
+    water_pil = fun_图片竖向拼接(
+        [water_pil, shop_name_pil],
+        spacing,
+        "start",
+        (255, 255, 255, 0),
+    )
     water_pil.thumbnail((999999, erweima_pil.height), resample=Image.Resampling.LANCZOS)
 
-    water_pil = fun_图片横向拼接([erweima_pil, water_pil], spacing, "start", (255, 255, 255, 0))
+    return fun_图片横向拼接(
+        [erweima_pil, water_pil],
+        spacing,
+        "start",
+        (255, 255, 255, 0),
+    )
 
-    all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)
 
+@threads(5)
+def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
+    im = Image.open(image_path.as_posix())
     im_width = 2000
-    for in_file_stem in tqdm(all_image, ncols=100, desc="素材图水印\t"):
-        in_file: Path = Path(in_file_stem)
+    im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
+    im.paste(
+        water_pil,
+        (20, im.height - water_pil.height - 20),
+        water_pil,
+    )
+    if image_path.suffix.lower() != ".png":
+        im.convert("RGB")
+    im.save(image_path)
+    im.close()
 
-        if shop_name in in_file.stem:
-            try:
-                im = Image.open(in_file.as_posix())
-                im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
-                try:
-                    im.paste(water_pil, (20, im.height - water_pil.height - 20), water_pil)
-                except OSError:
-                    print(in_file.as_posix())
-                else:
-                    if in_file.suffix.lower() != ".png":
-                        im.convert("RGB")
 
-                    im.save(in_file)
-                    im.close()
-            except ValueError as e:
-                print(in_file.as_posix(), e)
+def fun_素材图水印(material_path: str, shop_name: str) -> None:
+    """素材图水印"""
+    water_pil = __单个水印(shop_name)
+    all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)
+    for in_file in tqdm(all_image, ncols=100, desc="素材图水印\t"):
+        __处理单个图片(
+            image_path=Path(in_file),
+            water_pil=water_pil,
+        )
