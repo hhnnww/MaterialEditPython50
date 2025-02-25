@@ -56,7 +56,8 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
     num = 1
     # 制作数据图
     data_header = fun_制作详情栏目标题(
-        title="素材信息", desc="Material Info " + item.shop_name
+        title="素材信息",
+        desc="Material Info " + item.shop_name,
     )
 
     data_list = [
@@ -103,7 +104,8 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
 
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
-                title="素材效果图", desc="* 此图片素材内不提供"
+                title="素材效果图",
+                desc="* 此图片素材内不提供",
             )
 
             effect_image = ClassMakeXQ2(
@@ -145,7 +147,8 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
         ]
         if len(image_list) > 0:
             header_pil = fun_制作详情栏目标题(
-                title="素材预览图", desc="* 预览图与源文件对应"
+                title="素材预览图",
+                desc="* 预览图与源文件对应",
             )
 
             sort = item.preview_image_sort == 1

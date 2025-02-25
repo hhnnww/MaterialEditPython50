@@ -13,59 +13,57 @@ from tqdm import tqdm
 
 class SeleniumUploadTaobao:
     def __init__(self) -> None:
+        """Init"""
         options = EdgeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_argument("--disable-blink-features=AutomationControlled")
 
-        self.driver = Edge(options=options)
+        self.driver = Edge(options=options)  # type: ignore  # noqa: PGH003
         self.driver.set_window_rect(x=1274, y=0, width=1292, height=1398)
 
         self.up_loader_path = Path(r"C:\Users\wuweihua\Desktop\UPLOAD")
 
-    def fun_页面标题等待(self, title: str):
-        """
-        判断标题是否包含，来确定是否加载完成
-        """
+    def fun_页面标题等待(self, title: str) -> bool:
+        """判断标题是否包含，来确定是否加载完成"""
         return WebDriverWait(driver=self.driver, timeout=10, poll_frequency=1).until(
-            expected_conditions.title_contains(title)
+            expected_conditions.title_contains(title),
         )
 
-    def fun_js点击(self, selector: str):
-        """
-        页面执行JS来进行点击
-        因为selenium很多按钮点击不了
-        """
+    def fun_js点击(self, selector: str) -> None:
+        """页面执行JS来进行点击 因为selenium很多按钮点击不了"""
         self.driver.execute_script(f'document.querySelector("{selector}").click()')
 
     @staticmethod
     def fun_获取数字(stem: str) -> int:
+        """获取字符串中的数字"""
         num_list = re.findall(r"\d+", stem)
         if len(num_list) > 0:
             return int("".join(num_list))
 
         return 0
 
-    def fun_登录(self):
-        # 输入账号密码进行登录，会自动跳入到后台
+    def fun_登录(self) -> None:
+        """输入账号密码进行登录，会自动跳入到后台"""
         self.driver.get(
-            "https://havanalogin.taobao.com/mini_login.htm?lang=zh_CN&appName=taobao&appEntrance=qianniu_pc_web&styleType=vertical&bizParams=&notLoadSsoView=true&notKeepLogin=false&isMobile=false&cssUrl=https://g.alicdn.com/qn/qn-login-iframe-css/0.0.8/qn-login-iframe.css&returnUrl=https://myseller.taobao.com/home.htm&rnd=0.17371788128615084"
+            "https://havanalogin.taobao.com/mini_login.htm?lang=zh_CN&appName=taobao&appEntrance=qianniu_pc_web&styleType=vertical&bizParams=&notLoadSsoView=true&notKeepLogin=false&isMobile=false&cssUrl=https://g.alicdn.com/qn/qn-login-iframe-css/0.0.8/qn-login-iframe.css&returnUrl=https://myseller.taobao.com/home.htm&rnd=0.17371788128615084",
         )
         self.fun_页面标题等待("登录")
         self.driver.find_element(By.CSS_SELECTOR, "#fm-login-id").send_keys(
-            "tb313185518913"
+            "tb313185518913",
         )
         self.driver.find_element(By.CSS_SELECTOR, "#fm-login-password").send_keys(
-            input("输入密码")
+            input("输入密码"),
         )
         self.driver.find_element(
-            By.CSS_SELECTOR, "#login-form > div.fm-btn > button"
+            By.CSS_SELECTOR,
+            "#login-form > div.fm-btn > button",
         ).click()
         self.fun_页面标题等待("千牛商家工作台")
 
-    def fun_上传单个商品(self, material_path: Path):
-        # 打开发布页面
+    def fun_上传单个商品(self, material_path: Path) -> None:
+        """上传单个商品"""
         self.driver.get(
-            "https://item.upload.taobao.com/sell/v2/publish.htm?catId=201160807&smartRouter=true&keyProps=%7B%7D&newRouter=1&paramCacheId=merge_router_cache_389353239_1694673279246_988&x-gpf-submit-trace-id=213e259e16946732792022149e0968"
+            "https://item.upload.taobao.com/sell/v2/publish.htm?catId=201160807&smartRouter=true&keyProps=%7B%7D&newRouter=1&paramCacheId=merge_router_cache_389353239_1694673279246_988&x-gpf-submit-trace-id=213e259e16946732792022149e0968",
         )
         self.fun_页面标题等待("商品发布")
         # 标题
@@ -134,7 +132,7 @@ class SeleniumUploadTaobao:
             self.driver.find_element(
                 By.CSS_SELECTOR,
                 "body > div.next-overlay-wrapper.v2.opened > div > div > div > iframe",
-            )
+            ),
         )
         time.sleep(2)
 
@@ -173,7 +171,7 @@ class SeleniumUploadTaobao:
             self.driver.find_element(
                 By.CSS_SELECTOR,
                 "body > div.ln-overlay-wrapper.opened > div.ln-overlay-inner.mediaDialog--EM7Hx.ck-dialog.overlay--Bwotz > div > iframe",
-            )
+            ),
         )
 
         # 点击上传图片按钮
@@ -230,7 +228,7 @@ class SeleniumUploadTaobao:
 
         # 放入仓库
         self.fun_js点击(
-            selector="#sell-field-startTime > div.sell-component-info-wrapper-component-wrap > div.sell-component-info-wrapper-component-child-wrap > div > div > span > span:nth-child(3) > label"
+            selector="#sell-field-startTime > div.sell-component-info-wrapper-component-wrap > div.sell-component-info-wrapper-component-child-wrap > div > div > span > span:nth-child(3) > label",
         )
         time.sleep(1)
 
@@ -247,7 +245,9 @@ class SeleniumUploadTaobao:
         self.fun_登录()
 
         for in_path in tqdm(
-            list(self.up_loader_path.iterdir()), desc="上传产品到淘宝", ncols=100
+            list(self.up_loader_path.iterdir()),
+            desc="上传产品到淘宝",
+            ncols=100,
         ):
             if in_path.is_dir():
                 self.fun_上传单个商品(material_path=in_path)

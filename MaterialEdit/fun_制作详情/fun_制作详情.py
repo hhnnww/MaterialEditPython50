@@ -1,15 +1,17 @@
+"""制作详情"""
+
 from pathlib import Path
 
+from PIL import Image
 from tqdm import tqdm
 
+from MaterialEdit.fun_制作详情.fun_2_构建图片 import fun_构建图片
+from MaterialEdit.fun_制作详情.fun_3_图片编组 import fun_图片编组
+from MaterialEdit.fun_制作详情.fun_4_单行图片制作 import fun_单行图片制作
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-
-from ..setting import MATERIAL_SOURCE_SUFFIX
-from ..type import ALIGNITEM
-from .fun_2_构建图片 import fun_构建图片
-from .fun_3_图片编组 import fun_图片编组
-from .fun_4_单行图片制作 import fun_单行图片制作
+from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
+from MaterialEdit.type import ALIGNITEM
 
 
 def fun_制作详情(
@@ -21,10 +23,12 @@ def fun_制作详情(
     crop_position: ALIGNITEM,
     shop_name: str,
     xq_width: int = 1500,
-):
+) -> Image.Image:
     image_list = fun_构建图片(image_list=image_path_list)
     comb_image_list = fun_图片编组(
-        image_list, line_number=line_number, max_line_ratio=max_line_ratio
+        image_list,
+        line_number=line_number,
+        max_line_ratio=max_line_ratio,
     )
 
     material_fil_list = []
@@ -62,7 +66,7 @@ def fun_制作详情(
 
     im = im.crop((0, 0, xq_width, im.height))
 
-    im = fun_图片扩大粘贴(
+    return fun_图片扩大粘贴(
         background_color=(255, 255, 255, 255),
         height=im.height + 200,
         width=xq_width,
@@ -70,5 +74,3 @@ def fun_制作详情(
         left="center",
         top="start",
     )
-
-    return im

@@ -31,7 +31,11 @@ class ExportImage:
                 first_layer.visible = False
 
             png_path = path.with_suffix(suffix=".png").as_posix()
-            doc.exportDocument(file_path=png_path, exportAs=ps.ExportType.SaveForWeb, options=export_options)
+            doc.exportDocument(
+                file_path=png_path,
+                exportAs=ps.ExportType.SaveForWeb,
+                options=export_options,
+            )
             doc.close(saving=ps.SaveOptions.DoNotSaveChanges)
 
         pythoncom.CoUninitialize()
@@ -50,7 +54,11 @@ class ExportImage:
             export_options.VerticalScale = radio
             export_options.ArtBoardClipping = True
             png_path = path.with_suffix(suffix=".png")
-            doc.Export(ExportFile=png_path.as_posix(), ExportFormat=5, Options=export_options)
+            doc.Export(
+                ExportFile=png_path.as_posix(),
+                ExportFormat=5,
+                Options=export_options,
+            )
             doc.Close(2)
         pythoncom.CoUninitialize()
 

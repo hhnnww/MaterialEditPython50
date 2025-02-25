@@ -1,6 +1,6 @@
 from PIL import Image
 
-from ...type import _COLOR, ALIGNITEM
+from MaterialEdit.type import _COLOR, ALIGNITEM
 
 
 def fun_图片横向拼接(

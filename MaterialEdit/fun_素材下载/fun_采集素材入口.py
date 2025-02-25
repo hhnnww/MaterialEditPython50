@@ -1,7 +1,12 @@
+"""采集素材入口"""
+
+from collections.abc import Generator
+
 from tqdm import tqdm
 
-from .fun_构建链接列表 import fun_构建链接列表
-from .scrapy_网站采集规则 import (
+from MaterialEdit.fun_素材下载.fun_构建链接列表 import fun_构建链接列表
+from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
+from MaterialEdit.fun_素材下载.scrapy_网站采集规则 import (
     scrapy_envato,
     scrapy_freepik,
     scrapy_pngtree,
@@ -13,7 +18,12 @@ from .scrapy_网站采集规则 import (
 )
 
 
-def fun_采集单页素材(single_url: str, cookie: str, material_site: str):
+def fun_采集单页素材(
+    single_url: str,
+    cookie: str,
+    material_site: str,
+) -> Generator[MaterialModel]:
+    """采集单页素材"""
     ma_list = []
 
     match material_site:
@@ -44,9 +54,19 @@ def fun_采集单页素材(single_url: str, cookie: str, material_site: str):
     yield from ma_list
 
 
-def fun_采集(base_url: str, num: int, cookie: str, material_site: str):
+def fun_采集(
+    base_url: str,
+    num: int,
+    cookie: str,
+    material_site: str,
+) -> Generator[MaterialModel]:
+    """采集"""
     if num <= 1:
-        yield from fun_采集单页素材(single_url=base_url, cookie=cookie, material_site=material_site)
+        yield from fun_采集单页素材(
+            single_url=base_url,
+            cookie=cookie,
+            material_site=material_site,
+        )
 
     else:
         for page_url in tqdm(
@@ -55,5 +75,7 @@ def fun_采集(base_url: str, num: int, cookie: str, material_site: str):
             desc="采集页面",
         ):
             yield from fun_采集单页素材(
-                single_url=page_url, cookie=cookie, material_site=material_site
+                single_url=page_url,
+                cookie=cookie,
+                material_site=material_site,
             )
