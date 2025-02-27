@@ -1,3 +1,5 @@
+"""export order"""
+
 import pyperclip
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -15,6 +17,7 @@ col_order.create_index(keys="order_sn", unique=True)
 
 
 def get_header() -> dict[str, str]:
+    """Get header"""
     req_header = pyperclip.paste().strip()
     req_split = req_header.split(sep="\n")
     header_dict = {}
@@ -26,22 +29,7 @@ def get_header() -> dict[str, str]:
 
 
 def get_order(url: str, header_dict: dict[str, str]) -> None:
+    """Get order"""
     res = session.post(url=url, headers=header_dict)
     objs = res.json().get("data").get("data")
-    print(url)
-    try:
-        res = col_order.insert_many(documents=objs)
-    except:  # noqa: E722
-        print("有重复订单，不插入。")
-    else:
-        print(res)
-
-
-if __name__ == "__main__":
-    import concurrent.futures
-
-    header_dict = get_header()
-    all_page = col_page.find({"state": False})
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-        futures = [executor.submit(get_order, url, header_dict) for url in all_page]
-        concurrent.futures.wait(futures)
+    res = col_order.insert_many(documents=objs)

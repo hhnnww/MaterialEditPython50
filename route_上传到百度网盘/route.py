@@ -21,7 +21,11 @@ class UpBaiduResponseModel(BaseModel):
 @route.post(path="")
 def route_up_to_baiduwangpan(item: UpBaiduModel) -> UpBaiduResponseModel:
     """上传到百度网盘."""
-    obj = UpAllFolderToBaiduWangPan(parent_path=item.parent_path, start_stem=item.start_stem, end_stem=item.end_stem)
+    obj = UpAllFolderToBaiduWangPan(
+        parent_path=item.parent_path,
+        start_stem=item.start_stem,
+        end_stem=item.end_stem,
+    )
     obj.main()
 
     return UpBaiduResponseModel(msg="上传成功")

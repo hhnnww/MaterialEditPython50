@@ -12,7 +12,9 @@ pyautogui.PAUSE = 1
 
 
 class UpOneFolderToBaiduWangPan:
-    def __init__(self, folder: Path, exp_point: pyautogui.Point, baidu_point: pyautogui.Point) -> None:
+    def __init__(
+        self, folder: Path, exp_point: pyautogui.Point, baidu_point: pyautogui.Point
+    ) -> None:
         """需要上传的文件夹 文件夹管理器窗口坐标 网盘APP窗口坐标."""
         self.folder = folder
         self.exp_point = exp_point

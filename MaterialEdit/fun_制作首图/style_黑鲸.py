@@ -37,7 +37,7 @@ def fun_make_material_id_image(material_id: str) -> Image.Image:
 def fun_make_left_logo_image(shop_name: str) -> Image.Image:
     """制作左边的logo."""
     # 左边的logo
-    logo = fun_获取单个水印(size=80, fill_clor=(255, 255, 255, 255))
+    logo = fun_获取单个水印(size=100, fill_clor=(255, 255, 255, 255))
     shop_name_pil = MakeIbmFont(
         text=shop_name,
         size=50,
@@ -45,7 +45,10 @@ def fun_make_left_logo_image(shop_name: str) -> Image.Image:
         bg_color=(0, 0, 0, 255),
         weight="bold",
     ).main()
-    shop_name_pil.thumbnail(size=(logo.width + 20, 999999), resample=Image.Resampling.LANCZOS)
+    shop_name_pil.thumbnail(
+        size=(logo.width + 20, 999999),
+        resample=Image.Resampling.LANCZOS,
+    )
     logo = fun_图片竖向拼接(
         image_list=[logo, shop_name_pil],
         spacing=20,
@@ -59,7 +62,9 @@ def fun_make_left_logo_image(shop_name: str) -> Image.Image:
         border_radius=35,
         fill_color=(0, 0, 0, 255),
     )
-    logo_bg = logo_bg.crop(box=(0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height))
+    logo_bg = logo_bg.crop(
+        box=(0, int(logo_bg.height / 2), logo_bg.width, logo_bg.height),
+    )
     logo_bg.paste(im=logo, box=(int(add_width / 2), 25), mask=logo)
 
     return logo_bg
@@ -90,7 +95,9 @@ def fun_make_title_image(title: str) -> Image.Image:
     return circle
 
 
-def fun_select_format_color(material_format: str) -> tuple[tuple[int, int, int, int], ...]:
+def fun_select_format_color(
+    material_format: str,
+) -> tuple[tuple[int, int, int, int], ...]:
     """制作格式图片."""
     if material_format.lower() in ["psd"]:
         background_color = (35, 200, 250, 255)
@@ -206,13 +213,18 @@ def fun_黑鲸首图(
     xq_width = 1500
     if im.width > xq_width:
         im = im.crop(box=(0, 0, 1500, im.height))
+
     bg = Image.new("RGBA", im.size, bg_color)
     bg.paste(im, (0, 0), im)
     im = bg
 
     # 制作素材ID
     material_id_bg = fun_make_material_id_image(material_id=material_id)
-    im.paste(im=material_id_bg, box=(im.width - material_id_bg.width - 30, 30), mask=material_id_bg)
+    im.paste(
+        im=material_id_bg,
+        box=(im.width - material_id_bg.width - 30, 30),
+        mask=material_id_bg,
+    )
 
     # 制作左边的LOGO
     logo_bg = fun_make_left_logo_image(shop_name=shop_name)

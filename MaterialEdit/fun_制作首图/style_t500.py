@@ -30,7 +30,7 @@ def fun_T500首图(
         fill_color=(0, 0, 0, 255),
         background_color=(255, 255, 255, 0),
     )
-    water_pil = fun_获取单个水印(80, (255, 200, 85, 255))
+    water_pil = fun_获取单个水印(120, (255, 200, 85, 255))
     water_pil_shop_name = fun_单行文字转图片(
         text=shop_name,
         chinese_font_name="noto",
@@ -99,7 +99,9 @@ def fun_T500首图(
         bottom_pil,
         (
             int((circle.width - bottom_pil.width) / 2),
-            int((((circle.height - 250) / 2) - bottom_pil.height) / 2) + int(((circle.height - 250) / 2) + 250) - 10,
+            int((((circle.height - 250) / 2) - bottom_pil.height) / 2)
+            + int(((circle.height - 250) / 2) + 250)
+            - 10,
         ),
         bottom_pil,
     )
@@ -183,7 +185,7 @@ def fun_T500首图(
         ad_title_pil,
     )
 
-    im = fun_图片扩大粘贴(
+    return fun_图片扩大粘贴(
         im=big_circle,
         width=im.width,
         height=im.height,
@@ -192,5 +194,3 @@ def fun_T500首图(
         background_color=(255, 255, 255, 0),
         background_pil=im,
     )
-
-    return im

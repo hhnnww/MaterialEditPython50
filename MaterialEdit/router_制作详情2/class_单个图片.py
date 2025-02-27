@@ -57,7 +57,7 @@ class ClassOneImage:
 
     @cached_property
     def __fun_图片中间广告图片(self) -> Image.Image:
-        transparent = 150
+        transparent = 80
         ad_pil = MakeIbmFont(
             text=f"淘宝:{self.shop_name}",
             bg_color=(0, 0, 0, 0),
@@ -182,7 +182,7 @@ class ClassOneImage:
 
             bottom_im = fun_图片竖向拼接(
                 image_list=[
-                    fun_获取单个水印(size=160, fill_clor=self.text_color),
+                    fun_获取单个水印(size=140, fill_clor=self.text_color),
                     bottom_im,
                 ],
                 spacing=self.logo_to_text_space,

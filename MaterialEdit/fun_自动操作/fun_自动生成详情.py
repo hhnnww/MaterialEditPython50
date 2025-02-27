@@ -1,15 +1,16 @@
+"""自动生成详情"""
+
 from pathlib import Path
 
 from tqdm import tqdm
 
 from MaterialEdit import fun_获取素材信息
+from MaterialEdit.fun_自动操作.fun_判断文件夹是否为空 import fun_判断是否为空文件夹
+from MaterialEdit.get_stem_num import get_path_num
 from MaterialEdit.router_制作详情2.fun_制作详情2 import (
     MakeProductImageRequestModel,
     fun_制作详情2,
 )
-
-from ..get_stem_num import get_path_num
-from .fun_判断文件夹是否为空 import fun_判断是否为空文件夹
 
 
 class AutoMakeProductImage:
@@ -19,7 +20,8 @@ class AutoMakeProductImage:
         start_stem: int,
         shop_name: str,
         make_effect: bool,
-    ):
+    ) -> None:
+        """自动生成详情."""
         self.parent_path = Path(material_parent_path)
         self.start_id = start_stem
         self.shop_name = shop_name

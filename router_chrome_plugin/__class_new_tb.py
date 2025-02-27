@@ -14,7 +14,7 @@ class NewTbScrapy(ScrapyBase):
     def fun_get_new_tb(self) -> Generator[MaterialModel]:
         """采集新版本的淘宝页面."""
         ma_list = self.html.find(
-            "#ice-container > div > div > div.flexCell--O42zbLr4 > div.shopProductShelfArea--Z6GzvxkU" " > div > div:nth-child(3) > div > div.cardContainer--CwazTl0O",
+            "#ice-container > div > div > div.flexCell--O42zbLr4 > div.shopProductShelfArea--Z6GzvxkU > div > div:nth-child(3) > div > div.cardContainer--CwazTl0O",
         )
         for ma in ma_list:  # type: ignore  # noqa: PGH003
             link_find: Element = ma.find("a", first=True)

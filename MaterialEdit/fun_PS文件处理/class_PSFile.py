@@ -187,7 +187,7 @@ class PSFile:
         save_path = Path(self.ps_path)
         if self.doc.ArtLayers.Count > 0:
             first_layer = self.doc.ArtLayers[0]
-            if first_layer.Name in ["SY"]:
+            if first_layer.Name in ["SY"] or first_layer.Name[0] == "$":
                 first_layer.Delete()
 
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
@@ -199,6 +199,10 @@ class PSFile:
 
     def run_导出图片(self) -> None:
         """导出PNG图片."""
+        if self.doc.ArtLayers.Count > 0:
+            first_layer = self.doc.ArtLayers[0]
+            if first_layer.Name in ["SY"] or first_layer.Name[0] == "$":
+                first_layer.Visible = False
         save_path = Path(self.ps_path)
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
         self.doc.Close(2)

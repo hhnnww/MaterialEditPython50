@@ -92,7 +92,7 @@ def __单个水印(shop_name: str) -> Image.Image:
     )
 
 
-@threads(5)
+@threads(10)
 def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
     im = Image.open(image_path.as_posix())
     im_width = 2000
