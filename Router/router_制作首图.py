@@ -45,6 +45,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
+from MaterialEdit.router_制作详情2.fun_制作详情2 import fun_蜘蛛水印2
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -82,6 +83,22 @@ def fun_转换COLOR(bg_color: str) -> tuple[int, ...]:
     return tuple(bg[:3])
 
 
+def fun_换算图片高度(first_image_style_name: str) -> int:
+    """根据首图样式，换算首图高度。"""
+    xq_height = 1500
+
+    if first_image_style_name == "黑鲸":
+        xq_height = 1300
+    elif first_image_style_name == "黑鲸高":
+        xq_height = 1250
+    elif first_image_style_name == "泡泡":
+        xq_height = 1200
+    elif first_image_style_name == "黑鲸笔刷":
+        xq_height = 1000
+
+    return xq_height
+
+
 @router.post("")
 def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
     """制作首图路由."""
@@ -94,16 +111,8 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
     bg_color = fun_转换COLOR(bg_color=item.bg_color)
 
     # 制作首图背景
-    xq_width, xq_height = 1500, 1500
-
-    if item.first_image_style == "黑鲸":
-        xq_height = 1300
-    elif item.first_image_style == "黑鲸高":
-        xq_height = 1250
-    elif item.first_image_style == "泡泡":
-        xq_height = 1200
-    elif item.first_image_style == "黑鲸笔刷":
-        xq_height = 1000
+    xq_width = 1500
+    xq_height = fun_换算图片高度(first_image_style_name=item.first_image_style)
 
     if item.first_image_layout == "自适应裁剪":
         bg = LayoutAdaptiveCrop(
@@ -430,7 +439,11 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         )
 
     # ---------------- 水印 ----------------
-    if item.first_image_style != "无样式" and item.shop_name != "饭桶设计" and item.first_image_style != "黑鲸":
+    if (
+        item.first_image_style != "无样式"
+        and item.shop_name != "饭桶设计"
+        and item.first_image_style != "黑鲸"
+    ):
         water_pixel_color = 0
         bg = fun_图片打满水印(
             bg,
@@ -477,8 +490,8 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
-            shop_name=item.shop_name,
             bg_color=fun_转换COLOR(bg_color=item.bg_color),
+            shop_name=item.shop_name,
         )
 
     elif item.first_image_style == "泡泡":
@@ -511,6 +524,8 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
     elif item.first_image_style == "无样式":
         pass
 
+    bg = fun_蜘蛛水印2(bg, item.shop_name)
+
     fun_保存图片(bg, "st_" + item.first_image_num)
 
-    return dict(msg="ok")
+    return {"msg": "ok"}

@@ -36,7 +36,7 @@ class OpenNoImagePsdFiles:
         """遍历PSD 没有预览图的打开5个."""
         app = Dispatch(dispatch="photoshop.application")
         num = 0
-        open_num = 5
+        open_num = 10
         for psd_file in rglob(
             folder=self.material_path.as_posix(),
             suffix=[".psd", ".psb"],

@@ -119,7 +119,7 @@ class ClassOneImage:
         ori_im = self.__fun_原始图片
         height = math.ceil(self.image_width / (ori_im.width / ori_im.height))
 
-        max_height = 5000
+        max_height = 95000
         if height > max_height:
             small_im = fun_图片裁剪(
                 im=ori_im,
@@ -134,27 +134,6 @@ class ClassOneImage:
                 resample=Image.Resampling.LANCZOS,
                 reducing_gap=8,
             )
-
-        if self.has_water is True:
-            for left in [
-                # 30,
-                int((small_im.width - self.__fun_图片中间广告图片.width) / 2),
-                # small_im.width - self.__fun_图片中间广告图片.width - 30,
-            ]:
-                for top in [
-                    # 30,
-                    int((small_im.height - self.__fun_图片中间广告图片.height) / 2),
-                    # small_im.height - self.__fun_图片中间广告图片.height - 30,
-                ]:
-                    _r, _g, _b, a = self.__fun_图片中间广告图片.split()
-                    small_im.paste(
-                        im=self.__fun_图片中间广告图片,
-                        box=(
-                            left,
-                            top,
-                        ),
-                        mask=a,
-                    )
 
         return small_im
 
@@ -182,7 +161,7 @@ class ClassOneImage:
 
             bottom_im = fun_图片竖向拼接(
                 image_list=[
-                    fun_获取单个水印(size=140, fill_clor=self.text_color),
+                    fun_获取单个水印(size=120, fill_clor=self.text_color),
                     bottom_im,
                 ],
                 spacing=self.logo_to_text_space,

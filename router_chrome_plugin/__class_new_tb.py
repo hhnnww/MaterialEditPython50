@@ -15,7 +15,7 @@ class NewTbScrapy(ScrapyBase):
         """采集新版本的淘宝页面."""
         ma_list = self.html.find(
             "#ice-container > div > div > div.flexCell--O42zbLr4 > div.shopProductShelfArea--Z6GzvxkU > div > div:nth-child(3) > div > div.cardContainer--CwazTl0O",
-        )
+        )  # type: ignore  # noqa: PGH003
         for ma in ma_list:  # type: ignore  # noqa: PGH003
             link_find: Element = ma.find("a", first=True)
             link = next(iter(link_find.absolute_links))
