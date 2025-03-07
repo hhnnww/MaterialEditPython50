@@ -90,7 +90,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
 
     if item.has_effect_image == 1 and Path(item.effect_image_path).exists() is True:
         image_list = [
-            obj
+            obj.as_posix()
             for obj in fun_遍历图片(
                 folder=item.effect_image_path,
                 used_image_number=0,
@@ -131,7 +131,7 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
     # 制作预览图
     if item.has_preview_image == 1 and Path(item.preview_image_path).exists() is True:
         image_list = [
-            obj
+            obj.as_posix()
             for obj in fun_遍历图片(
                 folder=item.preview_image_path,
                 used_image_number=item.preview_used_number,

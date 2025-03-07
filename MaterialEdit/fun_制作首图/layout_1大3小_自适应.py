@@ -3,9 +3,8 @@ from functools import cached_property
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片裁剪
-
-from .class_layout_init import LayoutInit
 
 
 class Layout1大3小自适应(LayoutInit):
@@ -13,11 +12,13 @@ class Layout1大3小自适应(LayoutInit):
     def fun_first_image(self):
         im = self._pil_list[0]
         im_height = math.ceil(self.xq_width / (im.width / im.height))
-        if im_height < self.xq_height - 250:
-            im_height = self.xq_height - 250
+        im_height = max(im_height, self.xq_height - 250)
         # im = im.resize((self.xq_width, im_height), resample=Image.Resampling.LANCZOS)
         im = fun_图片裁剪(
-            im=im, width=self.xq_width, height=im_height, position="center"
+            im=im,
+            width=self.xq_width,
+            height=im_height,
+            position="center",
         )
         return im
 
@@ -31,7 +32,8 @@ class Layout1大3小自适应(LayoutInit):
     def main(self):
         bottom_list = self._pil_list[1:4]
         small_width = math.ceil(
-            (self.xq_width - ((len(bottom_list) - 1) * self.spacing)) / len(bottom_list)
+            (self.xq_width - ((len(bottom_list) - 1) * self.spacing))
+            / len(bottom_list),
         )
 
         bottom_im_list = []

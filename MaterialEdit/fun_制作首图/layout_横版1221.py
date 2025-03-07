@@ -4,11 +4,10 @@ from itertools import cycle
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-
-from .class_layout_init import LayoutInit
 
 
 class Layout_横版1221(LayoutInit):
@@ -39,7 +38,7 @@ class Layout_横版1221(LayoutInit):
                         width=self.fun_大图尺寸[0],
                         height=self.fun_大图尺寸[1],
                         position=self.crop_position,
-                    )
+                    ),
                 )
             else:
                 im_list.append(
@@ -48,7 +47,7 @@ class Layout_横版1221(LayoutInit):
                         width=self.fun_小图尺寸[0],
                         height=self.fun_小图尺寸[1],
                         position=self.crop_position,
-                    )
+                    ),
                 )
 
             num += 1

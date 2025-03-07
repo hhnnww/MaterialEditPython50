@@ -3,10 +3,8 @@
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.class_image_edit import (
-    fun_图片切换到圆角,
     fun_图片扩大粘贴,
     fun_图片横向拼接,
-    fun_图片画边框,
     fun_图片竖向拼接,
     fun_图片裁剪,
 )
@@ -21,6 +19,9 @@ def fun_layout_1_n(
     spacing: int,
 ) -> Image.Image:
     """制作1+n的布局."""
+    if spacing > 0:
+        spacing = spacing - 4
+
     # 组合图片编组
     comb_image_list = [[image_list[0]], image_list[1 : small_line_num + 1]]
 
@@ -51,9 +52,6 @@ def fun_layout_1_n(
         int(larger_image_height * all_reduce_ratio),
         "center",
     )
-    if spacing > 0:
-        large_im = fun_图片画边框(large_im, (240, 240, 240, 255))
-        large_im = fun_图片切换到圆角(large_im, 15, (255, 255, 255, 255))
 
     # 制作小图
     all_small_pil = []
@@ -72,9 +70,6 @@ def fun_layout_1_n(
             small_im_height,
             "center",
         )
-        if spacing > 0:
-            small_im = fun_图片画边框(small_im, (240, 240, 240, 255))
-            small_im = fun_图片切换到圆角(small_im, 15, (255, 255, 255, 255))
 
         all_small_pil.append(small_im.copy())
 
@@ -83,6 +78,11 @@ def fun_layout_1_n(
         spacing=spacing,
         align_item="center",
         background_color=(255, 255, 255, 255),
+    )
+
+    small_line_im = small_line_im.resize(
+        (large_im.width, small_line_im.height),
+        resample=Image.Resampling.LANCZOS,
     )
 
     bg = fun_图片竖向拼接(

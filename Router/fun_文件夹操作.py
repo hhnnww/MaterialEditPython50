@@ -275,6 +275,38 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             pythoncom.CoInitialize()
 
             for in_file in tqdm(all_file, ncols=100, desc="导出图片 添加广告\t"):
+                in_file: Path
+                pic_exists = False
+                for pic_suffix in [".jpg", ".png"]:
+                    png_path = in_file.with_suffix(pic_suffix)
+                    if png_path.exists() is True:
+                        pic_exists = True
+
+                if pic_exists is False:
+                    min_size = 4096
+                    if in_file.stat().st_size == min_size:
+                        in_file.unlink()
+                    try:
+                        PSFile(
+                            ps_path=in_file.as_posix(),
+                            tb_name=item.shop_name,
+                            ad_pic_list=[],
+                        ).run_导出图片添加广告()
+                    except Exception as e:
+                        msg = f"错误的PSD文件:{in_file},{e}"
+                        logging.info(msg)
+
+            pythoncom.CoUninitialize()
+
+        case "PSD-删除错误PSD-导出图片-添加广告":
+            # 获取所有PSD
+            all_file = []
+            all_file.extend(rglob(material_structure.material_path, [".psd", ".psb"]))
+
+            pythoncom.CoInitialize()
+
+            for in_file in tqdm(all_file, ncols=100, desc="导出图片 添加广告\t"):
+                in_file: Path
                 pic_exists = False
                 for pic_suffix in [".jpg", ".png"]:
                     png_path = in_file.with_suffix(pic_suffix)
@@ -285,12 +317,16 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     min_size = 4096
                     if in_file.stat().st_size == min_size:
                         continue
-
-                    PSFile(
-                        ps_path=in_file.as_posix(),
-                        tb_name=item.shop_name,
-                        ad_pic_list=[],
-                    ).run_导出图片添加广告()
+                    try:
+                        PSFile(
+                            ps_path=in_file.as_posix(),
+                            tb_name=item.shop_name,
+                            ad_pic_list=[],
+                        ).run_导出图片添加广告()
+                    except Exception as e:
+                        msg = f"错误的PSD文件:{in_file},{e}"
+                        logging.info(msg)
+                        in_file.unlink()
 
             pythoncom.CoUninitialize()
 

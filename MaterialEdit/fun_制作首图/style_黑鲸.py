@@ -17,8 +17,8 @@ def fun_make_material_id_image(material_id: str) -> Image.Image:
     # 制作素材ID
     material_id_pil = MakeIbmFont(
         text="ID:" + material_id,
-        weight="bold",
-        size=20,
+        weight="semibold",
+        size=25,
         color=(255, 255, 255, 255),
         bg_color=(0, 0, 0, 255),
     ).main()
@@ -30,7 +30,14 @@ def fun_make_material_id_image(material_id: str) -> Image.Image:
         background_color=(255, 255, 255, 0),
     )
 
-    material_id_bg.paste(im=material_id_pil, box=(25, 13), mask=material_id_pil)
+    material_id_bg.paste(
+        im=material_id_pil,
+        box=(
+            (material_id_bg.width - material_id_pil.width) // 2,
+            ((material_id_bg.height - material_id_pil.height) // 2) - 2,
+        ),
+        mask=material_id_pil,
+    )
     return material_id_bg
 
 

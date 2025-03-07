@@ -3,10 +3,8 @@
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.class_image_edit import (
-    fun_图片切换到圆角,
     fun_图片扩大粘贴,
     fun_图片横向拼接,
-    fun_图片画边框,
     fun_图片竖向拼接,
     fun_图片裁剪,
 )
@@ -43,10 +41,6 @@ def fun_layout_1_3(
                 height=small_height,
                 position="center",
             )
-
-        if spacing > 0:
-            im = fun_图片画边框(im, (240, 240, 240, 255))
-            im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
 
         pil_list.append(im)
         max_len = 4
