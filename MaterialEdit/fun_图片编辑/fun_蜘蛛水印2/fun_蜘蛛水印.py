@@ -11,16 +11,19 @@ from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 impor
 
 def __fun_制作单个水印(shop_name: str) -> Image.Image:
     """制作单个蜘蛛水印。"""
+    line_num = 4
+    fill_color = (120, 120, 120, 60)
     shop_name_pil = MakeIbmFont(
         text=f"{shop_name}",
         size=120,
-        color=(0, 0, 0, 255),
+        color=fill_color,
         bg_color=(0, 0, 0, 0),
         weight="semibold",
     ).main()
+
     logo = fun_图片竖向拼接(
         image_list=[
-            fun_获取单个水印(size=480, fill_clor=(0, 0, 0, 255)),
+            fun_获取单个水印(size=480, fill_clor=fill_color),
             shop_name_pil,
         ],
         spacing=60,
@@ -28,27 +31,37 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
         background_color=(0, 0, 0, 0),
     )
 
-    # 修改颜色为180,180,180透明度
-    for x in range(logo.width):
-        for y in range(logo.height):
-            r, g, b, a = logo.getpixel((x, y))
-            logo.putpixel((x, y), (125, 125, 125, int(a * 0.5)))
-
     line_bg = Image.open(Path(__file__).parent / "line.png")
+    with Image.new("RGBA", line_bg.size, (120, 120, 120, 10)) as fill_bg:
+        line_bg.paste(fill_bg, (0, 0), line_bg)
+
     line_bg.paste(
-        im=logo,
-        box=((line_bg.width - logo.width) // 2, (line_bg.height - logo.height) // 2),
-        mask=logo,
+        logo,
+        ((line_bg.width - logo.width) // 2, (line_bg.height - logo.height) // 2),
     )
 
-    return line_bg
+    bg = Image.new(
+        "RGBA",
+        (line_bg.width * line_num, line_bg.height + logo.height),
+        (255, 255, 255, 0),
+    )
+    left, top = 0, 0
+    for _x in range(line_num):
+        bg.paste(line_bg, (left, top))
+        left += line_bg.width
+
+    left = int(line_bg.width - (logo.width / 2))
+    for _x in range(line_num - 1):
+        bg.paste(logo, (left, line_bg.height))
+        left += int(line_bg.width)
+
+    return bg
 
 
 def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
     """给图片添加蜘蛛水印。"""
     zhizhu = __fun_制作单个水印(shop_name)
-    zhizhu_width = im.width // 4
-    zhizhu.thumbnail((zhizhu_width, 999999), Image.Resampling.LANCZOS)
+    zhizhu.thumbnail((im.width, 999999), Image.Resampling.LANCZOS)
 
     x, y = 0, 0
     while x < im.width:
@@ -61,6 +74,7 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
 
 
 if __name__ == "__main__":
-    im = Image.open(r"C:\Users\aimlo\Desktop\UPLOAD\xq_1.jpg")
-    bg = fun_蜘蛛水印2(im, "淘宝:小夕素材")
+    logo = __fun_制作单个水印(shop_name="小夕素材")
+    bg = Image.new("RGBA", logo.size, (255, 255, 255, 255))
+    bg.paste(logo, (0, 0), logo)
     bg.show()

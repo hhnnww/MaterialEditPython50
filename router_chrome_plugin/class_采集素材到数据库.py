@@ -60,7 +60,7 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
         """插入到数据库."""
         state = False
 
-        if self.material_site in ["三老爹", "加油鸭素材铺", "漫语摄影"]:
+        if self.material_site in ["三老爹", "加油鸭素材铺", "漫语摄影", "轨迹"]:
             ma_list = self.fun_get_new_tb()
         elif self.material_site in ["青青草素材王国", "巴扎嘿"]:
             ma_list = self.fun_get_old_tb()

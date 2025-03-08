@@ -2,7 +2,7 @@ import math
 
 from PIL import Image
 
-from ...type import _COLOR, ALIGNITEM
+from MaterialEdit.type import _COLOR, ALIGNITEM
 
 
 def fun_图片竖向拼接(
@@ -13,7 +13,7 @@ def fun_图片竖向拼接(
 ) -> Image.Image:
     width = max([image.width for image in image_list])
     height = sum([image.height for image in image_list]) + int(
-        (len(image_list) - 1) * spacing
+        (len(image_list) - 1) * spacing,
     )
 
     bg = Image.new("RGBA", (width, height), background_color)
@@ -33,6 +33,5 @@ def fun_图片竖向拼接(
             bg.paste(image, (left, top), image)
 
         top += image.height + spacing
-        image.close()
 
     return bg

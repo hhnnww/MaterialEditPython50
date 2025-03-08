@@ -20,18 +20,15 @@ def fun_图片横向拼接(
 
     for image in image_list:
         if align_item == "start":
-            bg.paste(image, (left, top))
+            bg.paste(image, (left, top), image)
 
         elif align_item == "center":
             top = int((bg.height - image.height) / 2)
-            bg.paste(image, (left, top))
+            bg.paste(image, (left, top), image)
 
         elif align_item == "end":
             top = bg.height - image.height
-            bg.paste(image, (left, top))
+            bg.paste(image, (left, top), image)
 
         left += image.width + spacing
-
-        image.close()
-
     return bg
