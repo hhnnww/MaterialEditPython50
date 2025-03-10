@@ -43,7 +43,7 @@ def fun_make_material_id_image(material_id: str) -> Image.Image:
 
 def fun_make_left_logo_image(shop_name: str) -> Image.Image:
     """制作左边的logo."""
-    logo = fun_获取单个水印(size=120, fill_clor=(255, 255, 255, 255))
+    logo = fun_获取单个水印(size=100, fill_clor=(255, 255, 255, 255))
     shop_name_pil = MakeIbmFont(
         text=shop_name,
         size=50,

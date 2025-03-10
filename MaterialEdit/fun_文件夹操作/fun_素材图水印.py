@@ -1,5 +1,6 @@
 """素材图水印"""
 
+import logging
 from pathlib import Path
 
 from PIL import Image
@@ -94,24 +95,37 @@ def __单个水印(shop_name: str) -> Image.Image:
 
 @threads(10)
 def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
-    im = Image.open(image_path.as_posix())
-    im_width = 2000
-    im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
-    im.paste(
-        water_pil,
-        (20, im.height - water_pil.height - 20),
-        water_pil,
-    )
-    if image_path.suffix.lower() != ".png":
-        im.convert("RGB")
-    im.save(image_path)
-    im.close()
+    try:
+        im = Image.open(image_path.as_posix())
+    except ValueError:
+        msg = f"图片过大：{image_path}"
+        logging.info(msg)
+    else:
+        im_width = 2000
+        im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
+        im.paste(
+            water_pil,
+            (20, im.height - water_pil.height - 20),
+            water_pil,
+        )
+        if image_path.suffix.lower() != ".png":
+            im.convert("RGB")
+        im.save(image_path)
+        im.close()
 
 
 def fun_素材图水印(material_path: str, shop_name: str) -> None:
     """素材图水印"""
     water_pil = __单个水印(shop_name)
-    all_image = fun_遍历图片(folder=material_path, used_image_number=0, image_sort=True)
+    all_image = [
+        in_file
+        for in_file in fun_遍历图片(
+            folder=material_path,
+            used_image_number=0,
+            image_sort=True,
+        )
+        if in_file.parent.stem.lower() not in ["links"]
+    ]
     for in_file in tqdm(all_image, ncols=100, desc="素材图水印\t"):
         __处理单个图片(
             image_path=Path(in_file),

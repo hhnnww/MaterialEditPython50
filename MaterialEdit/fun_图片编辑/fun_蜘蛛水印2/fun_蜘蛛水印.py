@@ -12,7 +12,7 @@ from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 impor
 def __fun_制作单个水印(shop_name: str) -> Image.Image:
     """制作单个蜘蛛水印。"""
     line_num = 4
-    fill_color = (120, 120, 120, 60)
+    fill_color = (120, 120, 120, 80)
     shop_name_pil = MakeIbmFont(
         text=f"{shop_name}",
         size=120,
@@ -50,10 +50,10 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
         bg.paste(line_bg, (left, top))
         left += line_bg.width
 
-    left = int(line_bg.width - (logo.width / 2))
-    for _x in range(line_num - 1):
-        bg.paste(logo, (left, line_bg.height))
-        left += int(line_bg.width)
+    # left = int(line_bg.width - (logo.width / 2))
+    # for _x in range(line_num - 1):
+    #     bg.paste(logo, (left, line_bg.height))
+    #     left += int(line_bg.width)
 
     return bg
 
@@ -64,12 +64,16 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
     zhizhu.thumbnail((im.width, 999999), Image.Resampling.LANCZOS)
 
     x, y = 0, 0
-    while x < im.width:
-        while y < im.height:
+    num = 1
+    while y < im.height:
+        if num % 2 == 0:
             im.paste(zhizhu, (x, y), mask=zhizhu)
             y += zhizhu.height
-        x += zhizhu.width
-        y = 0
+        else:
+            y += 100
+
+        num += 1
+
     return im
 
 
