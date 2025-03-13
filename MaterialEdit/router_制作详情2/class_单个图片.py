@@ -56,30 +56,6 @@ class ClassOneImage:
         return self.image_pil.width / self.image_pil.height
 
     @cached_property
-    def __fun_图片中间广告图片(self) -> Image.Image:
-        transparent = 80
-        ad_pil = MakeIbmFont(
-            text=f"淘宝:{self.shop_name}",
-            bg_color=(0, 0, 0, 0),
-            weight="bold",
-            size=30,
-            color=(80, 80, 80, transparent),
-        ).main()
-        logo_waterial = fun_获取单个水印(size=120, fill_clor=(80, 80, 80, transparent))
-
-        ad_pil = fun_图片竖向拼接(
-            image_list=[logo_waterial, ad_pil],
-            spacing=40,
-            align_item="center",
-            background_color=(0, 0, 0, 0),
-        )
-
-        if ad_pil.width > self.image_width / 4:
-            ad_pil.thumbnail(size=(int(self.image_width / 4), 999999))
-
-        return ad_pil
-
-    @cached_property
     def __fun_原始图片(self) -> Image.Image:
         im = self.image_pil
         if im.mode.lower() != "rgba":
@@ -119,7 +95,7 @@ class ClassOneImage:
         ori_im = self.__fun_原始图片
         height = math.ceil(self.image_width / (ori_im.width / ori_im.height))
 
-        max_height = 95000
+        max_height = 5000
         if height > max_height:
             small_im = fun_图片裁剪(
                 im=ori_im,

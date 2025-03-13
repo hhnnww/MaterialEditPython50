@@ -5,11 +5,10 @@ from typing import Literal
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-
-from .class_layout_init import LayoutInit
 
 
 class Layout行自适应(LayoutInit):
@@ -17,7 +16,7 @@ class Layout行自适应(LayoutInit):
     def __fun_小图高度(self) -> int:
         if self.out_space is True:
             return math.floor(
-                (self.xq_height - ((self.col + 1) * self.spacing)) / self.col
+                (self.xq_height - ((self.col + 1) * self.spacing)) / self.col,
             )
 
         return math.floor((self.xq_height - ((self.col - 1) * self.spacing)) / self.col)
@@ -86,4 +85,4 @@ class Layout行自适应(LayoutInit):
             background_color=self.bg_color,
         )
 
-        return bg
+        return bg.resize((self.xq_width, self.xq_height), Image.Resampling.LANCZOS)

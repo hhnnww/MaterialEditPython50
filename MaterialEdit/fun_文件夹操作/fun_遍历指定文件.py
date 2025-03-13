@@ -9,7 +9,9 @@ def rglob(folder: str, suffix: list[str]) -> list[Path]:
     """递归遍历文件夹下的所有文件."""
     folder_obj = Path(folder)
     image_list = [
-        in_file for in_file in folder_obj.rglob("*") if in_file.is_file() and in_file.suffix.lower() in suffix
+        in_file
+        for in_file in folder_obj.rglob("*")
+        if in_file.is_file() and in_file.suffix.lower() in suffix
     ]
 
     image_list.sort(key=lambda k: get_path_num(stem=k.stem))

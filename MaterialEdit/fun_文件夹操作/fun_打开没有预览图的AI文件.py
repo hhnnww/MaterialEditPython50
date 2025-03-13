@@ -13,7 +13,7 @@ class OpenNoPngAIFile:
     def __init__(self, in_path: str) -> None:
         """打开没有预览图的AI文件"""
         self.material_path = Path(in_path)
-        self.all_ai_file = rglob(in_path, suffix=[".ai"])
+        self.all_ai_file = rglob(in_path, suffix=[".ai", ".eps"])
 
     open_ai_file_num = 10
 

@@ -435,7 +435,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             for in_file in all_file:
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is not True:
-                    subprocess.run(args=in_file.as_posix(), check=False)
+                    subprocess.run(
+                        args=["start", in_file.as_posix()],
+                        shell=True,
+                        check=False,
+                    )
 
         case "打开没有预览图的SKP":
             all_file = rglob(folder=material_structure.material_path, suffix=[".skp"])

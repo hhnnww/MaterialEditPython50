@@ -1,7 +1,5 @@
 """给图片添加蜘蛛水印。"""
 
-from pathlib import Path
-
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
@@ -31,9 +29,11 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
         background_color=(0, 0, 0, 0),
     )
 
-    line_bg = Image.open(Path(__file__).parent / "line.png")
-    with Image.new("RGBA", line_bg.size, (120, 120, 120, 10)) as fill_bg:
-        line_bg.paste(fill_bg, (0, 0), line_bg)
+    # line_bg = Image.open(Path(__file__).parent / "line.png")
+    # with Image.new("RGBA", line_bg.size, (120, 120, 120, 10)) as fill_bg:
+    #     line_bg.paste(fill_bg, (0, 0), line_bg)
+
+    line_bg = Image.new("RGBA", (2000, 2000), (255, 255, 255, 0))
 
     line_bg.paste(
         logo,
@@ -70,7 +70,7 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
             im.paste(zhizhu, (x, y), mask=zhizhu)
             y += zhizhu.height
         else:
-            y += 100
+            y += 200
 
         num += 1
 
