@@ -29,10 +29,6 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
         background_color=(0, 0, 0, 0),
     )
 
-    # line_bg = Image.open(Path(__file__).parent / "line.png")
-    # with Image.new("RGBA", line_bg.size, (120, 120, 120, 10)) as fill_bg:
-    #     line_bg.paste(fill_bg, (0, 0), line_bg)
-
     line_bg = Image.new("RGBA", (2000, 2000), (255, 255, 255, 0))
 
     line_bg.paste(
@@ -50,11 +46,6 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
         bg.paste(line_bg, (left, top))
         left += line_bg.width
 
-    # left = int(line_bg.width - (logo.width / 2))
-    # for _x in range(line_num - 1):
-    #     bg.paste(logo, (left, line_bg.height))
-    #     left += int(line_bg.width)
-
     return bg
 
 
@@ -70,7 +61,7 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
             im.paste(zhizhu, (x, y), mask=zhizhu)
             y += zhizhu.height
         else:
-            y += 200
+            y += 400
 
         num += 1
 

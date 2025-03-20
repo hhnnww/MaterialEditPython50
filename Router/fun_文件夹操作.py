@@ -23,6 +23,7 @@ from MaterialEdit.fun_图片编辑.fun_蜘蛛水印.fun_蜘蛛水印 import fun_
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
 from MaterialEdit.fun_文件夹操作.fun_AI批量导出图片重命名 import AI_批量导出图片重命名
 from MaterialEdit.fun_文件夹操作.fun_AI文件重命名 import fun_ai文件重命名
+from MaterialEdit.fun_文件夹操作.fun_CMYK图片转RGB import fun_CMYK转RGB
 from MaterialEdit.fun_文件夹操作.fun_SD生成图片改名 import SDPicReName
 from MaterialEdit.fun_文件夹操作.fun_享设计文件夹重构 import fun_享设计文件夹重构
 from MaterialEdit.fun_文件夹操作.fun_删除AI对应的PNG图片 import fun_删除AI对应的PNG文件
@@ -554,6 +555,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
         case "打开没有预览图的PSD文件":
             pythoncom.CoInitialize()
             OpenNoImagePsdFiles(material_path=material_structure.material_path).main()
+
+        case "CMYK转RGB":
+            pythoncom.CoInitialize()
+            fun_CMYK转RGB(material_path=material_structure.material_path)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",

@@ -15,6 +15,12 @@ def image_make_web_thumbnail(image_path: Path) -> Path:
     if new_path.exists() is False:
         im = Image.open(image_path.as_posix())
         im.thumbnail((500, 500))
+        if im.mode == "CMYK":
+            if new_path.suffix.lower() != ".png":
+                im = im.convert("RGB")
+            else:
+                im = im.convert("RGBA")
+
         im.save(new_path.as_posix())
 
     return new_path
