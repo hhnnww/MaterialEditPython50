@@ -1,10 +1,12 @@
-from .fun_遍历指定文件 import rglob
+"""删除EPS文件"""
+
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
-def fun_删除EPS文件(material_path: str):
-    ai_file_list = rglob(folder=material_path, suffix=[".ai"])
+def fun_删除EPS文件(material_path: str) -> None:
+    """删除EPS文件。"""
     eps_file_list = rglob(folder=material_path, suffix=[".eps"])
-
-    if len(ai_file_list) == len(eps_file_list):
-        for in_file in eps_file_list:
-            in_file.unlink()
+    for eps_file in eps_file_list:
+        ai_file = eps_file.with_suffix(".ai")
+        if ai_file.exists():
+            eps_file.unlink()

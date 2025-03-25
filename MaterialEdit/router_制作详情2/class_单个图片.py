@@ -137,7 +137,7 @@ class ClassOneImage:
 
             bottom_im = fun_图片竖向拼接(
                 image_list=[
-                    fun_获取单个水印(size=120, fill_clor=self.text_color),
+                    fun_获取单个水印(size=100, fill_clor=self.text_color),
                     bottom_im,
                 ],
                 spacing=self.logo_to_text_space,

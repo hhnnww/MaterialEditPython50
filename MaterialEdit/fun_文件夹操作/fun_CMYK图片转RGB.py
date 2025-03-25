@@ -18,9 +18,11 @@ def fun_CMYK转RGB(material_path: str) -> None:
     ):
         if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
             with Image.open(in_file.as_posix()) as im:
-                if im.mode == "CMYK":
-                    app.Open(in_file.as_posix())
-                    doc = app.ActiveDocument
-                    doc.ChangeMode(2)
-                    doc.Save()
-                    doc.Close(2)
+                mode = im.mode
+
+            if mode == "CMYK":
+                app.Open(in_file.as_posix())
+                doc = app.ActiveDocument
+                doc.ChangeMode(2)
+                doc.Save()
+                doc.Close(2)

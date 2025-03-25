@@ -7,7 +7,7 @@ from pathlib import Path
 import pythoncom
 import pywintypes
 from PIL import Image
-from win32com.client import DispatchEx
+from win32com.client import Dispatch
 
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
@@ -39,7 +39,9 @@ class PPT导出图片:
     @property
     def small_width(self) -> int:
         """小图宽度"""
-        return int((self.pic_width - ((self.line_col + 1) * self.spacing)) / self.line_col)
+        return int(
+            (self.pic_width - ((self.line_col + 1) * self.spacing)) / self.line_col,
+        )
 
     @property
     def pic_width(self) -> int:
@@ -63,7 +65,7 @@ class PPT导出图片:
     def fun_ppt导出图片(self) -> None:
         """使用win32com导出所有图片"""
         pythoncom.CoInitialize()
-        ppt_app = DispatchEx("PowerPoint.Application")
+        ppt_app = Dispatch("PowerPoint.Application")
         ppt_app.DisplayAlerts = 0
 
         with contextlib.suppress(pywintypes.com_error):
@@ -88,10 +90,16 @@ class PPT导出图片:
             im = im.convert("RGBA")
 
             if num == 0:
-                im.thumbnail((self.first_width, 9999), resample=Image.Resampling.LANCZOS)
+                im.thumbnail(
+                    (self.first_width, 9999),
+                    resample=Image.Resampling.LANCZOS,
+                )
                 bg_list.append(im.copy())
             else:
-                im.thumbnail((self.small_width, 9999), resample=Image.Resampling.LANCZOS)
+                im.thumbnail(
+                    (self.small_width, 9999),
+                    resample=Image.Resampling.LANCZOS,
+                )
                 in_line_list.append(im.copy())
 
             if len(in_line_list) == self.line_col:

@@ -61,7 +61,7 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
             im.paste(zhizhu, (x, y), mask=zhizhu)
             y += zhizhu.height
         else:
-            y += 400
+            y += 500
 
         num += 1
 

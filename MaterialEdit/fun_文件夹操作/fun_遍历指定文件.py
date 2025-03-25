@@ -8,6 +8,7 @@ from MaterialEdit.get_stem_num import get_path_num
 def rglob(folder: str, suffix: list[str]) -> list[Path]:
     """递归遍历文件夹下的所有文件."""
     folder_obj = Path(folder)
+
     image_list = [
         in_file
         for in_file in folder_obj.rglob("*")
