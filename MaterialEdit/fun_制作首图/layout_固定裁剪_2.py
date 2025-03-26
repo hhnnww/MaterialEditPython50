@@ -11,7 +11,6 @@ from PIL import Image
 from tqdm import tqdm
 
 from MaterialEdit.fun_制作首图.fun_重新构建所有图片 import fun_重新构建所有图片
-from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
@@ -56,8 +55,8 @@ def fun_layout_固定裁剪2(  # noqa: PLR0913
     row = oneline_num_ratio_list[0][0]
     image_comb_list = fun_列表分段(image_list, row, line)
 
-    image_height = math.floor((xq_height - ((line + 1) * spacing)) / line)
-    image_width = math.floor((xq_width - ((row + 1) * spacing)) / row)
+    image_height = math.ceil((xq_height - ((line + 1) * spacing)) / line)
+    image_width = math.ceil((xq_width - ((row + 1) * spacing)) / row)
 
     all_comb = []
 
@@ -84,15 +83,7 @@ def fun_layout_固定裁剪2(  # noqa: PLR0913
         all_comb.append(one_line_im)
 
     bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 0))
-
-    bg = fun_图片扩大粘贴(
-        bg,
-        xq_width,
-        xq_height,
-        "center",
-        "center",
-        (255, 255, 255, 0),
-    )
+    bg = bg.resize((xq_width, xq_height), Image.Resampling.LANCZOS)
 
     if Path(design_path).exists() is not True:
         Path(design_path).mkdir()

@@ -1,8 +1,13 @@
-from typing import Optional
+"""图片扩大粘贴"""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from PIL import Image
 
-from ..type import _COLOR, ALIGNITEM
+if TYPE_CHECKING:
+    from MaterialEdit.type import _COLOR, ALIGNITEM
 
 
 def fun_图片扩大粘贴(
@@ -12,13 +17,16 @@ def fun_图片扩大粘贴(
     left: ALIGNITEM,
     top: ALIGNITEM,
     background_color: _COLOR,
-    background_pil: Optional[Image.Image] = None,
+    background_pil: Image.Image | None = None,
 ) -> Image.Image:
+    """吧图片扩大，并可以添加背景颜色."""
     if width < im.width:
-        raise IndexError("背景宽度必须比图片尺寸大")
+        msg = "背景宽度必须比图片尺寸大"
+        raise IndexError(msg)
 
     if height < im.height:
-        raise IndexError("背景高度必须比图片尺寸大")
+        msg = "背景高度必须比图片尺寸大"
+        raise IndexError(msg)
 
     if background_pil is None:
         bg = Image.new("RGBA", (width, height), background_color)

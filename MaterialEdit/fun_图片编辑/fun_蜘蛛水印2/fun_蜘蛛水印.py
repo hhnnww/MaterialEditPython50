@@ -10,7 +10,7 @@ from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 impor
 def __fun_制作单个水印(shop_name: str) -> Image.Image:
     """制作单个蜘蛛水印。"""
     line_num = 4
-    fill_color = (120, 120, 120, 80)
+    fill_color = (120, 120, 120, 60)
     shop_name_pil = MakeIbmFont(
         text=f"{shop_name}",
         size=120,
@@ -21,7 +21,7 @@ def __fun_制作单个水印(shop_name: str) -> Image.Image:
 
     logo = fun_图片竖向拼接(
         image_list=[
-            fun_获取单个水印(size=480, fill_clor=fill_color),
+            fun_获取单个水印(size=400, fill_clor=fill_color),
             shop_name_pil,
         ],
         spacing=60,

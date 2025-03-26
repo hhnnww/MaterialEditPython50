@@ -86,9 +86,11 @@ def fun_make_title_image(title: str) -> Image.Image:
         background_color=(255, 255, 255, 255),
     )
     circle = circle.crop(box=(0, 200, circle.width, circle.height))
+    circle = circle.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+
     title_pil = MakeIbmFont(
         text=title,
-        size=110,
+        size=105,
         weight="text",
         color=(255, 255, 255, 255),
         bg_color=(0, 0, 0, 255),

@@ -28,6 +28,9 @@ from MaterialEdit.fun_文件夹操作.fun_SD生成图片改名 import SDPicReNam
 from MaterialEdit.fun_文件夹操作.fun_享设计文件夹重构 import fun_享设计文件夹重构
 from MaterialEdit.fun_文件夹操作.fun_删除AI对应的PNG图片 import fun_删除AI对应的PNG文件
 from MaterialEdit.fun_文件夹操作.fun_删除EPS文件 import fun_删除EPS文件
+from MaterialEdit.fun_文件夹操作.fun_删除享设计文件夹结构的预览图 import (
+    fun_删除享设计文件夹结构的预览图,
+)
 from MaterialEdit.fun_文件夹操作.fun_删除图片边框 import fun_删除图片边框
 from MaterialEdit.fun_文件夹操作.fun_删除广告文件 import fun_删除广告文件
 from MaterialEdit.fun_文件夹操作.fun_删除文件夹 import fun_删除文件夹
@@ -50,6 +53,9 @@ from MaterialEdit.fun_文件夹操作.fun_文件夹初始化 import fun_文件�
 from MaterialEdit.fun_文件夹操作.fun_文件重命名 import fun_文件重命名
 from MaterialEdit.fun_文件夹操作.fun_生成SKP导出命令 import fun_生成SKP批量导出脚本
 from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目录内放置广告
+from MaterialEdit.fun_文件夹操作.fun_移动AI文件和对应的图片到子目录 import (
+    MoveAIToSubPath,
+)
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
@@ -317,7 +323,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 if pic_exists is False:
                     min_size = 4096
                     if in_file.stat().st_size == min_size:
-                        continue
+                        in_file.unlink()
                     try:
                         PSFile(
                             ps_path=in_file.as_posix(),
@@ -341,18 +347,14 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 if png_path.exists() is False:
                     min_size = 4096
                     if in_file.stat().st_size == min_size:
-                        print("错误PSD文件", in_file)
-                        continue
+                        in_file.unlink()
                     PSFile(
                         ps_path=in_file.as_posix(),
                         tb_name=item.shop_name,
                         ad_pic_list=[],
                     ).run_图层改名_导出图片()
 
-            # app = Dispatch("photoshop.application")
-            # app.Quit()
-
-            pythoncom.CoUninitialize()  # type: ignore
+            pythoncom.CoUninitialize()
 
         case "PSD-导出图片":
             all_file = []
@@ -559,6 +561,16 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
         case "CMYK转RGB":
             pythoncom.CoInitialize()
             fun_CMYK转RGB(material_path=material_structure.material_path)
+
+        case "AI文件移动到子目录":
+            MoveAIToSubPath(
+                material_path_str=material_structure.material_path,
+            ).main()
+
+        case "删除享设计文件夹结构的预览图":
+            fun_删除享设计文件夹结构的预览图(
+                material_path=Path(material_structure.material_path),
+            )
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",

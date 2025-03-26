@@ -1,3 +1,5 @@
+"""横版1221布局"""
+
 import math
 from functools import cached_property
 from itertools import cycle
@@ -25,7 +27,7 @@ class Layout_横版1221(LayoutInit):
 
     def fun_横版1221(self) -> Image.Image:
         image_list = cycle(self.image_list)
-
+        max_num = 6
         num = 1
         im_list = []
         for image in image_list:
@@ -52,11 +54,8 @@ class Layout_横版1221(LayoutInit):
 
             num += 1
 
-            if len(im_list) == 6:
+            if len(im_list) == max_num:
                 break
-
-        for im in im_list:
-            print(im.size)
 
         top_r = fun_图片竖向拼接(
             image_list=[im_list[1], im_list[2]],
@@ -93,4 +92,4 @@ class Layout_横版1221(LayoutInit):
             background_color=self.bg_color,
         )
 
-        return bg
+        return bg.resize((self.xq_width, self.xq_height), Image.Resampling.LANCZOS)

@@ -1,6 +1,6 @@
 """素材图水印"""
 
-import logging
+import contextlib
 from pathlib import Path
 
 from PIL import Image
@@ -95,12 +95,7 @@ def __单个水印(shop_name: str) -> Image.Image:
 
 @threads(10)
 def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
-    try:
-        im = Image.open(image_path.as_posix())
-    except ValueError:
-        msg = f"图片过大：{image_path}"
-        logging.info(msg)
-    else:
+    with contextlib.suppress(Exception), Image.open(image_path.as_posix()) as im:
         im_width = 2000
         im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
         im.paste(
@@ -111,7 +106,6 @@ def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
         if image_path.suffix.lower() != ".png":
             im.convert("RGB")
         im.save(image_path)
-        im.close()
 
 
 def fun_素材图水印(material_path: str, shop_name: str) -> None:
