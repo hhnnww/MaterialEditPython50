@@ -2,12 +2,14 @@
 
 from pathlib import Path
 
-from ..fun_创建文件夹结构 import fun_创建文件夹结构
-from ..fun_遍历图片 import fun_遍历图片
-from ..type import MaterialInfo
-from .get_all_material_file_size import get_all_material_file_size
-from .material_file_count import mateiral_file_count
-from .material_file_list import material_file_list
+from MaterialEdit.fun_创建文件夹结构 import fun_创建文件夹结构
+from MaterialEdit.fun_获取素材信息.get_all_material_file_size import (
+    get_all_material_file_size,
+)
+from MaterialEdit.fun_获取素材信息.material_file_count import mateiral_file_count
+from MaterialEdit.fun_获取素材信息.material_file_list import material_file_list
+from MaterialEdit.fun_遍历图片 import fun_遍历图片
+from MaterialEdit.type import MaterialInfo
 
 
 def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) -> MaterialInfo:
@@ -34,7 +36,7 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
 
     effect_image_path = root_path_structure.effect_path
     effect_image_list = [
-        dict(path=obj)
+        {"path": obj}
         for obj in fun_遍历图片(
             folder=effect_image_path,
             image_sort=image_sort,
@@ -57,7 +59,9 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
         material_source_file_count = 0
         material_source_format = "none"
 
-    material_source_format_number = f"{material_source_file_count}个 {material_source_format} 文件"
+    material_source_format_number = (
+        f"{material_source_file_count}个 {material_source_format} 文件"
+    )
 
     material_source_format_title = ""
     if len(material_count_num_obj) > 0:

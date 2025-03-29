@@ -6,12 +6,9 @@ with 1 large, 2 medium,and 3 small images.
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑 import (
-    fun_图片扩大粘贴,
     fun_图片横向拼接,
     fun_图片竖向拼接,
 )
-from MaterialEdit.fun_图片编辑.class_image_edit import fun_图片切换到圆角
-from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.type import ImageModel
 
@@ -23,8 +20,10 @@ def fun_layout_1_2_3_3(
     spacing: int,
 ) -> Image.Image:
     """制作1大2中3小的布局."""
-    small_width = int((xq_width - ((3 + 1) * spacing)) / 3)
-    small_height = int((xq_height - ((4 + 1) * spacing)) / 4)
+    spacing = spacing - 4
+
+    small_width = int((xq_width - ((3 - 1) * spacing)) / 3)
+    small_height = int((xq_height - ((4 - 1) * spacing)) / 4)
 
     pil_list = []
     for num, image in enumerate(image_list):
@@ -46,10 +45,6 @@ def fun_layout_1_2_3_3(
                 height=small_height,
                 position="center",
             )
-
-        if spacing > 0:
-            im = fun_图片画边框(im, (240, 240, 240, 255))
-            im = fun_图片切换到圆角(im, 15, (255, 255, 255, 255))
 
         pil_list.append(im)
         max_len = 9
@@ -88,11 +83,4 @@ def fun_layout_1_2_3_3(
         "start",
         (255, 255, 255, 255),
     )
-    return fun_图片扩大粘贴(
-        bg,
-        xq_width,
-        xq_height,
-        "center",
-        "center",
-        (255, 255, 255, 255),
-    )
+    return bg.resize((xq_width, xq_height), Image.Resampling.LANCZOS)

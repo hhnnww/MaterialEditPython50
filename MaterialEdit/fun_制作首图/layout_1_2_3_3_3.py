@@ -1,3 +1,5 @@
+"""制作1大2中3小3小的布局."""
+
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
@@ -12,7 +14,8 @@ def fun_layout_1_2_3_3_3(
     xq_width: int,
     xq_height: int,
     spacing: int,
-):
+) -> Image.Image:
+    """制作1大2中3小3小的布局."""
     spacing = spacing - 4
     small_width = int((xq_width - ((3 - 1) * spacing)) / 3)
     small_height = int((xq_height - ((5 - 1) * spacing)) / 5)
@@ -67,7 +70,7 @@ def fun_layout_1_2_3_3_3(
         "start",
         (255, 255, 255, 255),
     )
-    bg = fun_图片扩大粘贴(
+    return fun_图片扩大粘贴(
         bg,
         xq_width,
         xq_height,
@@ -75,5 +78,3 @@ def fun_layout_1_2_3_3_3(
         "center",
         (255, 255, 255, 255),
     )
-
-    return bg

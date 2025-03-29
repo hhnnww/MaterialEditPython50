@@ -560,7 +560,10 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
         case "CMYK转RGB":
             pythoncom.CoInitialize()
-            fun_CMYK转RGB(material_path=material_structure.material_path)
+            fun_CMYK转RGB(
+                material_path=material_structure.material_path,
+                preview_path=material_structure.preview_path,
+            )
 
         case "AI文件移动到子目录":
             MoveAIToSubPath(

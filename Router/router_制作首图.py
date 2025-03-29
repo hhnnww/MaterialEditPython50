@@ -31,7 +31,7 @@ from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3�
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
-from MaterialEdit.fun_制作首图.layout_横版1221 import Layout_横版1221
+from MaterialEdit.fun_制作首图.layout_横版1221 import LayoutHorizontal1221
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_竖版1221 import Layout竖版1221
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
@@ -402,7 +402,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         ).main()
 
     elif item.first_image_layout == "横版-1221":
-        bg = Layout_横版1221(
+        bg = LayoutHorizontal1221(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,
