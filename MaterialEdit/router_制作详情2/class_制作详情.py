@@ -135,7 +135,6 @@ class ClassMakeXQ2:
     def __fun_组合图片列表(self) -> list[list[ClassOneImage]]:
         image_list = []
         in_list = []
-        break_num = 0
 
         for num, image in enumerate(iterable=self.image_list):
             in_list.append(image)
@@ -145,19 +144,13 @@ class ClassMakeXQ2:
                 next_list = [*in_list, self.image_list[num + 1]]
 
             if (
-                (break_num == 0 and len(in_list) == self.col - 1)
-                or len(in_list) == self.col
+                len(in_list) == self.col
                 or self.__计算单行图片的比例(online_comb=next_list)
                 >= self.oneline_ratio
                 or (num + 1 == len(self.image_list) and len(in_list) > 0)
             ):
                 image_list.append(in_list.copy())
                 in_list = []
-                break_num += 1
-
-            duandian = 5
-            if break_num > duandian:
-                break_num = 0
 
         return image_list
 

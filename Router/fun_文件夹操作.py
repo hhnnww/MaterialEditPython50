@@ -58,7 +58,7 @@ from MaterialEdit.fun_文件夹操作.fun_移动AI文件和对应的图片到子
 )
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
-from MaterialEdit.fun_文件夹操作.fun_素材图水印 import fun_素材图水印
+from MaterialEdit.fun_文件夹操作.fun_素材图水印2 import fun_素材图水印2
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
@@ -190,7 +190,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             )
 
         case "素材图水印":
-            fun_素材图水印(
+            fun_素材图水印2(
                 material_path=material_structure.material_path,
                 shop_name=item.shop_name,
             )
@@ -388,7 +388,6 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             all_file.extend(rglob(material_structure.material_path, [".ppt", ".pptx"]))
 
             for in_file in tqdm(all_file, ncols=100, desc="PPT导出图片"):
-                print(in_file)
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
                     PPT导出图片(ppt_path=in_file).main()

@@ -4,9 +4,8 @@ from tqdm import tqdm
 from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
 from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-
-from ..setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
-from ..type import ALIGNITEM, ImageModel
+from MaterialEdit.setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
+from MaterialEdit.type import ALIGNITEM, ImageModel
 
 
 def fun_固定裁剪(

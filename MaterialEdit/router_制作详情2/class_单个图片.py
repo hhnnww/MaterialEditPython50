@@ -11,6 +11,9 @@ from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩�
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
+from MaterialEdit.fun_图片编辑.fun_预览图水印.fun_单个预览图效果图水印 import (
+    fun_单个预览图效果图水印,
+)
 from MaterialEdit.setting import FONT_COLOR
 
 
@@ -137,7 +140,7 @@ class ClassOneImage:
 
             bottom_im = fun_图片竖向拼接(
                 image_list=[
-                    fun_获取单个水印(size=100, fill_clor=self.text_color),
+                    fun_获取单个水印(size=120, fill_clor=self.text_color),
                     bottom_im,
                 ],
                 spacing=self.logo_to_text_space,
@@ -167,4 +170,8 @@ class ClassOneImage:
                 background_color=self.background_color,
             )
 
-        return self.__fun_制作小图
+        logo = fun_单个预览图效果图水印(shop_name=self.shop_name, cate="xgt")
+        logo.thumbnail((200, 200), Image.Resampling.LANCZOS)
+        small_im = self.__fun_制作小图
+        small_im.paste(logo, (50, small_im.height - logo.height - 50), logo)
+        return small_im

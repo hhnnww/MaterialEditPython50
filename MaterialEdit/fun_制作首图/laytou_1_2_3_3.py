@@ -20,8 +20,6 @@ def fun_layout_1_2_3_3(
     spacing: int,
 ) -> Image.Image:
     """制作1大2中3小的布局."""
-    spacing = spacing - 4
-
     small_width = int((xq_width - ((3 - 1) * spacing)) / 3)
     small_height = int((xq_height - ((4 - 1) * spacing)) / 4)
 

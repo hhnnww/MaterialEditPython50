@@ -1,6 +1,7 @@
 """制作首图路由."""
 
 from fastapi import APIRouter
+from PIL import Image
 from pydantic import BaseModel
 
 from MaterialEdit import (
@@ -27,8 +28,10 @@ from MaterialEdit.fun_制作首图 import (
     style_paopao,
 )
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
+from MaterialEdit.fun_制作首图.layout_1_2_3_3_3_3 import fun_layout_1_2_3_3_3_3
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
+from MaterialEdit.fun_制作首图.layout_中间大四边小 import LayoutOneLargeOutSmall
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
 from MaterialEdit.fun_制作首图.layout_横版1221 import LayoutHorizontal1221
@@ -426,7 +429,25 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
         ).fun_竖版1221()
-
+    elif item.first_image_layout == "1-2-3-3-3-3":
+        bg = fun_layout_1_2_3_3_3_3(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+        )
+    elif item.first_image_layout == "中间大四周小":
+        bg = LayoutOneLargeOutSmall(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+            out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
+        ).main()
     else:
         bg = fun_layout_固定裁剪2(
             image_list=item.select_image_list,
@@ -525,7 +546,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         pass
 
     bg = fun_蜘蛛水印2(bg, item.shop_name)
-
+    bg = bg.resize((1500, 1500), Image.Resampling.LANCZOS)
     fun_保存图片(bg, "st_" + item.first_image_num)
 
     return {"msg": "ok"}

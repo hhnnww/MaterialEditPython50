@@ -6,9 +6,8 @@ from itertools import cycle
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片竖向拼接, fun_图片裁剪
-
-from .class_layout_init import LayoutInit
 
 
 class Layout1大竖2排小竖(LayoutInit):

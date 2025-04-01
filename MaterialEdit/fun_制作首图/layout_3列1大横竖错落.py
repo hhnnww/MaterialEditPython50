@@ -1,18 +1,20 @@
 from PIL import Image
 
+from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
+from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
+from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片画边框 import fun_图片画边框
+from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.setting import FIRST_IMAGE_BORDER_COLOR, FIRST_IMAGE_RATIO
-
-from ..fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
-from ..fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
-from ..fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
-from ..fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from ..fun_图片编辑.fun_图片画边框 import fun_图片画边框
-from ..fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
-from ..type import ImageModel
+from MaterialEdit.type import ImageModel
 
 
 def layout_3列1大横竖错落(
-    image_list: list[ImageModel], xq_width: int, xq_height: int, spacing: int
+    image_list: list[ImageModel],
+    xq_width: int,
+    xq_height: int,
+    spacing: int,
 ):
     small_width = int((xq_width - (spacing * 4)) / 3)
     small_height = int((xq_height - (spacing * 5)) / 4)
@@ -25,9 +27,6 @@ def layout_3列1大横竖错落(
         height=int((small_height * 2) + spacing),
         position="center",
     )
-    if spacing > 0:
-        large_im = fun_图片画边框(large_im, FIRST_IMAGE_BORDER_COLOR)
-        large_im = fun_图片切换到圆角(large_im, FIRST_IMAGE_RATIO, (255, 255, 255, 255))
 
     small_im_list = []
     for image in image_list[1:]:
@@ -38,7 +37,10 @@ def layout_3列1大横竖错落(
 
         if im.width >= im.height:
             im = fun_图片裁剪(
-                im=im, width=small_width, height=small_height, position="center"
+                im=im,
+                width=small_width,
+                height=small_height,
+                position="center",
             )
         else:
             im = fun_图片裁剪(

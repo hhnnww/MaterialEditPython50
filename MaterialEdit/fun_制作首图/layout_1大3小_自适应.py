@@ -9,42 +9,42 @@ from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片裁�
 
 class Layout1大3小自适应(LayoutInit):
     @cached_property
-    def fun_first_image(self):
+    def fun_first_image(self) -> Image.Image:
+        """获取第一张图片"""
         im = self._pil_list[0]
         im_height = math.ceil(self.xq_width / (im.width / im.height))
         im_height = max(im_height, self.xq_height - 250)
-        # im = im.resize((self.xq_width, im_height), resample=Image.Resampling.LANCZOS)
-        im = fun_图片裁剪(
+
+        return fun_图片裁剪(
             im=im,
             width=self.xq_width,
             height=im_height,
             position="center",
         )
-        return im
 
     @cached_property
     def bottom_height(self) -> int:
+        """底部图片的高度"""
         bottom_height = self.xq_height - self.fun_first_image.height - 50
-        if bottom_height < 300:
-            return 300
-        return bottom_height
+        return max(bottom_height, 300)
 
-    def main(self):
+    def main(self) -> Image.Image:
+        """生成详情中的单个图片"""
         bottom_list = self._pil_list[1:4]
         small_width = math.ceil(
             (self.xq_width - ((len(bottom_list) - 1) * self.spacing))
             / len(bottom_list),
         )
 
-        bottom_im_list = []
-        for im in bottom_list:
-            im = fun_图片裁剪(
+        bottom_im_list = [
+            fun_图片裁剪(
                 im=im,
                 width=small_width,
                 height=math.ceil(small_width / (im.width / im.height)),
                 position="center",
             )
-            bottom_im_list.append(im)
+            for im in bottom_list
+        ]
 
         bottom_im = fun_图片横向拼接(
             image_list=bottom_im_list,

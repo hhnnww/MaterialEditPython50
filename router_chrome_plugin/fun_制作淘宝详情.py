@@ -45,7 +45,7 @@ class MakeTaobaoXQStr:
                     obj.find("img", first=True).attrs.get("src").replace("_100x100", "")
                 )
                 self.image_mode_list.append(
-                    ImageModel(name=name, name_number=name_int, img=img)
+                    ImageModel(name=name, name_number=name_int, img=img),
                 )
                 max_num = max([obj.name_number for obj in self.image_mode_list])
                 if len(self.image_mode_list) == max_num:
@@ -53,8 +53,22 @@ class MakeTaobaoXQStr:
 
         self.image_mode_list.sort(key=lambda k: k.name_number)
 
-        html = ""
+        html = (
+            '<div class="dm_module" data-id="11286177" data-title="会'
+            '员免费" id="ids-module-11286177"><p><a data-spm-anchor-id="a2126o'
+            '.11854294.0.0" href="https://item.taobao.com/item.htm?id=66974140'
+            '2774" target="_blank"><img data-spm-anchor-id="a2126o.11854294.0.'
+            'i4.39c14831lYQ9jY" src="https://img.alicdn.com/imgextra/i4/86232232'
+            '6/O1CN010fYimm1T3MGpxFKsf_!!862322326.png" /></a></p></div>'
+        )
+
         for img_mode in self.image_mode_list:
             html += f"<img src={img_mode.img} />"
 
+        html += (
+            '<div class="dm_module" data-id="11715980" data-title="查看更多'
+            '" id="ids-module-11715980"><p><img align="absmiddle" src="https://img.'
+            "alicdn.com/imgextra/i1/862322326/O1CN0186snmc1T3MGobZ9lu_!!862322326.p"
+            'ng" style="max-width:750px;" /></p></div>'
+        )
         pyperclip.copy(html)

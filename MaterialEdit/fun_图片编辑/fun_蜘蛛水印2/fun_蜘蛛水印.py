@@ -54,17 +54,7 @@ def fun_蜘蛛水印2(im: Image.Image, shop_name: str) -> Image.Image:
     zhizhu = __fun_制作单个水印(shop_name)
     zhizhu.thumbnail((im.width, 999999), Image.Resampling.LANCZOS)
 
-    x, y = 0, 0
-    num = 1
-    while y < im.height:
-        if num % 2 == 0:
-            im.paste(zhizhu, (x, y), mask=zhizhu)
-            y += zhizhu.height
-        else:
-            y += 500
-
-        num += 1
-
+    im.paste(zhizhu, (0, int((im.height - zhizhu.height) / 2)), zhizhu)
     return im
 
 

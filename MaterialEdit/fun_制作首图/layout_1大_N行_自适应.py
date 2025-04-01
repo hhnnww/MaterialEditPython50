@@ -3,39 +3,44 @@ from functools import cached_property
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import (
     fun_图片横向拼接,
     fun_图片竖向拼接,
 )
 
-from .class_layout_init import LayoutInit
-
 
 class Layout1大N行自适应(LayoutInit):
     @cached_property
     def first_image(self) -> Image.Image:
+        """获取第一张图片"""
         im = self._pil_list[0]
 
         first_height = math.ceil((self.xq_width) / (im.width / im.height))
-        im = im.resize((self.xq_width, first_height), resample=Image.Resampling.LANCZOS)
-
-        return im
+        return im.resize(
+            (self.xq_width, first_height),
+            resample=Image.Resampling.LANCZOS,
+        )
 
     @cached_property
     def bottom_height(self) -> int:
+        """底部图片的高度"""
         return self.xq_height - (self.spacing * 1) - self.first_image.height
 
     @cached_property
     def small_width(self) -> int:
+        """小图的宽度"""
         return math.ceil((self.xq_width - (self.spacing * 1)) / 2)
 
-    def main(self):
+    def main(self) -> Image.Image:
+        """生成详情中的单个图片"""
         col_list = []
         bottom_list = []
         for pil in self._pil_list[1:]:
             small_height = math.ceil(self.small_width / (pil.width / pil.height))
             im = pil.resize(
-                (self.small_width, small_height), resample=Image.Resampling.LANCZOS
+                (self.small_width, small_height),
+                resample=Image.Resampling.LANCZOS,
             )
 
             col_list.append(im)

@@ -3,6 +3,7 @@ from PIL import Image
 from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
 from MaterialEdit.fun_图片编辑.fun_画一个圆形横框 import fun_画一个圆形横框
 
 
@@ -11,10 +12,15 @@ def fun_制作详情栏目标题(title: str, desc: str) -> Image.Image:
 
     Returns:
         _type_: _description_
+
     """
     font_color = (60, 60, 90, 255)
     title_pil = MakeIbmFont(
-        weight="bold", text=title, size=60, bg_color=(0, 0, 0, 0), color=font_color
+        weight="bold",
+        text=title,
+        size=60,
+        bg_color=(0, 0, 0, 0),
+        color=font_color,
     ).main()
     circle = fun_画一个圆形横框(
         width=title_pil.width + 20,
@@ -33,7 +39,9 @@ def fun_制作详情栏目标题(title: str, desc: str) -> Image.Image:
         mask=circle,
     )
     im1.paste(
-        im=title_pil, box=(int((im1.width - title_pil.width) / 2), 10), mask=title_pil
+        im=title_pil,
+        box=(int((im1.width - title_pil.width) / 2), 10),
+        mask=title_pil,
     )
     desc_pil = MakeIbmFont(
         text=desc,
@@ -42,13 +50,14 @@ def fun_制作详情栏目标题(title: str, desc: str) -> Image.Image:
         color=font_color,
         bg_color=(255, 255, 255, 0),
     ).main()
-
+    logo = fun_获取单个水印(size=100, fill_clor=(120, 120, 120, 255))
     im = fun_图片竖向拼接(
-        image_list=[im1, desc_pil],
+        image_list=[logo, im1, desc_pil],
         spacing=25,
         align_item="center",
         background_color=(255, 255, 255, 0),
     )
+
     im = fun_图片扩大粘贴(
         im=im,
         width=1500,
@@ -57,7 +66,8 @@ def fun_制作详情栏目标题(title: str, desc: str) -> Image.Image:
         top="center",
         background_color=(255, 255, 255, 255),
     )
-    im = fun_图片扩大粘贴(
+
+    return fun_图片扩大粘贴(
         im=im,
         width=1500,
         height=im.height + 200,
@@ -65,4 +75,3 @@ def fun_制作详情栏目标题(title: str, desc: str) -> Image.Image:
         top="end",
         background_color=(255, 255, 255, 255),
     )
-    return im

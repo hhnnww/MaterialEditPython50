@@ -20,7 +20,6 @@ def layout_列自适应(
     design_path: str,
 ) -> Image.Image:
     """列自适应首图."""
-    spacing = spacing - 4
     bg_color = (255, 255, 255, 0)
     col_width = math.ceil((xq_width - ((col - 1) * spacing)) / col)
 

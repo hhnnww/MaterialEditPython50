@@ -29,11 +29,7 @@ class LayoutInit:
         self.image_list = image_list
         self.xq_width = xq_width
         self.xq_height = xq_height
-
-        if spacing > 0:
-            self.spacing = spacing - 4
-        else:
-            self.spacing = spacing
+        self.spacing = spacing
 
         self.col = col
         self.crop_position: ALIGNITEM = crop_position
@@ -50,7 +46,8 @@ class LayoutInit:
 
             pil_list.append(im)
 
-            if len(pil_list) >= 50:
+            max_pic_count = 50
+            if len(pil_list) >= max_pic_count:
                 break
 
         return pil_list

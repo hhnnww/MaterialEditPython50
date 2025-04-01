@@ -17,11 +17,13 @@ class NewTbScrapy(ScrapyBase):
             "#ice-container > div > div > div.container--ZphYH1vW > div:nth-child(3) > div > div",
         )  # type: ignore  # noqa: PGH003
         for ma in ma_list:  # type: ignore  # noqa: PGH003
+            print(ma.html)
             link_find: Element = ma.find("a", first=True)
-            link = next(iter(link_find.absolute_links))
 
-            img_find: Element = ma.find("img", first=True)
-            img = img_find.attrs.get("src")
+            if link_find is not None:
+                link = next(iter(link_find.absolute_links))
+                img_find: Element = ma.find("img", first=True)
+                img = img_find.attrs.get("src")
 
-            if isinstance(img, str) and ".png" not in img:
-                yield MaterialModel(url=link, img=img, state=False)
+                if isinstance(img, str) and ".png" not in img:
+                    yield MaterialModel(url=link, img=img, state=False)

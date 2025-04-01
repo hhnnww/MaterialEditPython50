@@ -29,7 +29,6 @@ def fun_layout_固定裁剪2(  # noqa: PLR0913
     design_path: str,
 ) -> Image.Image:
     """固定裁剪."""
-    spacing = spacing - 4
     image_list = fun_重新构建所有图片(image_list)
 
     # 计算所有图片的平均比例

@@ -3,7 +3,6 @@
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.class_image_edit import (
-    fun_图片扩大粘贴,
     fun_图片横向拼接,
     fun_图片竖向拼接,
     fun_图片裁剪,
@@ -18,8 +17,8 @@ def fun_layout_1_3(
     spacing: int,
 ) -> Image.Image:
     """制作1+3的布局."""
-    small_width = int((xq_width - ((3 + 1) * spacing)) / 3)
-    small_height = int((xq_height - ((3 + 1) * spacing)) / 3)
+    small_width = int((xq_width - ((3 - 1) * spacing)) / 3)
+    small_height = int((xq_height - ((3 - 1) * spacing)) / 3)
 
     pil_list = []
     for num, image in enumerate(image_list):
@@ -48,15 +47,6 @@ def fun_layout_1_3(
             break
 
     top_pil = pil_list[0]
-
     two_pil = fun_图片横向拼接(pil_list[1:4], spacing, "center", (255, 255, 255, 255))
-
     bg = fun_图片竖向拼接([top_pil, two_pil], spacing, "start", (255, 255, 255, 255))
-    return fun_图片扩大粘贴(
-        bg,
-        xq_width,
-        xq_height,
-        "center",
-        "center",
-        (255, 255, 255, 255),
-    )
+    return bg.resize((xq_width, xq_height), Image.Resampling.LANCZOS)
