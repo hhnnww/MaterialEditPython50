@@ -14,6 +14,7 @@ def fun_layout_1_2_3_3_3(
     xq_width: int,
     xq_height: int,
     spacing: int,
+    bg_color: tuple,
 ) -> Image.Image:
     """制作1大2中3小3小的布局."""
     small_width = int((xq_width - ((3 - 1) * spacing)) / 3)
@@ -50,24 +51,25 @@ def fun_layout_1_2_3_3_3(
         [pil_list[1], pil_list[2]],
         spacing,
         "center",
-        (255, 255, 255, 255),
+        bg_color,
     )
+
     top_pil = fun_图片横向拼接(
         [pil_list[0], large_right],
         spacing,
         "center",
-        (255, 255, 255, 255),
+        bg_color,
     )
 
-    two_pil = fun_图片横向拼接(pil_list[3:6], spacing, "center", (255, 255, 255, 255))
-    three_pil = fun_图片横向拼接(pil_list[6:9], spacing, "center", (255, 255, 255, 255))
-    four_pil = fun_图片横向拼接(pil_list[9:12], spacing, "center", (255, 255, 255, 255))
+    two_pil = fun_图片横向拼接(pil_list[3:6], spacing, "center", bg_color)
+    three_pil = fun_图片横向拼接(pil_list[6:9], spacing, "center", bg_color)
+    four_pil = fun_图片横向拼接(pil_list[9:12], spacing, "center", bg_color)
 
     bg = fun_图片竖向拼接(
         [top_pil, two_pil, three_pil, four_pil],
         spacing,
         "start",
-        (255, 255, 255, 255),
+        bg_color,
     )
     return fun_图片扩大粘贴(
         bg,
@@ -75,5 +77,5 @@ def fun_layout_1_2_3_3_3(
         xq_height,
         "center",
         "center",
-        (255, 255, 255, 255),
+        bg_color,
     )

@@ -83,9 +83,14 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
     )
 
     if item.image_name_has_material_id is True:
-        fun_保存图片(data_im, f"xq_{num}", item.material_id)
+        fun_保存图片(
+            im=data_im,
+            stem=f"xq_{num}",
+            shop_name=item.shop_name,
+            material_id=item.material_id,
+        )
     else:
-        fun_保存图片(data_im, f"xq_{num}")
+        fun_保存图片(data_im, f"xq_{num}", shop_name=item.shop_name)
     num += 1
 
     if item.has_effect_image == 1 and Path(item.effect_image_path).exists() is True:
@@ -123,9 +128,14 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
 
             for im in fun_裁剪图片(im=data_im):
                 if item.image_name_has_material_id is True:
-                    fun_保存图片(im, f"xq_{num}", item.material_id)
+                    fun_保存图片(
+                        im=im,
+                        stem=f"xq_{num}",
+                        shop_name=item.shop_name,
+                        material_id=item.material_id,
+                    )
                 else:
-                    fun_保存图片(im, f"xq_{num}")
+                    fun_保存图片(im=im, stem=f"xq_{num}", shop_name=item.shop_name)
                 num += 1
 
     # 制作预览图
@@ -164,7 +174,12 @@ def fun_make_material_product_image(item: MakeProductImageRequestModel) -> None:
 
             for im in fun_裁剪图片(im=data_im):
                 if item.image_name_has_material_id is True:
-                    fun_保存图片(im, f"xq_{num}", item.material_id)
+                    fun_保存图片(
+                        im,
+                        f"xq_{num}",
+                        shop_name=item.shop_name,
+                        material_id=item.material_id,
+                    )
                 else:
-                    fun_保存图片(im, f"xq_{num}")
+                    fun_保存图片(im, f"xq_{num}", shop_name=item.shop_name)
                 num += 1

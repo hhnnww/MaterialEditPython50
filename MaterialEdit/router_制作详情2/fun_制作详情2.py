@@ -13,7 +13,6 @@ from MaterialEdit import (
     fun_遍历图片,
 )
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_蜘蛛水印2.fun_蜘蛛水印 import fun_蜘蛛水印2
 from MaterialEdit.router_制作详情2.class_制作详情 import ClassMakeXQ2
 from MaterialEdit.type import ALIGNITEM
 
@@ -40,6 +39,8 @@ class MakeProductImageRequestModel(BaseModel):
     preview_used_number: int
     preview_has_material_info: int
     preview_image_count: int
+
+    effect_has_watermark: bool
 
     crop_position: ALIGNITEM
     xq_width: int
@@ -84,12 +85,15 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
         background_color=(255, 255, 255, 255),
     )
 
-    data_im = fun_蜘蛛水印2(data_im, item.shop_name)
-
     if item.image_name_has_material_id is True:
-        fun_保存图片(data_im, f"xq_{num}", item.material_id)
+        fun_保存图片(
+            im=data_im,
+            stem=f"xq_{num}",
+            shop_name=item.shop_name,
+            material_id=item.material_id,
+        )
     else:
-        fun_保存图片(data_im, f"xq_{num}")
+        fun_保存图片(data_im, f"xq_{num}", shop_name=item.shop_name)
     num += 1
 
     # ---------------- 制作效果图 ----------------
@@ -121,6 +125,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
                 material_path=Path(item.material_path),
                 has_water=item.has_water == 1,
                 oneline_ratio=item.oneline_ratio,
+                effect_has_watermark=item.effect_has_watermark,
             ).main()
 
             data_im = fun_图片竖向拼接(
@@ -129,13 +134,17 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
                 align_item="center",
                 background_color=(255, 255, 255, 255),
             )
-            data_im = fun_蜘蛛水印2(data_im, item.shop_name)
 
             for im in fun_裁剪图片(im=data_im):
                 if item.image_name_has_material_id is True:
-                    fun_保存图片(im, f"xq_{num}", item.material_id)
+                    fun_保存图片(
+                        im=im,
+                        stem=f"xq_{num}",
+                        material_id=item.material_id,
+                        shop_name=item.shop_name,
+                    )
                 else:
-                    fun_保存图片(im, f"xq_{num}")
+                    fun_保存图片(im=im, stem=f"xq_{num}", shop_name=item.shop_name)
                 num += 1
 
     # 制作预览图
@@ -168,6 +177,7 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
                 material_path=Path(item.material_path),
                 has_water=item.has_water == 1,
                 oneline_ratio=item.oneline_ratio,
+                effect_has_watermark=item.effect_has_watermark,
             ).main()
 
             data_im = fun_图片竖向拼接(
@@ -176,10 +186,14 @@ def fun_制作详情2(item: MakeProductImageRequestModel) -> None:  # noqa: C901
                 align_item="center",
                 background_color=(255, 255, 255, 255),
             )
-            data_im = fun_蜘蛛水印2(data_im, item.shop_name)
             for im in fun_裁剪图片(im=data_im):
                 if item.image_name_has_material_id is True:
-                    fun_保存图片(im=im, stem=f"xq_{num}", material_id=item.material_id)
+                    fun_保存图片(
+                        im=im,
+                        stem=f"xq_{num}",
+                        material_id=item.material_id,
+                        shop_name=item.shop_name,
+                    )
                 else:
-                    fun_保存图片(im=im, stem=f"xq_{num}")
+                    fun_保存图片(im=im, stem=f"xq_{num}", shop_name=item.shop_name)
                 num += 1

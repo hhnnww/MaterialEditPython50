@@ -30,6 +30,7 @@ class ClassOneImage:
         all_material_file: list[Path],
         has_water: bool,
         has_name: bool,
+        effect_has_watermark: bool,
     ) -> None:
         """处理单个图片."""
         self.image_pil = image_pil
@@ -40,6 +41,7 @@ class ClassOneImage:
         self.image_path = image_path
         self.all_material_file = all_material_file
         self.has_water = has_water
+        self.effect_has_watermark = effect_has_watermark
 
     text_color = FONT_COLOR
     logo_to_text_space = 30
@@ -170,8 +172,11 @@ class ClassOneImage:
                 background_color=self.background_color,
             )
 
-        logo = fun_单个预览图效果图水印(shop_name=self.shop_name, cate="xgt")
-        logo.thumbnail((200, 200), Image.Resampling.LANCZOS)
-        small_im = self.__fun_制作小图
-        small_im.paste(logo, (50, small_im.height - logo.height - 50), logo)
-        return small_im
+        if self.effect_has_watermark is True:
+            logo = fun_单个预览图效果图水印(shop_name=self.shop_name, cate="xgt")
+            logo.thumbnail((200, 200), Image.Resampling.LANCZOS)
+            small_im = self.__fun_制作小图
+            small_im.paste(logo, (50, small_im.height - logo.height - 50), logo)
+            return small_im
+
+        return self.__fun_制作小图

@@ -37,6 +37,7 @@ from MaterialEdit.fun_文件夹操作.fun_删除文件夹 import fun_删除文�
 from MaterialEdit.fun_文件夹操作.fun_删除素材文件夹所有图片 import (
     fun_删除素材文件夹所有图片,
 )
+from MaterialEdit.fun_文件夹操作.fun_删除预览小图 import fun_删除预览小图
 from MaterialEdit.fun_文件夹操作.fun_制作享设计大图 import fun_享设计制作预览图
 from MaterialEdit.fun_文件夹操作.fun_图片添加白色背景 import fun_图片添加白色背景
 from MaterialEdit.fun_文件夹操作.fun_子目录psd重命名 import fun_子目录PSD重命名
@@ -573,6 +574,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             fun_删除享设计文件夹结构的预览图(
                 material_path=Path(material_structure.material_path),
             )
+
+        case "删除预览小图":
+            fun_删除预览小图(preview_path=material_structure.preview_path)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",

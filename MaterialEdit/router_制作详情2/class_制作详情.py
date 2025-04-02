@@ -35,6 +35,7 @@ class ClassMakeXQ2:
         material_path: Path,
         has_water: bool,
         oneline_ratio: float,
+        effect_has_watermark: bool,
     ) -> None:
         """初始化."""
         self.col = col
@@ -47,6 +48,7 @@ class ClassMakeXQ2:
         self.material_path = material_path
         self.has_water = has_water
         self.oneline_ratio = oneline_ratio
+        self.effect_has_watermark = effect_has_watermark
 
         self.image_list_path = self.__fun_获取仅使用的图片(image_list=image_list)
         self.image_list = self.__fun_排序图片(image_list=self.image_list_path)
@@ -85,6 +87,7 @@ class ClassMakeXQ2:
                 has_name=self.has_name,
                 all_material_file=self.__fun_所有源文件,
                 has_water=self.has_water,
+                effect_has_watermark=self.effect_has_watermark,
             )
             for image in image_list
         ]

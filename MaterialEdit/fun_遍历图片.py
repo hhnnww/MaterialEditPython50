@@ -6,7 +6,11 @@ from MaterialEdit.get_stem_num import get_path_num
 from MaterialEdit.setting import IMAGE_SUFFIX
 
 
-def fun_遍历图片(folder: str, used_image_number: int, image_sort: bool) -> list[Path]:
+def fun_遍历图片(
+    folder: str,
+    used_image_number: int,
+    image_sort: bool,
+) -> list[Path]:
     """遍历文件夹图片."""
     image_list = [
         in_file

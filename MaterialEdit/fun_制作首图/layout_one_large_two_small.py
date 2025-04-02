@@ -1,10 +1,10 @@
-"""
-一个大行
+"""一个大行
 下面每行2个的小行图片布局
 """
 
 from PIL import Image
 
+from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import (
     fun_图片扩大粘贴,
     fun_图片横向拼接,
@@ -13,18 +13,16 @@ from MaterialEdit.fun_图片编辑 import (
     fun_图片边框圆角,
 )
 
-from .class_layout_init import LayoutInit
-
 
 class LayoutOneLargeTwoSmall(LayoutInit):
-    """第一行占满宽度
-    后面每行两个图片
+    """第一行占满宽度,后面每行两个图片.
 
     Args:
         LayoutInit (_type_): _description_
 
     Returns:
         _type_: _description_
+
     """
 
     @property
@@ -33,6 +31,7 @@ class LayoutOneLargeTwoSmall(LayoutInit):
 
         Returns:
             int: _description_
+
         """
         return int((self.xq_height - (self.spacing * (self.col + 3))) / (self.col + 2))
 
@@ -42,6 +41,7 @@ class LayoutOneLargeTwoSmall(LayoutInit):
 
         Returns:
             int: _description_
+
         """
         return int((self.xq_width - (self.spacing * 3)) / 2)
 
@@ -50,6 +50,7 @@ class LayoutOneLargeTwoSmall(LayoutInit):
 
         Returns:
             Image.Image: _description_
+
         """
         im = fun_图片裁剪(
             im=self._pil_list[0],
@@ -68,6 +69,7 @@ class LayoutOneLargeTwoSmall(LayoutInit):
 
         Returns:
             _type_: _description_
+
         """
         line_small_im_list = []
         bottom_im_list = []

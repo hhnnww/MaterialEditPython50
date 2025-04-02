@@ -66,6 +66,7 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
             "漫语摄影",
             "轨迹",
             "巴扎嘿",
+            "唐峰",
         ]:
             ma_list = self.fun_get_new_tb()
         elif self.material_site in ["青青草素材王国"]:

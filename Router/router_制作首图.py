@@ -1,7 +1,7 @@
 """制作首图路由."""
 
 from fastapi import APIRouter
-from PIL import Image
+from PIL import Image, ImageColor
 from pydantic import BaseModel
 
 from MaterialEdit import (
@@ -48,7 +48,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
-from MaterialEdit.router_制作详情2.fun_制作详情2 import fun_蜘蛛水印2
+from MaterialEdit.fun_图片编辑.fun_蜘蛛水印2.fun_蜘蛛水印 import fun_蜘蛛水印2
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -80,12 +80,6 @@ class MakeFirstImageModel(BaseModel):
     out_space: int
 
 
-def fun_转换COLOR(bg_color: str) -> tuple[int, ...]:
-    """颜色转换成rbga颜色."""
-    bg = [int(in_str) for in_str in bg_color.split(" ")]
-    return tuple(bg[:3])
-
-
 def fun_换算图片高度(first_image_style_name: str) -> int:
     """根据首图样式，换算首图高度。"""
     xq_height = 1500
@@ -111,7 +105,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
     fun_清空桌面上传文件夹图片("st_" + item.first_image_num)
 
     # 转换bg_color
-    bg_color = fun_转换COLOR(bg_color=item.bg_color)
+    bg_color = ImageColor.getrgb(f"#{item.bg_color}")
 
     # 制作首图背景
     xq_width = 1500
@@ -197,6 +191,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
+            bg_color=bg_color,
         )
 
     elif item.first_image_layout == "S1-2":
@@ -502,7 +497,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             format_title=item.format_title,
             shop_name=item.shop_name,
             material_id=item.material_id,
-            bg_color=fun_转换COLOR(bg_color=item.bg_color),
+            bg_color=bg_color,
         )
 
     elif item.first_image_style == "黑鲸":
@@ -511,7 +506,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             title=item.first_image_title,
             material_format=item.source_format,
             material_id=item.material_id,
-            bg_color=fun_转换COLOR(bg_color=item.bg_color),
+            bg_color=bg_color,
             shop_name=item.shop_name,
         )
 
@@ -547,6 +542,6 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
 
     bg = fun_蜘蛛水印2(bg, item.shop_name)
     bg = bg.resize((1500, 1500), Image.Resampling.LANCZOS)
-    fun_保存图片(bg, "st_" + item.first_image_num)
+    fun_保存图片(im=bg, stem="st_" + item.first_image_num, shop_name=item.shop_name)
 
     return {"msg": "ok"}
