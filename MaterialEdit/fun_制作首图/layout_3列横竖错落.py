@@ -1,6 +1,5 @@
 from PIL import Image
 
-from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
@@ -68,14 +67,7 @@ def layout_3列横竖错落(
         align_item="start",
         background_color=(255, 255, 255, 255),
     )
-
-    bg = fun_图片扩大粘贴(
-        im=bg,
-        width=xq_width,
-        height=xq_height,
-        left="center",
-        top="center",
-        background_color=(255, 255, 255, 255),
+    return bg.resize(
+        (xq_width, xq_height),
+        resample=Image.Resampling.LANCZOS,
     )
-
-    return bg

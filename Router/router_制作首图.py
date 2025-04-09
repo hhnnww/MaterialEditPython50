@@ -47,8 +47,6 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 )
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
-from MaterialEdit.fun_图片编辑.fun_图片水印.fun_图片打满水印 import fun_图片打满水印
-from MaterialEdit.fun_图片编辑.fun_蜘蛛水印2.fun_蜘蛛水印 import fun_蜘蛛水印2
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -454,40 +452,6 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             design_path=path_jiegou.design_path,
         )
 
-    # ---------------- 水印 ----------------
-    if (
-        item.first_image_style != "无样式"
-        and item.shop_name != "饭桶设计"
-        and item.first_image_style != "黑鲸"
-    ):
-        water_pixel_color = 0
-        bg = fun_图片打满水印(
-            bg,
-            80,
-            3,
-            3,
-            (
-                water_pixel_color,
-                water_pixel_color,
-                water_pixel_color,
-                int(255 * 0.8),
-            ),
-        )
-
-        water_pixel_color = 255
-        bg = fun_图片打满水印(
-            bg,
-            80,
-            3,
-            3,
-            (
-                water_pixel_color,
-                water_pixel_color,
-                water_pixel_color,
-                int(255 * 0.8),
-            ),
-        )
-
     # ---------------- 样式 ----------------
 
     if item.first_image_style == "T500":
@@ -540,7 +504,6 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
     elif item.first_image_style == "无样式":
         pass
 
-    bg = fun_蜘蛛水印2(bg, item.shop_name)
     bg = bg.resize((1500, 1500), Image.Resampling.LANCZOS)
     fun_保存图片(im=bg, stem="st_" + item.first_image_num, shop_name=item.shop_name)
 

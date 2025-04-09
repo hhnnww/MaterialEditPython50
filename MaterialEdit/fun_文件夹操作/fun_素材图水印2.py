@@ -16,6 +16,10 @@ from MaterialEdit.fun_遍历图片 import fun_遍历图片
 @threads(10)
 def __单个文件处理(file: Path, logo: Image.Image) -> None:
     with Image.open(file.as_posix()) as im:
+        max_height_ratio = 4
+        if im.height / im.width > max_height_ratio:
+            im = im.crop((0, 0, im.width, im.width * max_height_ratio))
+
         im.thumbnail((2000, 2000))
         random_number = randbelow(100) + 1
         if random_number % 2 == 1:  # Odd number
@@ -34,7 +38,7 @@ def fun_素材图水印2(material_path: str, shop_name: str) -> None:
         shop_name=shop_name,
         cate="ylt",
     )
-    logo_max_size = 500
+    logo_max_size = 400
     logo.thumbnail((logo_max_size, logo_max_size))
 
     for file in tqdm(

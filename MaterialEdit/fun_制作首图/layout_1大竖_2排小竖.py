@@ -2,7 +2,6 @@
 
 import math
 from functools import cached_property
-from itertools import cycle
 
 from PIL import Image
 
@@ -47,25 +46,31 @@ class Layout1大竖2排小竖(LayoutInit):
         line_list = []
         right_im_list = []
 
-        for im in cycle(self._pil_list[1:]):
-            in_im = fun_图片裁剪(
-                im,
-                width=self.fun_小图宽度,
-                height=self.fun_小图高度,
-                position="center",
+        min_pic_count = 6
+        right_list = self._pil_list[1:]
+        if len(right_list) < min_pic_count:
+            right_list.extend(right_list)
+
+        for im in right_list:
+            line_list.append(
+                fun_图片裁剪(
+                    im,
+                    width=self.fun_小图宽度,
+                    height=self.fun_小图高度,
+                    position="center",
+                ),
             )
 
-            line_list.append(in_im.copy())
-
-            if self._fun_计算单行高度(im_list=line_list) > self.xq_height:
-                line_im = fun_图片竖向拼接(
-                    image_list=line_list,
-                    spacing=self.spacing,
-                    align_item="center",
-                    background_color=(255, 255, 255, 255),
+            right_one_line_pic_num = 3
+            if len(line_list) == right_one_line_pic_num:
+                right_im_list.append(
+                    fun_图片竖向拼接(
+                        image_list=line_list,
+                        spacing=self.spacing,
+                        align_item="center",
+                        background_color=(255, 255, 255, 255),
+                    ),
                 )
-
-                right_im_list.append(line_im)
 
                 line_list = []
 
@@ -87,4 +92,7 @@ class Layout1大竖2排小竖(LayoutInit):
             background_color=(255, 255, 255, 255),
         )
 
-        return bg.crop((0, 0, self.xq_width, self.xq_height))
+        return bg.resize(
+            (self.xq_width, self.xq_height),
+            Image.Resampling.LANCZOS,
+        )

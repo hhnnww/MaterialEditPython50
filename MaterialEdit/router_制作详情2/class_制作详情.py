@@ -54,7 +54,7 @@ class ClassMakeXQ2:
         self.image_list = self.__fun_排序图片(image_list=self.image_list_path)
 
     xq_width = 2000
-    space = 20
+    space = 40
     background_color = (255, 255, 255, 255)
 
     @cached_property
@@ -166,9 +166,18 @@ class ClassMakeXQ2:
 
         spacing = 0 if self.has_name else self.space
 
-        return fun_图片竖向拼接(
+        bg = fun_图片竖向拼接(
             image_list=im_list,
             spacing=spacing,
             align_item="center",
             background_color=self.background_color,
+        )
+
+        return fun_图片扩大粘贴(
+            im=bg,
+            width=2060,
+            height=bg.height,
+            left="center",
+            top="center",
+            background_color=(255, 255, 255, 255),
         )

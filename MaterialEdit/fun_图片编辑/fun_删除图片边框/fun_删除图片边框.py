@@ -4,6 +4,7 @@ from MaterialEdit.fun_图片编辑.fun_删除图片边框.fun_单点删除边框
 
 
 def fun_删除图片边框(im: Image.Image) -> Image.Image:
+    """删除图片透明边框"""
     pix_list = [
         im.getpixel((0, 0)),
         im.getpixel((im.width - 1, 0)),

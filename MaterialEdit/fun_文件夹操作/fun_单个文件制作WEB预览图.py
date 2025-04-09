@@ -14,9 +14,9 @@ def image_make_web_thumbnail(image_path: Path) -> Path:
 
     if new_path.exists() is False:
         im = Image.open(image_path.as_posix())
-        max_height_ratio = 3
+        max_height_ratio = 5
         if im.height / im.width > max_height_ratio:
-            im = im.crop((0, 0, im.width, im.width * 3))
+            im = im.crop((0, 0, im.width, im.width * 5))
 
         im.thumbnail((500, 500))
         if im.mode == "CMYK":
