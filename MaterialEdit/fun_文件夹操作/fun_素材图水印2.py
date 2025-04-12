@@ -1,5 +1,6 @@
 """layout 一大周围小"""
 
+import contextlib
 from pathlib import Path
 from secrets import randbelow
 
@@ -18,7 +19,7 @@ def __单个文件处理(file: Path, logo: Image.Image) -> None:
     with Image.open(file.as_posix()) as im:
         max_height_ratio = 4
         if im.height / im.width > max_height_ratio:
-            im = im.crop((0, 0, im.width, im.width * max_height_ratio))
+            im = im.crop((0, 0, im.width, im.width * max_height_ratio))  # noqa: PLW2901
 
         im.thumbnail((2000, 2000))
         random_number = randbelow(100) + 1
@@ -27,9 +28,10 @@ def __单个文件处理(file: Path, logo: Image.Image) -> None:
         else:  # Even number
             position = (im.width - logo.width - 50, im.height - logo.height - 50)
 
-        # Paste the logo at the determined position
         im.paste(logo, position, logo)
-        im.save(file.as_posix())
+
+        with contextlib.suppress(OSError):
+            im.save(file.as_posix())
 
 
 def fun_素材图水印2(material_path: str, shop_name: str) -> None:

@@ -13,7 +13,6 @@ from tqdm import tqdm
 from MaterialEdit.fun_制作首图.fun_重新构建所有图片 import fun_重新构建所有图片
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 if TYPE_CHECKING:
     from MaterialEdit.type import ALIGNITEM, ImageModel
@@ -69,7 +68,10 @@ def fun_layout_固定裁剪2(  # noqa: PLR0913
                 if im.mode != "RGBA":
                     im = im.convert("RGBA")
 
-                im = fun_图片裁剪(im, image_width, image_height, crop_position)
+                im = im.resize(
+                    (image_width, image_height),
+                    Image.Resampling.LANCZOS,
+                )
                 one_line.append(im)
 
         one_line_im = fun_图片横向拼接(

@@ -18,5 +18,5 @@ def fun_删除享设计文件夹结构的预览图(material_path: Path) -> None:
 
 if __name__ == "__main__":
     fun_删除享设计文件夹结构的预览图(
-        material_path=Path(r"F:\小夕素材\10000-20000\10298\10298"),
+        material_path=Path(r"F:\小夕素材\10000-20000\10329\10329"),
     )

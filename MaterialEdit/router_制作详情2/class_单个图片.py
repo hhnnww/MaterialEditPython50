@@ -7,6 +7,7 @@ from pathlib import Path
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_ibm_font.fun_ibm_font import MakeIbmFont
+from MaterialEdit.fun_图片编辑.fun_删除图片透明边框 import fun_删除图片透明边框
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
@@ -33,7 +34,7 @@ class ClassOneImage:
         effect_has_watermark: bool,
     ) -> None:
         """处理单个图片."""
-        self.image_pil = image_pil
+        self.image_pil = fun_删除图片透明边框(image_pil)
         self.image_width = image_width
         self.background_color = background_color
         self.shop_name = shop_name

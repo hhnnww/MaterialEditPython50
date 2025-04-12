@@ -3,13 +3,14 @@
 with 1 large, 2 medium,and 3 small images.
 """
 
+from itertools import cycle
+
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑 import (
     fun_图片横向拼接,
     fun_图片竖向拼接,
 )
-from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.type import ImageModel
 
 
@@ -24,24 +25,32 @@ def fun_layout_1_2_3_3(
     small_height = int((xq_height - ((4 - 1) * spacing)) / 4)
 
     pil_list = []
-    for num, image in enumerate(image_list):
+    for num, image in enumerate(cycle(image_list)):
         im = Image.open(image.path)
         if im.mode.lower() != "rgba":
             im = im.convert("RGBA")
 
         if num == 0:
-            im = fun_图片裁剪(
-                im,
-                width=int(small_width * 2) + spacing,
-                height=int(small_height * 2) + spacing,
-                position="center",
+            # im = fun_图片裁剪(
+            #     im,
+            #     width=int(small_width * 2) + spacing,
+            #     height=int(small_height * 2) + spacing,
+            #     position="center",
+            # )
+            im = im.resize(
+                (int(small_width * 2) + spacing, int(small_height * 2) + spacing),
+                resample=Image.Resampling.LANCZOS,
             )
         else:
-            im = fun_图片裁剪(
-                im,
-                width=small_width,
-                height=small_height,
-                position="center",
+            # im = fun_图片裁剪(
+            #     im,
+            #     width=small_width,
+            #     height=small_height,
+            #     position="center",
+            # )
+            im = im.resize(
+                (small_width, small_height),
+                resample=Image.Resampling.LANCZOS,
             )
 
         pil_list.append(im)

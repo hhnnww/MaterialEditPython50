@@ -23,7 +23,7 @@ def fun_删除图片透明边框(image: Image.Image) -> Image.Image:
 if __name__ == "__main__":
     all_image = [
         infile
-        for infile in Path(r"F:\小夕素材\11000-11999\11207\11207").rglob("*")
+        for infile in Path(r"F:\小夕素材\11000-11999\11208\11208").rglob("*")
         if infile.is_file() and infile.suffix.lower() in [".png"]
     ]
     for infile in tqdm(all_image, desc="删除图片透明边框", ncols=100):

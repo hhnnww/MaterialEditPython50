@@ -4,7 +4,6 @@ from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.type import ImageModel
 
 
@@ -25,18 +24,14 @@ def fun_layout_1_2_3_3_3_3(
             im = im.convert("RGBA")
 
         if num == 0:
-            im = fun_图片裁剪(
-                im,
-                width=int(small_width * 2) + spacing,
-                height=int(small_height * 2) + spacing,
-                position="center",
+            im = im.resize(
+                (int(small_width * 2) + spacing, int(small_height * 2) + spacing),
+                resample=Image.Resampling.LANCZOS,
             )
         else:
-            im = fun_图片裁剪(
-                im,
-                width=small_width,
-                height=small_height,
-                position="center",
+            im = im.resize(
+                (small_width, small_height),
+                resample=Image.Resampling.LANCZOS,
             )
 
         pil_list.append(im)

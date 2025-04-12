@@ -9,7 +9,6 @@ from PIL import Image
 
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片竖向拼接
-from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 
 
 class Layout行自适应(LayoutInit):
@@ -58,12 +57,16 @@ class Layout行自适应(LayoutInit):
                 )
 
             elif small_size == "固定尺寸":
-                im = fun_图片裁剪(
-                    im=im,
-                    width=self.__fun_固定尺寸小图宽度,
-                    height=self.__fun_小图高度,
-                    position=self.crop_position,
+                im = im.resize(
+                    (self.__fun_固定尺寸小图宽度, self.__fun_小图高度),
+                    resample=Image.Resampling.LANCZOS,
                 )
+                # im = fun_图片裁剪(
+                #     im=im,
+                #     width=self.__fun_固定尺寸小图宽度,
+                #     height=self.__fun_小图高度,
+                #     position=self.crop_position,
+                # )
 
             line_list.append(im.copy())
 

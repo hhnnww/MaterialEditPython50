@@ -23,6 +23,7 @@ class LayoutInit:
         bg_color: tuple,
         out_space: bool,
         design_path: str,
+        resize: str = "缩放",
     ) -> None:
         """图片布局初始化."""
         self.design_path = design_path
@@ -35,6 +36,7 @@ class LayoutInit:
         self.crop_position: ALIGNITEM = crop_position
         self.bg_color = bg_color
         self.out_space = out_space
+        self.resize = resize
 
     @cached_property
     def _pil_list(self) -> list[Image.Image]:
