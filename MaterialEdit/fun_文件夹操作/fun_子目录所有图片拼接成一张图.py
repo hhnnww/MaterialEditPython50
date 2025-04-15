@@ -57,7 +57,9 @@ class MergeSinglePath:
     @cached_property
     def all_pil(self) -> list[Image.Image]:
         """打开所有图片."""
-        return [Image.open(image.as_posix()).convert("RGBA") for image in self.all_images]
+        return [
+            Image.open(image.as_posix()).convert("RGBA") for image in self.all_images
+        ]
 
     @cached_property
     def first_pil(self) -> Image.Image:
@@ -150,4 +152,4 @@ class MergeSubPathImages:
 
 
 if __name__ == "__main__":
-    MergeSubPathImages(material_path_str=r"F:\小夕素材\10000-20000\10961\10961").main()
+    MergeSubPathImages(material_path_str=r"F:\小夕素材\5000-5999\5547\5547").main()

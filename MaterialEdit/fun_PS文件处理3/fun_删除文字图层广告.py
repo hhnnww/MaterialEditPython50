@@ -139,7 +139,7 @@ class DeleteImageName:
 
 
 if __name__ == "__main__":
-    material_path = Path(r"F:\小夕素材\11000-11999\11215\11215")
+    material_path = Path(r"F:\小夕素材\5000-5999\5547\5547")
     delete_image_name = DeleteImageName(
         material_path=material_path,
         shop_name="小夕素材",

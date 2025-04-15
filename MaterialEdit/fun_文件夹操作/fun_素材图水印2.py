@@ -21,7 +21,7 @@ def __单个文件处理(file: Path, logo: Image.Image) -> None:
         if im.height / im.width > max_height_ratio:
             im = im.crop((0, 0, im.width, im.width * max_height_ratio))  # noqa: PLW2901
 
-        im.thumbnail((2000, 2000))
+        im.thumbnail((1200, 1200))
         random_number = randbelow(100) + 1
         if random_number % 2 == 1:  # Odd number
             position = (50, im.height - logo.height - 50)
