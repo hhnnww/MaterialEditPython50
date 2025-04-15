@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import logging
 import math
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from PIL import Image
+from tqdm import tqdm
 
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
@@ -19,6 +19,8 @@ from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+Image.MAX_IMAGE_PIXELS = None
 
 
 class ClassMakeXQ2:
@@ -77,20 +79,28 @@ class ClassMakeXQ2:
         return image_list[: self.use_pic]
 
     def __fun_排序图片(self, image_list: list[Path]) -> list[ClassOneImage]:
-        obj_list = [
-            ClassOneImage(
-                image_pil=Image.open(fp=image.as_posix()),
-                image_path=image,
-                image_width=800,
-                background_color=self.background_color,
-                shop_name=self.shop_name,
-                has_name=self.has_name,
-                all_material_file=self.__fun_所有源文件,
-                has_water=self.has_water,
-                effect_has_watermark=self.effect_has_watermark,
+        obj_list: list[ClassOneImage] = []
+        max_size = 20
+        for image in tqdm(image_list, desc="加载图片", ncols=100):
+            size = image.stat().st_size / 1000 / 1000
+            if size > max_size:
+                continue
+
+            opim = Image.open(fp=image.as_posix())
+            opim.thumbnail((1500, 99999), Image.Resampling.LANCZOS)
+            obj_list.append(
+                ClassOneImage(
+                    image_pil=opim,
+                    image_path=image,
+                    image_width=800,
+                    background_color=self.background_color,
+                    shop_name=self.shop_name,
+                    has_name=self.has_name,
+                    all_material_file=self.__fun_所有源文件,
+                    has_water=self.has_water,
+                    effect_has_watermark=self.effect_has_watermark,
+                ),
             )
-            for image in image_list
-        ]
 
         if self.col == 1:
             return obj_list
@@ -100,9 +110,6 @@ class ClassMakeXQ2:
         return obj_list
 
     def __fun_制作单行(self, image_list: list[ClassOneImage]) -> Image.Image:
-        msg = f"制作单行:{image_list}"
-        logging.info(msg=msg)
-
         width = math.floor(
             (self.xq_width - ((len(image_list) - 1) * self.space)) / len(image_list),
         )
@@ -161,7 +168,7 @@ class ClassMakeXQ2:
         """开始执行制作详情"""
         im_list = [
             self.__fun_制作单行(image_list=line_image)
-            for line_image in self.__fun_组合图片列表
+            for line_image in tqdm(self.__fun_组合图片列表, desc="制作详情", ncols=100)
         ]
 
         spacing = 0 if self.has_name else self.space

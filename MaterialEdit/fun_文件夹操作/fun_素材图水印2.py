@@ -16,6 +16,10 @@ from MaterialEdit.fun_遍历图片 import fun_遍历图片
 
 @threads(10)
 def __单个文件处理(file: Path, logo: Image.Image) -> None:
+    max_size = 20
+    if file.stat().st_size / 1000 / 1000 > max_size:
+        return
+
     with Image.open(file.as_posix()) as im:
         max_height_ratio = 4
         if im.height / im.width > max_height_ratio:
@@ -40,7 +44,7 @@ def fun_素材图水印2(material_path: str, shop_name: str) -> None:
         shop_name=shop_name,
         cate="ylt",
     )
-    logo_max_size = 400
+    logo_max_size = 300
     logo.thumbnail((logo_max_size, logo_max_size))
 
     for file in tqdm(

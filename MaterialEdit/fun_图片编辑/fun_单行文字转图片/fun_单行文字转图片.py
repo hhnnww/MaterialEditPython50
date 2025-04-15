@@ -1,11 +1,15 @@
 from PIL import Image, ImageDraw, ImageFont
 
-from ...type import _COLOR, _FONT_NAME, _FONT_WEIGHT
-from ..fun_删除图片边框.fun_删除图片边框 import fun_删除图片边框
-from .fun_判断是否是英文 import fun_是英文
-from .fun_获取字体 import fun_获取字体
-from .fun_计算一行文字的宽度和高度 import fun_计算一行文字的宽度和高度
-from .fun_计算单个文字的尺寸 import fun_计算单个文字的尺寸
+from MaterialEdit.fun_图片编辑.fun_删除图片边框.fun_删除图片边框 import fun_删除图片边框
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_判断是否是英文 import fun_是英文
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_获取字体 import fun_获取字体
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_计算一行文字的宽度和高度 import (
+    fun_计算一行文字的宽度和高度,
+)
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_计算单个文字的尺寸 import (
+    fun_计算单个文字的尺寸,
+)
+from MaterialEdit.type import _COLOR, _FONT_NAME, _FONT_WEIGHT
 
 
 def fun_单行文字转图片(
@@ -63,7 +67,7 @@ def fun_单行文字转图片(
     for t in text:
         if fun_是英文(text=t) is True:
             curr_font_size = fun_计算单个文字的尺寸(text=t, true_font=english_font_obj)
-            top = 0 - int((curr_font_size.height * ((en_size_expand_ratio - 1) / 2)))
+            top = 0 - int(curr_font_size.height * ((en_size_expand_ratio - 1) / 2))
             draw.text(xy=(left, top), text=t, fill=fill_color, font=english_font_obj)
             left += curr_font_size.width
 

@@ -1,5 +1,6 @@
 """删除psd文件中的图片名称"""
 
+import contextlib
 from pathlib import Path
 
 import yaml
@@ -112,7 +113,16 @@ class DeleteImageName:
 
     def __fun_处理单个PSD文件(self, psd_path: Path) -> None:
         """编辑单个psd文件"""
-        doc = self.app.Open(psd_path.as_posix())
+        state = False
+        with contextlib.suppress(Exception):
+            doc = self.app.Open(psd_path.as_posix())
+            state = True
+
+        psd_error_size = 4000
+        if state is False and psd_path.stat().st_size == psd_error_size:
+            psd_path.unlink()
+            return
+
         text_layer_kind = 2
         for layer in self.fun_递归遍历当前PSD所有图层(doc):
             if layer.Kind != text_layer_kind:
@@ -139,7 +149,7 @@ class DeleteImageName:
 
 
 if __name__ == "__main__":
-    material_path = Path(r"F:\小夕素材\5000-5999\5547\5547")
+    material_path = Path(r"F:\小夕素材\11000-11999\11226\11226")
     delete_image_name = DeleteImageName(
         material_path=material_path,
         shop_name="小夕素材",

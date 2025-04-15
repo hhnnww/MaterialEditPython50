@@ -72,8 +72,10 @@ class ImageCopyToPreview:
         msg = f"复制到预览图:{image_file}\t->\t{preview_file}"
         logging.info(msg=msg)
 
-        shutil.copy(src=image_file, dst=preview_file)
-        image_make_web_thumbnail(image_path=preview_file)
+        max_size = 20
+        if image_file.stat().st_size / 1000 / 1000 < max_size:
+            shutil.copy(src=image_file, dst=preview_file)
+            image_make_web_thumbnail(image_path=preview_file)
 
     def main(self) -> None:
         """开始移动."""

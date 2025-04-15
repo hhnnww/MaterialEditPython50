@@ -24,9 +24,6 @@ def get_img(img: str):
             if im.mode != "RGBA":
                 im = im.convert(mode="RGBA")
 
-            if im.height / im.width > 2:
-                im = im.crop(box=(0, 0, im.width, int(im.width * 1.9)))
-
             im.thumbnail(size=(500, 500))
             im.save(fp=bytes_io, format="png")
 
@@ -56,9 +53,6 @@ def get_thumbnail(img_path: str) -> Response:
     with Image.open(fp=new_path) as im:
         if im.mode != "RGBA":
             im = im.convert(mode="RGBA")
-
-        if im.height / im.width > 2:
-            im = im.crop(box=(0, 0, im.width, int(im.width * 1.9)))
 
         im.thumbnail(size=(500, 500))
         im.save(fp=bytes_io, format="png")

@@ -6,6 +6,7 @@ from itertools import cycle
 
 from PIL import Image
 
+from image_action import ImageAction
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
@@ -106,12 +107,12 @@ class LayoutHorizontal1221(LayoutInit):
             if len(im_list) == max_num:
                 break
 
-        top_r = fun_图片竖向拼接(
+        top_r = ImageAction.ImageMerge(
             image_list=[im_list[1], im_list[2]],
             spacing=self.spacing,
-            align_item="center",
-            background_color=self.bg_color,
-        )
+            align="center",
+            direction="x",
+        ).main()
 
         top = fun_图片横向拼接(
             image_list=[im_list[0], top_r],

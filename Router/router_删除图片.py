@@ -27,7 +27,11 @@ def fun_dele_image(item: Item) -> dict:
             material_structure.material_path,
         ),
     )
-    thumb_path.unlink()
-    image_path.unlink()
-    material_path.unlink()
+    if thumb_path.exists():
+        thumb_path.unlink()
+    if image_path.exists():
+        image_path.unlink()
+    if material_path.exists():
+        material_path.unlink()
+
     return {"message": "删除成功"}
