@@ -34,12 +34,13 @@ def fun_layout_1_3(
                 position="center",
             )
         else:
-            im = fun_图片裁剪(
-                im,
-                width=small_width,
-                height=small_height,
-                position="center",
-            )
+            # im = fun_图片裁剪(
+            #     im,
+            #     width=small_width,
+            #     height=small_height,
+            #     position="center",
+            # )
+            im = im.resize((small_width, small_height), Image.Resampling.LANCZOS)
 
         pil_list.append(im)
         max_len = 4

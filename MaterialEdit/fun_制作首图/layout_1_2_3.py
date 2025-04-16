@@ -58,13 +58,13 @@ def fun_layout_1_2_3(
             im = im.convert("RGBA")
 
         if num == 0:
-            im = image_action.ImageAction.ImageCrop.fun_图片裁剪(
+            im = image_action.ImageAction.fun_图片裁剪(
                 im=im,
                 size=((small_width * 2) + spacing, (small_height * 2) + spacing),
                 align="center",
             )
         else:
-            im = image_action.ImageAction.ImageCrop.fun_图片裁剪(
+            im = image_action.ImageAction.fun_图片裁剪(
                 im=im,
                 size=(small_width, small_height),
                 align="center",

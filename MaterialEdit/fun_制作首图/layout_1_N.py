@@ -21,17 +21,20 @@ def fun_layout_1_n(
 ) -> Image.Image:
     """制作1+n的布局."""
     # 组合图片编组
-    comb_image_list = [[image_list[0]], image_list[1 : small_line_num + 1]]
+    pil_list = [Image.open(image.path) for image in image_list]
+    comb_image_list = [[pil_list[0]], pil_list[1 : small_line_num + 1]]
 
     # 计算大图的高度
     larger_image_width = xq_width
-    larger_image_height = float(larger_image_width) / image_list[0].ratio
+    larger_image_height = float(larger_image_width) / (
+        pil_list[0].width / pil_list[0].height
+    )
 
     # 计算小图的高度
     small_image_all_width = math.ceil(xq_width - spacing)
 
     small_image_all_height = small_image_all_width / sum(
-        [obj.ratio for obj in comb_image_list[1]],
+        [obj.width / obj.height for obj in comb_image_list[1]],
     )
 
     # 计算图片合并起来之后需要缩小的比例
@@ -40,7 +43,7 @@ def fun_layout_1_n(
     )
 
     # 制作大图
-    large_im = Image.open(comb_image_list[0][0].path)
+    large_im = comb_image_list[0][0]
     if large_im.mode != "RGBA":
         large_im = large_im.convert("RGBA")
 
@@ -55,11 +58,16 @@ def fun_layout_1_n(
     all_small_pil = []
     for image in comb_image_list[1]:
         small_im_width = math.ceil(
-            (small_image_all_width / sum([obj.ratio for obj in comb_image_list[1]]))
-            * image.ratio,
+            (
+                small_image_all_width
+                / sum([obj.width / obj.height for obj in comb_image_list[1]])
+            )
+            * (image.width / image.height),
         )
-        small_im_height = math.ceil(small_im_width / image.ratio * all_reduce_ratio)
-        small_im = Image.open(image.path)
+        small_im_height = math.ceil(
+            small_im_width / (image.width / image.height) * all_reduce_ratio,
+        )
+        small_im = image
         if small_im != "RGBA":
             small_im = small_im.convert("RGBA")
         small_im = fun_图片裁剪(

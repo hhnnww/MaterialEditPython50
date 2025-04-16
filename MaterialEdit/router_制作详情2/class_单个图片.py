@@ -101,7 +101,7 @@ class ClassOneImage:
         ori_im = self.__fun_原始图片
         height = math.ceil(self.image_width / (ori_im.width / ori_im.height))
 
-        max_height = 5000
+        max_height = 999000
         if height > max_height:
             small_im = fun_图片裁剪(
                 im=ori_im,

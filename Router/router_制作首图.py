@@ -32,6 +32,7 @@ from MaterialEdit.fun_制作首图.layout_1_2_3_3_3_3 import fun_layout_1_2_3_3_
 from MaterialEdit.fun_制作首图.layout_1大_33_正方形 import Layout1Large3Small
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
+from MaterialEdit.fun_制作首图.layout_1221 import Layout1221
 from MaterialEdit.fun_制作首图.layout_中间大四边小 import LayoutOneLargeOutSmall
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
@@ -445,6 +446,18 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         ).main()
     elif item.first_image_layout == "1大33正方形":
         bg = Layout1Large3Small(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+            out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
+        ).main()
+    elif item.first_image_layout == "横版-1212":
+        bg = Layout1221(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,

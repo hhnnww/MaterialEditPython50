@@ -110,8 +110,8 @@ class LayoutHorizontal1221(LayoutInit):
         top_r = ImageAction.ImageMerge(
             image_list=[im_list[1], im_list[2]],
             spacing=self.spacing,
-            align="center",
-            direction="x",
+            align="start",
+            direction="y",
         ).main()
 
         top = fun_图片横向拼接(

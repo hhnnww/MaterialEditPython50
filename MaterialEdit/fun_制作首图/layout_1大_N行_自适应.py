@@ -68,14 +68,16 @@ class Layout1大N行自适应(LayoutInit):
             align_item="start",
             background_color=self.bg_color,
         )
+        bottom_im = bottom_im.resize(
+            (self.xq_width, self.bottom_height),
+            resample=Image.Resampling.LANCZOS,
+        )
 
         bg = fun_图片竖向拼接(
             image_list=[self.first_image, bottom_im],
             spacing=self.spacing,
-            align_item="center",
+            align_item="start",
             background_color=self.bg_color,
         )
 
-        bg = bg.crop((0, 0, self.xq_width, self.xq_height))
-
-        return bg
+        return bg.resize((self.xq_width, self.xq_height), Image.Resampling.LANCZOS)
