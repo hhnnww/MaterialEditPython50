@@ -10,9 +10,8 @@ from typing import TYPE_CHECKING
 from PIL import Image
 from tqdm import tqdm
 
+from image_action.image_action import ImageAction
 from MaterialEdit.fun_制作首图.fun_重新构建所有图片 import fun_重新构建所有图片
-from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
-from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 
 if TYPE_CHECKING:
     from MaterialEdit.type import ALIGNITEM, ImageModel
@@ -63,27 +62,28 @@ def fun_layout_固定裁剪2(  # noqa: PLR0913
 
         if comb_list:
             for image in comb_list:
-                im = Image.open(image.path)
+                im = Image.open(image.path).convert("RGBA")
 
                 if im.mode != "RGBA":
                     im = im.convert("RGBA")
 
-                im = im.resize(
+                im = ImageAction.fun_图片裁剪(
+                    im,
                     (image_width, image_height),
-                    Image.Resampling.LANCZOS,
+                    crop_position,
                 )
+
                 one_line.append(im)
 
-        one_line_im = fun_图片横向拼接(
+        one_line_im = ImageAction.fun_图片横向拼接(
             one_line,
             spacing,
             "center",
-            (255, 255, 255, 0),
         )
 
         all_comb.append(one_line_im)
 
-    bg = fun_图片竖向拼接(all_comb, spacing, "center", (255, 255, 255, 0))
+    bg = ImageAction.fun_图片竖向拼接(all_comb, spacing, "center")
     bg = bg.resize((xq_width, xq_height), Image.Resampling.LANCZOS)
 
     if Path(design_path).exists() is not True:

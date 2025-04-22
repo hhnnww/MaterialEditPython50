@@ -2,7 +2,12 @@
 
 from pathlib import Path
 
+from PIL import Image
+
 from MaterialEdit.fun_创建文件夹结构 import fun_创建文件夹结构
+from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
+    image_make_web_thumbnail,
+)
 from MaterialEdit.fun_获取素材信息.get_all_material_file_size import (
     get_all_material_file_size,
 )
@@ -20,15 +25,19 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
     material_path = root_path_structure.material_path
 
     preview_image_path = root_path_structure.preview_path
-    preview_image_list = [
-        {"path": obj}
-        for obj in fun_遍历图片(
-            folder=preview_image_path,
-            image_sort=image_sort,
-            used_image_number=0,
-        )
-        if "_thumb" not in Path(obj).stem
-    ]
+    preview_image_list = []
+    for obj in fun_遍历图片(
+        folder=preview_image_path,
+        image_sort=image_sort,
+        used_image_number=0,
+    ):
+        if "_thumb" not in Path(obj).stem:
+            thumb_image = image_make_web_thumbnail(image_path=obj)
+            with Image.open(thumb_image) as im:
+                radio = round(im.width / im.height, 3)
+
+            preview_image_list.append({"path": obj, "radio": radio})
+
     preview_image_count = len(preview_image_list)
 
     if used_image > 0:

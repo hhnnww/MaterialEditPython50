@@ -65,6 +65,7 @@ class DeleteImageName:
         for layer in doc.Layers:
             if layer.typename == "LayerSet":
                 layer.Name = f"编组 {layer.ID}"
+                layer.AllLocked = False
                 layers += self.fun_递归遍历当前PSD所有图层(layer)
             else:
                 layers.append(layer)

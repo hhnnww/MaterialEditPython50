@@ -33,6 +33,7 @@ from MaterialEdit.fun_制作首图.layout_1_3__2 import Layout13_2
 from MaterialEdit.fun_制作首图.layout_1大_33_正方形 import Layout1Large3Small
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
+from MaterialEdit.fun_制作首图.layout_122112 import Layout122112
 from MaterialEdit.fun_制作首图.layout_中间大四边小 import LayoutOneLargeOutSmall
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_圆角固定裁剪 import LayoutRadioCrop
@@ -464,7 +465,21 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
+            image_radio=20 if item.radio == 1 else 0,
         )
+    elif item.first_image_layout == "横版-122112":
+        bg = Layout122112(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+            out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
+        ).main()
     elif item.first_image_layout == "中间大四周小":
         bg = LayoutOneLargeOutSmall(
             image_list=item.select_image_list,

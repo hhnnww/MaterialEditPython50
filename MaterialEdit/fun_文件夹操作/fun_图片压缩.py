@@ -2,14 +2,38 @@
 
 from pathlib import Path
 
+import pythoncom
 from PIL import Image
 from tqdm import tqdm
+from win32com.client import Dispatch
 
 from MaterialEdit.setting import IMAGE_SUFFIX
+
+Image.MAX_IMAGE_PIXELS = None
+
+
+def __fun_压缩单个图片(image_path: Path) -> None:
+    ps_app = Dispatch("Photoshop.Application")
+    ps_app.displayDialogs = 3
+    ps_app.Open(image_path.as_posix())
+    doc = ps_app.activeDocument
+
+    options = Dispatch("Photoshop.ExportOptionsSaveForWeb")
+    options.Format = 6
+    options.Quality = 60
+
+    jpg_path = image_path.with_suffix(".jpg")
+    doc.Export(ExportIn=jpg_path.as_posix(), ExportAs=2, Options=options)
+
+    if image_path.suffix.lower() == ".png":
+        image_path.unlink()
+
+    doc.Close(2)
 
 
 def fun_图片压缩(material_path: str) -> None:
     """压缩指定文件夹中超过最大大小的图片文件 并将其保存为JPEG格式。"""
+    pythoncom.CoInitialize()
     max_size = 20
     for infile in tqdm(
         [
@@ -24,9 +48,6 @@ def fun_图片压缩(material_path: str) -> None:
         unit="个",
         ncols=100,
     ):
-        with Image.open(infile.as_posix()) as im:
-            save_path = infile.with_suffix(".jpg")
-            im.convert("RGB").save(save_path.as_posix(), quality=60, subsampling=0)
+        __fun_压缩单个图片(infile)
 
-        if infile.suffix.lower() == ".png":
-            infile.unlink()
+    pythoncom.CoUninitialize()
