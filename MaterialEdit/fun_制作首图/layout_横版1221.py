@@ -7,6 +7,7 @@ from itertools import cycle
 from PIL import Image
 
 from image_action import ImageAction
+from image_action.image_funs import Align
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
@@ -35,7 +36,12 @@ class LayoutHorizontal1221(LayoutInit):
         返回:
             tuple[int, int]: 小图的宽度和高度。
         """
-        small_width = math.ceil((self.xq_width - (self.spacing * 2)) / 3) + 50
+        if self.radio:
+            small_width = math.ceil((self.xq_width - (self.spacing * 4)) / 3)
+            small_height = math.ceil((self.xq_height - (self.spacing * 5)) / 4)
+            return (small_width, small_height)
+
+        small_width = math.ceil((self.xq_width - (self.spacing * 2)) / 3)
         small_height = math.ceil((self.xq_height - (self.spacing * 3)) / 4)
         return (small_width, small_height)
 
@@ -47,7 +53,7 @@ class LayoutHorizontal1221(LayoutInit):
         返回:
             tuple[int, int]: 大图的宽度和高度。
         """
-        width = (self.fun_小图尺寸[0] * 2) + self.spacing - 50
+        width = (self.fun_小图尺寸[0] * 2) + self.spacing
         height = (self.fun_小图尺寸[1] * 2) + self.spacing
         return (width, height)
 
@@ -85,20 +91,26 @@ class LayoutHorizontal1221(LayoutInit):
             im = im.convert("RGBA")
             if num in [1, 6]:
                 im_list.append(
-                    fun_图片裁剪(
-                        im,
-                        width=self.fun_大图尺寸[0],
-                        height=self.fun_大图尺寸[1],
-                        position=self.crop_position,
+                    ImageAction.fun_图片添加圆角(
+                        fun_图片裁剪(
+                            im,
+                            width=self.fun_大图尺寸[0],
+                            height=self.fun_大图尺寸[1],
+                            position=self.crop_position,
+                        ),
+                        self.image_radio,
                     ),
                 )
             else:
                 im_list.append(
-                    fun_图片裁剪(
-                        im,
-                        width=self.fun_小图尺寸[0],
-                        height=self.fun_小图尺寸[1],
-                        position=self.crop_position,
+                    ImageAction.fun_图片添加圆角(
+                        fun_图片裁剪(
+                            im,
+                            width=self.fun_小图尺寸[0],
+                            height=self.fun_小图尺寸[1],
+                            position=self.crop_position,
+                        ),
+                        self.image_radio,
                     ),
                 )
 
@@ -107,12 +119,11 @@ class LayoutHorizontal1221(LayoutInit):
             if len(im_list) == max_num:
                 break
 
-        top_r = ImageAction.ImageMerge(
+        top_r = ImageAction.fun_图片竖向拼接(
             image_list=[im_list[1], im_list[2]],
             spacing=self.spacing,
             align="start",
-            direction="y",
-        ).main()
+        )
 
         top = fun_图片横向拼接(
             image_list=[im_list[0], top_r],
@@ -142,4 +153,12 @@ class LayoutHorizontal1221(LayoutInit):
             background_color=self.bg_color,
         )
 
-        return bg.resize((self.xq_width, self.xq_height), Image.Resampling.LANCZOS)
+        return ImageAction.fun_图片添加背景(
+            ImageAction.fun_图片扩大(
+                bg,
+                (self.xq_width, self.xq_height),
+                Align.CENTER,
+                Align.CENTER,
+            ),
+            self.bg_color,
+        )

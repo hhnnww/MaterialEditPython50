@@ -1,6 +1,5 @@
 """把素材文件夹图片复制到预览图."""
 
-import logging
 import shutil
 from pathlib import Path
 
@@ -9,6 +8,7 @@ from tqdm import tqdm
 from MaterialEdit.fun_文件夹操作.fun_单个文件制作WEB预览图 import (
     image_make_web_thumbnail,
 )
+from MaterialEdit.fun_文件夹操作.fun_图片压缩 import fun_图片压缩
 from MaterialEdit.setting import IMAGE_SUFFIX
 
 
@@ -52,32 +52,32 @@ class ImageCopyToPreview:
         """单个图片移动."""
         preview_file = self.image_to_preview_image(image_file)
         if image_file.parent.stem.lower() == "links":
-            msg = f"图片是AI文件夹内的link图片,不复制:{image_file}"
-            logging.info(msg=msg)
             return
 
         # 图片已经存在
         if preview_file.exists() is True:
-            msg = f"图片纯在不复制:{image_file}"
-            logging.info(msg=msg)
             return
 
         # 图片在子文件夹内
         # 先创建父文件夹
         if preview_file.parent.exists() is False:
-            msg = f"预览图需要创建父文件夹:{preview_file.parent}"
-            logging.info(msg=msg)
             preview_file.parent.mkdir(parents=True)
 
-        msg = f"复制到预览图:{image_file}\t->\t{preview_file}"
-        logging.info(msg=msg)
-
-        max_size = 20
+        max_size = 50
         if image_file.stat().st_size / 1000 / 1000 < max_size:
             shutil.copy(src=image_file, dst=preview_file)
             image_make_web_thumbnail(image_path=preview_file)
 
     def main(self) -> None:
         """开始移动."""
-        for image_file in tqdm(self.all_image(), desc="复制图片到预览图", ncols=100):
+        fun_图片压缩(
+            material_path=self.folder_path_obj.as_posix(),
+        )
+
+        for image_file in tqdm(
+            self.all_image(),
+            desc="复制图片到预览图",
+            ncols=100,
+            unit="个",
+        ):
             self.one_image_move(image_file=image_file)

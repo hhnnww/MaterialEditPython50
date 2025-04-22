@@ -1,3 +1,5 @@
+"""文件重命名.py"""
+
 from pathlib import Path
 
 from PIL import Image
@@ -6,7 +8,8 @@ from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 impor
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 
 
-def fun_享设计制作预览图(material_path: str, shop_name: str):
+def fun_享设计制作预览图(material_path: str, shop_name: str) -> None:
+    """根据指定文件夹路径和店铺名称，生成包含所有符合条件图片的大图，并保存到文件夹的上一级目录。"""
     for sub_path in Path(material_path).iterdir():
         if sub_path.is_dir():
             fun_制作文件夹大图(sub_path=sub_path, shop_name=shop_name)

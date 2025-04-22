@@ -13,23 +13,23 @@ def image_make_web_thumbnail(image_path: Path) -> Path:
         return image_path
 
     new_path = image_path.with_stem(f"{image_path.stem}_thumb")
-    max_size = 20
-    if (
-        new_path.exists() is False
-        and image_path.stat().st_size / 1000 / 1000 < max_size
-    ):
+    if new_path.exists() is False:
         with Image.open(image_path.as_posix()) as im:
             max_height_ratio = 5
             if im.height / im.width > max_height_ratio:
-                im = im.crop((0, 0, im.width, int(im.width * (max_height_ratio - 0.1))))
+                croped_im = im.crop(
+                    (0, 0, im.width, int(im.width * (max_height_ratio - 0.1))),
+                )
+            else:
+                croped_im = im
 
-            im.thumbnail((500, 500))
+            croped_im.thumbnail((900, 900))
             if im.mode == "CMYK":
                 if new_path.suffix.lower() != ".png":
-                    im = im.convert("RGB")
+                    croped_im = croped_im.convert("RGB")
                 else:
-                    im = im.convert("RGBA")
+                    croped_im = croped_im.convert("RGBA")
 
-            im.save(new_path.as_posix())
+            croped_im.save(new_path.as_posix())
 
     return new_path

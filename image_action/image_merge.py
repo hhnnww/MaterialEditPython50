@@ -18,98 +18,58 @@
                     - `align` 可选值为 "start"、"center" 或 "end"。
 """
 
-from pathlib import Path
 from typing import Literal
 
 from PIL import Image
 
 
 class ImageMerge:
-    def __init__(
-        self,
+    @staticmethod
+    def fun_图片横向拼接(
         image_list: list[Image.Image],
-        direction: Literal["x", "y"],
         spacing: int,
         align: Literal["start", "center", "end"],
-    ) -> None:
-        """初始化方法。
+    ) -> Image.Image:
+        """图片横向拼接函数。"""
+        widths, heights = zip(*(img.size for img in image_list))
+        # 计算总宽度和最大高度
+        total_width = sum(widths) + spacing * (len(image_list) - 1)
+        max_height = max(heights)
+        merged_image = Image.new("RGBA", (total_width, max_height), (255, 255, 255, 0))
 
-        参数:
-            image_list (list[Image.Image]): 图像对象的列表。
-            direction (Literal["x", "y"]): 合并图像的方向。
-            spacing (int): 图像之间的间距（以像素为单位）。
-            align (Literal["start", "center", "end"]): 图像对齐方式，
-                "start" 表示起始对齐，"center" 表示居中对齐，"end" 表示末尾对齐。
-        """
-        self.image_list = image_list
-        self.direction = direction
-        self.spacing = spacing
-        self.align = align
-
-    def main(self) -> Image.Image:
-        """主函数，用于将多个图像合并为一个图像。
-
-        Returns:
-            Image.Image: 合并后的图像对象。
-        Raises:
-            ValueError: 如果图像列表为空或方向无效时抛出。
-        功能描述:
-            - 如果 `direction` 为 "x"，图像将水平合并。
-            - 如果 `direction` 为 "y"，图像将垂直合并。
-            - 支持通过 `align` 参数设置对齐方式，
-                包括 "center"（居中对齐）和 "end"（末端对齐）。
-            - 支持通过 `spacing` 参数设置图像之间的间距。
-        注意:
-            - `image_list` 是一个包含 PIL 图像对象的列表。
-            - `direction` 必须是 "x" 或 "y"。
-            - `align` 可选值为 "center" 或 "end"。
-
-        """
-        # Calculate total size of the merged image
-        widths, heights = zip(*(img.size for img in self.image_list))
-        if self.direction == "x":
-            total_width = sum(widths) + self.spacing * (len(self.image_list) - 1)
-            max_height = max(heights)
-            merged_size = (total_width, max_height)
-        elif self.direction == "y":
-            total_height = sum(heights) + self.spacing * (len(self.image_list) - 1)
-            max_width = max(widths)
-            merged_size = (max_width, total_height)
-
-        # Create a new blank image
-        merged_image = Image.new("RGBA", merged_size, (255, 255, 255, 0))
-
-        # Paste images onto the merged image
+        # 根据对齐方式计算偏移量
         offset = 0
-        for img in self.image_list:
-            if self.direction == "x":
-                y_offset = 0
-                if self.align == "center":
-                    y_offset = (max_height - img.height) // 2
-                elif self.align == "end":
-                    y_offset = max_height - img.height
-                merged_image.paste(img, (offset, y_offset))
-                offset += img.width + self.spacing
-            elif self.direction == "y":
-                x_offset = 0
-                if self.align == "center":
-                    x_offset = (max_width - img.width) // 2
-                elif self.align == "end":
-                    x_offset = max_width - img.width
-                merged_image.paste(img, (x_offset, offset))
-                offset += img.height + self.spacing
-
+        for img in image_list:
+            y_offset = 0
+            if align == "center":
+                y_offset = (max_height - img.height) // 2
+            elif align == "end":
+                y_offset = max_height - img.height
+            merged_image.paste(img, (offset, y_offset), img)
+            offset += img.width + spacing
         return merged_image
 
+    @staticmethod
+    def fun_图片竖向拼接(
+        image_list: list[Image.Image],
+        spacing: int,
+        align: Literal["start", "center", "end"],
+    ) -> Image.Image:
+        """图片竖向拼接函数。"""
+        # 计算总高度和最大宽度
+        widths, heights = zip(*(img.size for img in image_list))
+        total_height = sum(heights) + (spacing * (len(image_list) - 1))
+        max_width = max(widths)
+        merged_image = Image.new("RGBA", (max_width, total_height), (255, 255, 255, 0))
 
-if __name__ == "__main__":
-    image_list = [
-        Image.open(infile)
-        for infile in Path(r"C:\Users\aimlo\Desktop\UPLOAD").iterdir()
-    ]
-    ImageMerge(
-        image_list=image_list,
-        direction="y",
-        spacing=0,
-        align="end",
-    ).main().show()
+        # 根据对齐方式计算偏移量
+        offset = 0
+        for img in image_list:
+            x_offset = 0
+            if align == "center":
+                x_offset = int((max_width - img.width) / 2)
+            elif align == "end":
+                x_offset = max_width - img.width
+            merged_image.paste(img, (x_offset, offset), img)
+            offset += img.height + spacing
+        return merged_image

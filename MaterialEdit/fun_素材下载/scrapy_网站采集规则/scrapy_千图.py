@@ -14,6 +14,7 @@ def scrapy_千图(single_url: str, cookie: str) -> Generator[MaterialModel, Any,
     html = fun_session(url=single_url, cookie=cookie)
 
     material_list = html.find("div.qtd-card")
+    url, img = "", ""
     if isinstance(material_list, list):
         for obj in material_list:
             find = obj.find("a", first=True)

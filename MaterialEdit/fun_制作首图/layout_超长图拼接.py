@@ -6,8 +6,8 @@ from itertools import cycle
 
 from PIL.Image import Image
 
+from image_action.image_action import ImageAction
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
-from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片裁剪
 
 
 class Layout超长图拼接(LayoutInit):
@@ -21,22 +21,20 @@ class Layout超长图拼接(LayoutInit):
         line_list = []
         for im in cycle(self._pil_list):
             line_list.append(
-                fun_图片裁剪(
+                ImageAction.fun_图片裁剪(
                     im=im,
-                    width=self.fun_小图宽度,
-                    height=self.xq_height,
-                    position=self.crop_position,
+                    size=(self.fun_小图宽度, self.xq_height),
+                    align="start",
                 ),
             )
 
             if len(line_list) == self.col:
                 break
 
-        bg = fun_图片横向拼接(
+        bg = ImageAction.fun_图片横向拼接(
             image_list=line_list,
             spacing=self.spacing,
-            align_item="start",
-            background_color=(255, 255, 255, 255),
+            align="start",
         )
 
         return bg.crop((0, 0, self.xq_width, self.xq_height))

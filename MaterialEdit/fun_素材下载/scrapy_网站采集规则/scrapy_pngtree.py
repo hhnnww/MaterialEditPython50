@@ -14,6 +14,7 @@ def scrapy_pngtree(single_url: str, cookie: str) -> Generator[MaterialModel, Any
     html = fun_session(url=single_url, cookie=cookie)
 
     material_list = html.find("section div ul li")
+    url, img = "", ""
     if material_list is not None and isinstance(material_list, list):
         for obj in material_list:
             find = obj.find("a", first=True)

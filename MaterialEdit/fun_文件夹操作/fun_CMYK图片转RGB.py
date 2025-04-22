@@ -1,5 +1,10 @@
 """CMYK转RGB."""
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 from PIL import Image
 from tqdm import tqdm
 from win32com.client import Dispatch
@@ -20,12 +25,18 @@ def fun_CMYK转RGB(material_path: str, preview_path: str) -> None:
     all_image = []
     all_image.extend(rglob(material_path, IMAGE_SUFFIX))
     all_image.extend(rglob(preview_path, IMAGE_SUFFIX))
+
     for in_file in tqdm(
         all_image,
         desc="CMYK转RGB",
         ncols=100,
     ):
-        if in_file.is_file() and in_file.suffix.lower() in IMAGE_SUFFIX:
+        in_file: Path
+        if (
+            in_file.is_file()
+            and in_file.suffix.lower() in IMAGE_SUFFIX
+            and in_file.parent.stem.lower() != "links"
+        ):
             with Image.open(in_file.as_posix()) as im:
                 mode = im.mode
 

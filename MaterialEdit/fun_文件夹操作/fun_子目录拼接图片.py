@@ -1,3 +1,5 @@
+"""文件重命名.py"""
+
 from pathlib import Path
 
 from PIL import Image
@@ -8,8 +10,10 @@ from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
-def fun_子目录拼接图片(material_path: str):
-    def __内目录拼接图片(in_path: Path):
+def fun_子目录拼接图片(material_path: str) -> None:
+    """子目录拼接图片."""
+
+    def __内目录拼接图片(in_path: Path) -> Image.Image:
         all_pic = rglob(
             folder=in_path.as_posix(),
             suffix=[".jpeg", ".png", ".jpg"],
@@ -19,7 +23,6 @@ def fun_子目录拼接图片(material_path: str):
         for in_file in all_pic:
             im = Image.open(in_file)
             im = im.convert("RGBA")
-            # im.thumbnail((800, 99999))
             im = fun_图片裁剪(
                 im=im,
                 width=800,

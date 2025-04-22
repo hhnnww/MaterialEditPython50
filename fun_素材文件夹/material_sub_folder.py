@@ -26,9 +26,15 @@ class MaterialSubFolder:
     def fun_子目录AI重命名(self) -> None:
         """子目录的AI文件重命名."""
         for num, infile in enumerate(
-            [infile for infile in self.path.iterdir() if infile.suffix.lower() in [".ai", ".eps"] and infile.is_file()],
+            [
+                infile
+                for infile in self.path.iterdir()
+                if infile.suffix.lower() in [".ai", ".eps"] and infile.is_file()
+            ],
         ):
-            new_stem = f"{self.path.stem}" if num == 0 else f"{self.path.stem}_{num+1}"
+            new_stem = (
+                f"{self.path.stem}" if num == 0 else f"{self.path.stem}_{num + 1}"
+            )
             infile.rename(infile.with_stem(new_stem))
 
     def fun_AI文件夹重构(self) -> None:

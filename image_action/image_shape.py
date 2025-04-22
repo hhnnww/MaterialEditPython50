@@ -100,7 +100,3 @@ class ImageShape:
         )
         image.thumbnail(size, Image.Resampling.LANCZOS)
         return image
-
-
-if __name__ == "__main__":
-    ImageShape.fun_画一个纯圆角矩形((800, 200), (255, 255, 255, 255)).show()

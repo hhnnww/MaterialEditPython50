@@ -24,7 +24,9 @@ class MaterialFile:
         return [
             ImageFile(path=infile)
             for infile in self.path.parent.iterdir()
-            if infile.suffix in MaterialType.image_suffix and infile.is_file() and self.path.stem in infile.name
+            if infile.suffix in MaterialType.image_suffix
+            and infile.is_file()
+            and self.path.stem in infile.name
         ]
 
     @property
@@ -37,17 +39,29 @@ class MaterialFile:
         """获取文件名中的数字."""
         return MaterialType.fun_获取文件名中的数字(self.path.stem)
 
-    def fun_修改素材源文件以及素材图和预览图名称(self, new_stem: str, material_path: Path, preview_path: Path) -> None:
+    def fun_修改素材源文件以及素材图和预览图名称(
+        self,
+        new_stem: str,
+        material_path: Path,
+        preview_path: Path,
+    ) -> None:
         """素材文件和对应的素材图以及预览图重命名."""
         for image in self.material_images:
             image.path.rename(image.path.with_stem(new_stem))
-            preview_path = image.preview_image_path(material_path=material_path, preview_path=preview_path)
+            preview_path = image.preview_image_path(
+                material_path=material_path,
+                preview_path=preview_path,
+            )
             if preview_path.exists() is True:
                 preview_path.rename(preview_path.with_stem(new_stem))
 
         self.path.rename(self.path.with_stem(new_stem))
 
-    def fun_修改素材源文件对应的素材图名称(self, material_path: Path, preview_path: Path) -> None:
+    def fun_修改素材源文件对应的素材图名称(
+        self,
+        material_path: Path,
+        preview_path: Path,
+    ) -> None:
         """素材文件对应的素材图重命名.
 
         AI到处的多画板图片和PS导出的多文件图片
@@ -58,7 +72,10 @@ class MaterialFile:
             # 修改素材图
             image.path.rename(image.path.with_stem(new_stem))
             # 修改预览图
-            preview_image = image.preview_image_path(material_path=material_path, preview_path=preview_path)
+            preview_image = image.preview_image_path(
+                material_path=material_path,
+                preview_path=preview_path,
+            )
             if preview_image.exists() is True:
                 preview_image.rename(preview_image.with_stem(new_stem))
 
@@ -79,7 +96,10 @@ class MaterialFile:
                 image.path.rename(parent_path / image.path.name)
 
                 # 预览图移动到子目录
-                preview_image = image.preview_image_path(material_path=material_path, preview_path=preview_path)
+                preview_image = image.preview_image_path(
+                    material_path=material_path,
+                    preview_path=preview_path,
+                )
                 if preview_image.exists() is True:
                     # 创建父文件夹
                     parent_path = preview_image.parent / f"{self.path.stem}"

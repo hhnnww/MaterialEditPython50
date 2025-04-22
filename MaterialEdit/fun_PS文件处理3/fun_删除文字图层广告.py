@@ -1,13 +1,21 @@
 """删除psd文件中的图片名称"""
 
-import contextlib
+import logging
 from pathlib import Path
 
 import yaml
+from tqdm import tqdm
 from win32com.client import CDispatch, Dispatch
 
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.setting import IMAGE_SUFFIX
+
+# Configure logger
+logging.basicConfig(
+    level=logging.INFO,
+    format="\n%(asctime)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 
 class DeleteImageName:
@@ -96,9 +104,12 @@ class DeleteImageName:
 
     def __fun_文字图层处理(self, layer: CDispatch) -> None:
         """获取文字图层"""
+        layer_visible = layer.Visible
+        if layer_visible is False:
+            return
+
         replace_name_list = self.__replace_text_list.get("replace_name_list", [])
         text = layer.TextItem.Contents.lower()
-
         replace_state = False
         for rep_name in replace_name_list:
             if rep_name[0] in text.lower():
@@ -108,20 +119,16 @@ class DeleteImageName:
         if replace_state is True:
             layer.TextItem.Font = "IBMPlexSansSC"
             layer.TextItem.Contents = text
-
-        layer.Name = text
+            layer.Name = text
 
     def __fun_处理单个PSD文件(self, psd_path: Path) -> None:
         """编辑单个psd文件"""
-        state = False
-        with contextlib.suppress(Exception):
-            doc = self.app.Open(psd_path.as_posix())
-            state = True
-
-        psd_error_size = 4000
-        if state is False and psd_path.stat().st_size == psd_error_size:
+        psd_error_size = 4096
+        if psd_path.stat().st_size == psd_error_size:
             psd_path.unlink()
             return
+
+        doc = self.app.Open(psd_path.as_posix())
 
         text_layer_kind = 2
         for layer in self.fun_递归遍历当前PSD所有图层(doc):
@@ -129,6 +136,7 @@ class DeleteImageName:
                 self.__fun_广告图层处理(layer)
             else:
                 self.__fun_文字图层处理(layer)
+
         self.__fun_导出PSD文档为PNG(doc, png_path=psd_path.with_suffix(".png"))
         self.__fun_导入广告(doc)
         doc.Save()
@@ -144,12 +152,15 @@ class DeleteImageName:
 
     def main(self) -> None:
         """删除psd文件中的图片名称"""
-        for psd_path in self.all_psd:
+        for psd_path in tqdm(self.all_psd, desc="处理psd文件", unit="个", ncols=100):
+            msg = f"处理文件:{psd_path}"
+            logger.info(msg)
             self.__fun_处理单个PSD文件(psd_path)
 
 
 if __name__ == "__main__":
-    material_path = Path(r"F:\小夕素材\11000-11999\11226\11226")
+    path_input = input("请输入素材路径：")
+    material_path = Path(path_input.strip())
     delete_image_name = DeleteImageName(
         material_path=material_path,
         shop_name="小夕素材",

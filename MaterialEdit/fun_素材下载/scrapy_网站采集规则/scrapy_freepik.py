@@ -19,7 +19,7 @@ def scrapy_freepik(single_url: str, cookie: str) -> Generator[MaterialModel]:
     """
     html = fun_session(url=single_url, cookie=cookie)
     material_list = html.find("figure", first=False)
-
+    url, img = "", ""
     if material_list is not None:
         if not isinstance(material_list, list):
             material_list = [material_list]

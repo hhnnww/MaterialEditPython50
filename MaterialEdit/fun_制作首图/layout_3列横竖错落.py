@@ -1,3 +1,5 @@
+"""文件重命名.py"""
+
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
@@ -11,7 +13,8 @@ def layout_3列横竖错落(
     xq_width: int,
     xq_height: int,
     spacing: int,
-):
+) -> Image.Image:
+    """3列横竖错落布局"""
     col_width = int((xq_width - (spacing * 4)) / 3)
     col_height = int((xq_height - (spacing * 5)) / 4)
 

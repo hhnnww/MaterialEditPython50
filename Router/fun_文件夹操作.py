@@ -21,7 +21,9 @@ from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_蜘蛛水印.fun_蜘蛛水印 import fun_蜘蛛水印
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
-from MaterialEdit.fun_文件夹操作.fun_AI批量导出图片重命名 import AI_批量导出图片重命名
+from MaterialEdit.fun_文件夹操作.fun_AI批量导出图片重命名 import (
+    AIBatchExportImageRename,
+)
 from MaterialEdit.fun_文件夹操作.fun_AI文件重命名 import fun_ai文件重命名
 from MaterialEdit.fun_文件夹操作.fun_CMYK图片转RGB import fun_CMYK转RGB
 from MaterialEdit.fun_文件夹操作.fun_SD生成图片改名 import SDPicReName
@@ -363,7 +365,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
             pythoncom.CoInitialize()
 
-            for in_file in all_file:
+            for in_file in tqdm(all_file, desc="导出图片", ncols=100):
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
                     min_size = 4096
@@ -536,7 +538,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 folder=material_structure.material_path,
                 suffix=[".ai"],
             ):
-                obj = AI_批量导出图片重命名(ai_file=in_file)
+                obj = AIBatchExportImageRename(ai_file=in_file)
                 obj.fun_jpg_重命名()
 
         case "生成SKP导出命令":

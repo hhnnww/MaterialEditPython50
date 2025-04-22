@@ -1,6 +1,4 @@
-"""一个大行
-下面每行2个的小行图片布局
-"""
+"""一个大行下面每行2个的小行图片布局"""
 
 from PIL import Image
 
@@ -73,7 +71,11 @@ class LayoutOneLargeTwoSmall(LayoutInit):
         """
         line_small_im_list = []
         bottom_im_list = []
-
+        bottom_im = Image.new(
+            "RGBA",
+            (self.xq_width, self.small_height),
+            self.bg_color,
+        )
         for im in self._pil_list[1:]:
             im = fun_图片裁剪(
                 im=im,

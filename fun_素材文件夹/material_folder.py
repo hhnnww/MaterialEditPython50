@@ -19,7 +19,8 @@ class MaterialFolder:
         all_material = [
             MaterialFile(path=infile)
             for infile in self.path.rglob(pattern="*")
-            if infile.suffix.lower() in MaterialType.material_suffix and infile.is_file()
+            if infile.suffix.lower() in MaterialType.material_suffix
+            and infile.is_file()
         ]
         all_material.sort(key=lambda k: k.num)
         return all_material
@@ -27,7 +28,11 @@ class MaterialFolder:
     @property
     def all_sub_path(self) -> list[MaterialSubFolder]:
         """所有子目录."""
-        all_sub_path = [MaterialSubFolder(infile) for infile in self.path.iterdir() if infile.is_dir()]
+        all_sub_path = [
+            MaterialSubFolder(infile)
+            for infile in self.path.iterdir()
+            if infile.is_dir()
+        ]
         all_sub_path.sort(key=lambda k: k.file_num)
         return all_sub_path
 

@@ -29,13 +29,15 @@ from MaterialEdit.fun_制作首图 import (
 )
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3 import fun_layout_1_2_3_3_3
 from MaterialEdit.fun_制作首图.layout_1_2_3_3_3_3 import fun_layout_1_2_3_3_3_3
+from MaterialEdit.fun_制作首图.layout_1_3__2 import Layout13_2
 from MaterialEdit.fun_制作首图.layout_1大_33_正方形 import Layout1Large3Small
 from MaterialEdit.fun_制作首图.layout_3列1大横竖错落 import layout_3列1大横竖错落
 from MaterialEdit.fun_制作首图.layout_3列横竖错落 import layout_3列横竖错落
-from MaterialEdit.fun_制作首图.layout_1221 import Layout1221
 from MaterialEdit.fun_制作首图.layout_中间大四边小 import LayoutOneLargeOutSmall
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
+from MaterialEdit.fun_制作首图.layout_圆角固定裁剪 import LayoutRadioCrop
 from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
+from MaterialEdit.fun_制作首图.layout_横版1212 import Layout1212
 from MaterialEdit.fun_制作首图.layout_横版1221 import LayoutHorizontal1221
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_竖版1221 import Layout竖版1221
@@ -79,6 +81,7 @@ class MakeFirstImageModel(BaseModel):
     bg_color: str
 
     out_space: int
+    radio: int
 
 
 def fun_换算图片高度(first_image_style_name: str) -> int:
@@ -133,6 +136,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "竖橫竖竖":
@@ -153,13 +157,26 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         )
 
     elif item.first_image_layout == "1-3":
-        bg = fun_layout_1_n(
+        # bg = fun_layout_1_n(
+        #     image_list=item.select_image_list,
+        #     xq_width=xq_width,
+        #     xq_height=xq_height,
+        #     spacing=item.spacing,
+        #     small_line_num=3,
+        # )
+
+        bg = Layout13_2(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
-            small_line_num=3,
-        )
+            col=2,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+            out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
+        ).main()
 
     elif item.first_image_layout == "1-4":
         bg = fun_layout_1_n(
@@ -184,6 +201,8 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             xq_width=xq_width,
             xq_height=xq_height,
             spacing=item.spacing,
+            radio=item.radio == 1,
+            bg_color=bg_color,
         )
 
     elif item.first_image_layout == "1-2-3-3-3":
@@ -193,6 +212,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             xq_height=xq_height,
             spacing=item.spacing,
             bg_color=bg_color,
+            radio=item.radio == 1,
         )
 
     elif item.first_image_layout == "S1-2":
@@ -268,6 +288,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "1大3行2列":
@@ -281,6 +302,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "1大N行-自适应":
@@ -294,6 +316,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "1竖-2排小竖-自适应":
@@ -307,6 +330,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "1大3小-自适应":
@@ -320,6 +344,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "2大竖-4小竖":
@@ -333,6 +358,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).fun_底部图片()
 
     elif item.first_image_layout == "超长图":
@@ -346,6 +372,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "背景图":
@@ -359,6 +386,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "行-自适应":
@@ -372,6 +400,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main(small_size="自适应")
 
     elif item.first_image_layout == "行-固定尺寸":
@@ -385,6 +414,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
@@ -398,6 +428,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             crop_position=item.crop_position,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
 
     elif item.first_image_layout == "横版-1221":
@@ -411,6 +442,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).fun_横版1221()
 
     elif item.first_image_layout == "竖版-1221":
@@ -424,6 +456,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).fun_竖版1221()
     elif item.first_image_layout == "1-2-3-3-3-3":
         bg = fun_layout_1_2_3_3_3_3(
@@ -443,6 +476,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
     elif item.first_image_layout == "1大33正方形":
         bg = Layout1Large3Small(
@@ -455,9 +489,10 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
     elif item.first_image_layout == "横版-1212":
-        bg = Layout1221(
+        bg = Layout1212(
             image_list=item.select_image_list,
             xq_width=xq_width,
             xq_height=xq_height,
@@ -467,6 +502,20 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
             bg_color=bg_color,
             out_space=item.out_space == 1,
             design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
+        ).main()
+    elif item.first_image_layout == "固定裁剪-圆角":
+        bg = LayoutRadioCrop(
+            image_list=item.select_image_list,
+            xq_width=xq_width,
+            xq_height=xq_height,
+            spacing=item.spacing,
+            col=item.first_image_line,
+            crop_position=item.crop_position,
+            bg_color=bg_color,
+            out_space=item.out_space == 1,
+            design_path=path_jiegou.design_path,
+            radio=item.radio == 1,
         ).main()
     else:
         bg = fun_layout_固定裁剪2(

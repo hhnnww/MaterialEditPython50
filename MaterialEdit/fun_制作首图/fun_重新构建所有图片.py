@@ -1,7 +1,5 @@
 """构建所有图片."""
 
-import logging
-
 from PIL import Image
 
 from MaterialEdit.type import ImageModel
@@ -12,7 +10,6 @@ def fun_重新构建所有图片(image_list: list[ImageModel]) -> list[ImageMode
     img_list = []
     for obj in image_list:
         with Image.open(obj.path) as im:
-            logging.info(msg=obj.path)
             ratio = im.width / im.height
             ratio = max(ratio, 0.2)
 

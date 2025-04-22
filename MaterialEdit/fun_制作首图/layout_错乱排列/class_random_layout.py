@@ -100,6 +100,8 @@ class LayoutRandomLayoug:
         shadow_im = self._fun_阴影图片()
         line_3 = 3
         line_2 = 2
+        left_dis = 0
+        top_dis = 0
         if self.line_row == line_3:
             left_dis = 24
             top_dis = 22

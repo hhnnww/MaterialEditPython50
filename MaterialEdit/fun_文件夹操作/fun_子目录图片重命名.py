@@ -2,9 +2,9 @@ from pathlib import Path
 from uuid import uuid4
 
 
-def fun_子目录图片重命名(material_path: str):
+def fun_子目录图片重命名(material_path: str) -> None:
     # 内目录重命名
-    def __fun_内目录重命名(in_path: Path):
+    def __fun_内目录重命名(in_path: Path) -> None:
         # 改成UUID
         for in_file in in_path.iterdir():
             if in_file.is_file() and in_file.suffix.lower() in [

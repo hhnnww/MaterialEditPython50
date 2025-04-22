@@ -5,61 +5,62 @@ from win32com.client import Dispatch
 
 
 class AIFile:
-    def __init__(self, file: Path, tb_name: str):
-        print("\n处理AI文件:", file.as_posix(), "\n")
+    def __init__(self, file: Path, tb_name: str) -> None:
+        """AI文件处理."""
         self.file = file
         self.tb_name = tb_name
 
         self.app = Dispatch("Illustrator.Application")
         try:
             self.app.Open(file.as_posix())
-        except Exception as err:
-            print(err)
+        except Exception:
             self.app.Quit()
             sleep(5)
             self.app.Open(file.as_posix())
 
         self.doc = self.app.ActiveDocument
 
-    def fun_删除afd广告(self):
+    def fun_删除afd广告(self) -> None:
+        """删除afd广告."""
         ad_layer = list(self.doc.Layers)[-1]
 
         for item in ad_layer.GroupItems:
-            if 70 < item.Height < 80:
-                if (float(item.Height) + abs(float(item.Top))) - float(
+            if (
+                70 < item.Height < 80
+                and (float(item.Height) + abs(float(item.Top)))
+                - float(
                     self.doc.Height,
-                ) < 10:
-                    if abs(int(item.Left)) == 0:
-                        print("success")
-                        item.Locked = False
-                        item.Delete()
+                )
+                < 10
+                and abs(int(item.Left)) == 0
+            ):
+                print("success")
+                item.Locked = False
+                item.Delete()
 
-    def fun_根据图层名字删除广告(self):
+    def fun_根据图层名字删除广告(self) -> None:
+        """根据图层名字删除广告."""
         ad_layer_name_list = [
             "小夕素材",
             "火山素材=9.9全店免费",
             "火山素材https://shop185838729.taobao.com/",
         ]
-        layer_list = []
-        for layer in self.doc.Layers:
-            layer_list.append(layer)
 
-        for layer in layer_list:
+        for layer in self.doc.Layers:
             layer_status = True
 
             if layer.Name in ad_layer_name_list:
                 if layer.Locked is True:
                     layer.Locked = False
 
-                print(f"删除图层：\t{layer.Name}")
                 layer.Delete()
                 layer_status = False
 
-            if layer_status is True:
-                if "火山素材" in layer.Name:
-                    layer.Name = layer.Name.replace("火山", "小夕")
+            if layer_status is True and "火山素材" in layer.Name:
+                layer.Name = layer.Name.replace("火山", "小夕")
 
-    def fun_添加自己的文字(self):
+    def fun_添加自己的文字(self) -> None:
+        """添加自己的文字."""
         # 添加文字图层
         new_layer = self.doc.Layers.Add()
 
@@ -76,9 +77,13 @@ class AIFile:
         area_text_ref = self.doc.TextFrames.AreaText(text_frame)
 
         if self.tb_name == "小夕素材":
-            area_text_ref.Contents = "淘宝店铺：小夕素材\nxiaoxisc.com\n购买时请认准官方店铺。"
+            area_text_ref.Contents = (
+                "淘宝店铺：小夕素材\nxiaoxisc.com\n购买时请认准官方店铺。"
+            )
         elif self.tb_name == "饭桶设计":
-            area_text_ref.Contents = "淘宝店铺：饭桶设计\nfantongdesign.com\n购买时请认准官方店铺。"
+            area_text_ref.Contents = (
+                "淘宝店铺：饭桶设计\nfantongdesign.com\n购买时请认准官方店铺。"
+            )
 
         for art_frame in new_layer.TextFrames:
             for art_range in art_frame.Characters:

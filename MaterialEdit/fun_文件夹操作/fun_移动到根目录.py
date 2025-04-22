@@ -1,10 +1,13 @@
+"""文件重命名.py"""
+
 import shutil
 from pathlib import Path
 
 from tqdm import tqdm
 
 
-def fun_移动到根目录(folder: str):
+def fun_移动到根目录(folder: str) -> None:
+    """移动到根目录."""
     folder_obj = Path(folder)
 
     if "Thumbs" in folder_obj.stem:

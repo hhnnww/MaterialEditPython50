@@ -1,6 +1,5 @@
 """摄图网采集."""
 
-import logging
 from collections.abc import Generator
 from typing import Any
 
@@ -12,12 +11,12 @@ from MaterialEdit.fun_素材下载.model_素材格式 import MaterialModel
 
 def scrapy_摄图(single_url: str, cookie: str) -> Generator[MaterialModel, Any, None]:
     """采集摄图网."""
-    logging.info(single_url)
     html = fun_session(url=single_url, cookie=cookie)
 
     material_list = html.find(
         selector="#wrapper > div > div.imgshow.clearfix > div > div",
     )
+    url, img = "", ""
     if isinstance(material_list, list):
         for obj in material_list:
             if "ad_type" in obj.attrs.get("class", ""):

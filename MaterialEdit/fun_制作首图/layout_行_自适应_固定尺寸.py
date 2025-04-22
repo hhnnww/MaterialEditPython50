@@ -7,14 +7,15 @@ from typing import Literal
 
 from PIL import Image
 
+from image_action.image_action import ImageAction
+from image_action.image_funs import Align
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
-from MaterialEdit.fun_图片编辑 import fun_图片横向拼接, fun_图片竖向拼接
 
 
 class Layout行自适应(LayoutInit):
     @cached_property
     def __fun_小图高度(self) -> int:
-        if self.out_space is True:
+        if self.radio:
             return math.floor(
                 (self.xq_height - ((self.col + 1) * self.spacing)) / self.col,
             )
@@ -51,47 +52,52 @@ class Layout行自适应(LayoutInit):
 
             if small_size == "自适应":
                 small_width = math.floor(self.__fun_小图高度 * (im.width / im.height))
-                im = im.resize(
-                    (small_width, self.__fun_小图高度),
-                    resample=Image.Resampling.LANCZOS,
+                im = ImageAction.fun_图片添加圆角(
+                    im.resize(
+                        (small_width, self.__fun_小图高度),
+                        resample=Image.Resampling.LANCZOS,
+                    ),
+                    self.image_radio,
                 )
 
             elif small_size == "固定尺寸":
-                im = im.resize(
-                    (self.__fun_固定尺寸小图宽度, self.__fun_小图高度),
-                    resample=Image.Resampling.LANCZOS,
+                im = ImageAction.fun_图片添加圆角(
+                    ImageAction.fun_图片裁剪(
+                        im,
+                        (self.__fun_固定尺寸小图宽度, self.__fun_小图高度),
+                        self.crop_position,
+                    ),
+                    self.image_radio,
                 )
-                # im = fun_图片裁剪(
-                #     im=im,
-                #     width=self.__fun_固定尺寸小图宽度,
-                #     height=self.__fun_小图高度,
-                #     position=self.crop_position,
-                # )
 
             line_list.append(im.copy())
 
             if self._fun_计算单行宽度(im_list=line_list) >= self.xq_width:
-                line_im = fun_图片横向拼接(
+                line_im = ImageAction.fun_图片横向拼接(
                     image_list=line_list,
                     spacing=self.spacing,
-                    align_item="center",
-                    background_color=self.bg_color,
+                    align="center",
                 )
                 line_list = []
-
                 bg_list.append(line_im.copy())
 
             if len(bg_list) == self.col:
                 break
 
-        bg = fun_图片竖向拼接(
+        bg = ImageAction.fun_图片竖向拼接(
             image_list=bg_list,
             spacing=self.spacing,
-            align_item="center",
-            background_color=self.bg_color,
+            align="center",
         )
 
         crop_left = math.floor((bg.width - self.xq_width) / 2)
         bg = bg.crop((crop_left, 0, self.xq_width + crop_left, bg.height))
+        bg = ImageAction.fun_图片扩大(
+            bg,
+            (self.xq_width, self.xq_height),
+            Align.CENTER,
+            Align.CENTER,
+        )
+        self.fun_储存design_image(bg)
 
-        return bg.resize((self.xq_width, self.xq_height + 1), Image.Resampling.LANCZOS)
+        return bg

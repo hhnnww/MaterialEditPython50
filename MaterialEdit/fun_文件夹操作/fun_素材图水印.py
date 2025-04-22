@@ -95,7 +95,7 @@ def __单个水印(shop_name: str) -> Image.Image:
 
 @threads(10)
 def __处理单个图片(image_path: Path, water_pil: Image.Image) -> None:
-    with contextlib.suppress(Exception), Image.open(image_path.as_posix()) as im:
+    with contextlib.suppress(Exception), Image.open(fp=image_path.as_posix()) as im:
         im_width = 2000
         im.thumbnail((im_width, im_width), Image.Resampling.LANCZOS, 3)
         im.paste(

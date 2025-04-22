@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 _FONT_WEIGHT = Literal["light", "normal", "medium", "bold", "heavy"]
 _FONT_NAME = Literal["misans", "opposans", "montserrat", "zihun", "lato", "noto", "sam"]
-_COLOR = tuple[int, int, int, int]
+_COLOR = tuple[int, int, int, int] | tuple[int, int, int]
 ALIGNITEM = Literal["start", "center", "end"]
 
 

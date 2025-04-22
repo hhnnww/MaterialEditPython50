@@ -18,6 +18,8 @@ def scrapy_包图(single_url: str, cookie: str) -> Generator[MaterialModel, Any,
         "div.bt-body.search.clearfix.search-main > div.search-list.w-search-list."
         "box-bottom-gradient.clearfix > div.result-list.media-list > div > dl > dt",
     )
+    url = ""
+    img_url = ""
     if material_element_list is not None and isinstance(material_element_list, list):
         for obj in material_element_list:
             find = obj.find("a.jump-details", first=True)

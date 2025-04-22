@@ -14,12 +14,17 @@ from MaterialEdit.fun_图片编辑.fun_画一个圆角矩形 import fun_画一�
 
 
 def style_黑鲸高(
-    im: Image.Image, title: str, format: str, material_id: str, shop_name: str
+    im: Image.Image,
+    title: str,
+    format: str,
+    material_id: str,
+    shop_name: str,
 ) -> Image.Image:
     """制作黑鲸首图
 
     Returns:
         _type_: _description_
+
     """
     if im.width < 1500 or im.height < 1250:
         im = fun_图片扩大粘贴(im, 1500, 1250, "center", "center", (255, 255, 255, 255))
@@ -102,7 +107,7 @@ def style_黑鲸高(
         fill_color=(0, 0, 0, 255),
     )
     water_pil_bg = water_pil_bg.crop(
-        (0, int(water_pil_bg.height / 2), water_pil_bg.width, water_pil_bg.height)
+        (0, int(water_pil_bg.height / 2), water_pil_bg.width, water_pil_bg.height),
     )
 
     water_pil_bg.paste(

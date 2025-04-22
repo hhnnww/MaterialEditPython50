@@ -16,7 +16,9 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
     def fun_千库(self) -> Generator[MaterialModel]:
         """千库采集."""
         ma_list = self.html.find(
-            selector="body > div.result-box.all.so > div.panel-box > div > div.clearfix.data-list.dataList.V-maronyV1.Vmarony.J_ViewCards.marony-vertical > div.fl.marony-item",
+            selector="body > div.result-box.all.so > div.panel-box > div > "
+            "div.clearfix.data-list.dataList.V-maronyV1.Vmarony.J_ViewCards."
+            "marony-vertical > div.fl.marony-item",
             first=False,
         )
         for ma in ma_list:  # type: ignore  # noqa: PGH003
@@ -43,6 +45,7 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
 
     def fun_freepik(self) -> Generator[MaterialModel]:
         """freepik采集."""
+        url, img = "", ""
         ma_list = self.html.find("figure")
         if ma_list is not None and isinstance(ma_list, list):
             for ma in ma_list:
@@ -59,7 +62,7 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
     def fun_insert_db(self) -> bool:
         """插入到数据库."""
         state = False
-
+        ma_list = []
         if self.material_site in [
             "三老爹",
             "加油鸭素材铺",

@@ -36,7 +36,12 @@ class MaterialInfo(RootFolder):
     def size(self) -> str:
         """Size."""
         size_level = ["B", "KB", "MB", "GB", "TB"]
-        size = sum([material.path.stat().st_size for material in self.mateiral_path.all_material])
+        size = sum(
+            [
+                material.path.stat().st_size
+                for material in self.mateiral_path.all_material
+            ]
+        )
 
         num = 1
         size_level_num = 1024

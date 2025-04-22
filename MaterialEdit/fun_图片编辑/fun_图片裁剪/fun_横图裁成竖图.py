@@ -2,11 +2,14 @@ import math
 
 from PIL import Image
 
-from ...type import ALIGNITEM
+from MaterialEdit.type import ALIGNITEM
 
 
 def fun_横图裁成竖图(
-    im: Image.Image, width: int, height: int, position: ALIGNITEM
+    im: Image.Image,
+    width: int,
+    height: int,
+    position: ALIGNITEM,
 ) -> Image.Image:
     ratio = im.height / height
     im_width = width * ratio

@@ -1,16 +1,18 @@
+"""文件重命名.py"""
+
 from pathlib import Path
 
 from PIL import Image
 from tqdm import tqdm
 
-from .fun_遍历指定文件 import rglob
+from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 
 
-def fun_图片添加白色背景(material_path_text: str):
+def fun_图片添加白色背景(material_path_text: str) -> None:
+    """给图片添加白色背景."""
     material_path = Path(material_path_text)
     png_file_list = rglob(material_path.as_posix(), [".png"])
     for in_png in tqdm(png_file_list, ncols=100, desc="图片添加白色背景"):
-        print(in_png)
         with Image.open(in_png.as_posix()) as im:
             if im.mode != "RGBA":
                 im = im.convert("RGBA")

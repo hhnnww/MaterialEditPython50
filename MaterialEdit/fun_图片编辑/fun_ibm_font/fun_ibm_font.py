@@ -29,14 +29,6 @@ class MakeIbmFont:
         color: _COLOR,
         bg_color: _COLOR,
     ) -> None:
-        """
-        Args:
-            text (str): 本文
-            size (int): 大小
-            weight (_FONT_WEIGHT): 自重
-            color (_COLOR): 颜色
-            bc_color (_COLOR): 背景色
-        """
         self.text = text
         self.size = size
         self.weight = weight
@@ -45,11 +37,6 @@ class MakeIbmFont:
 
     @property
     def get_font_path(self) -> Path:
-        """获取字体文件路径
-
-        Returns:
-            Path: _description_
-        """
         font_dir = Path(__file__).parent / "ibm-plex-sans"
         return font_dir / f"IBMPlexSansSC-{self.weight}.ttf"
 

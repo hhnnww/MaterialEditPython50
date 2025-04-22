@@ -1,24 +1,32 @@
+"""文件重命名.py"""
+
 import uuid
 from pathlib import Path
 
-from ..setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
+from MaterialEdit.setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
 
 
-def fun_文件重命名(folder: str, preview_path: str, shop_name: str, num: int = 1):
+def fun_文件重命名(
+    folder: str,
+    preview_path: str,
+    shop_name: str,
+    num: int = 1,
+) -> None:
+    """重命名文件夹内的文件."""
     folder_obj = Path(folder)
     preview_path_obj = Path(preview_path)
 
-    all_material_file = []
-    for in_file in folder_obj.rglob("*"):
-        if in_file.is_file() and in_file.suffix.lower() in MATERIAL_SOURCE_SUFFIX:
-            all_material_file.append(in_file)
-
+    all_material_file = [
+        in_file
+        for in_file in folder_obj.rglob("*")
+        if in_file.is_file() and in_file.suffix.lower() in MATERIAL_SOURCE_SUFFIX
+    ]
     all_material_file.sort(key=lambda in_list_file: in_list_file.suffix)
 
     for in_file in all_material_file:
         new_stem = str(uuid.uuid1())
         material_file_new_name = in_file.with_stem(new_stem).with_suffix(
-            in_file.suffix.lower()
+            in_file.suffix.lower(),
         )
 
         for image_suffix in IMAGE_SUFFIX:

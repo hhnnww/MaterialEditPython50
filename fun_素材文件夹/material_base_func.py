@@ -15,10 +15,34 @@ logging.basicConfig(
 
 
 class MaterialType:
-    material_suffix: ClassVar[list[str]] = [".ai", ".eps", ".psd", ".psb", ".su", ".ppt", ".pptx"]
-    image_suffix: ClassVar[list[str]] = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"]
+    material_suffix: ClassVar[list[str]] = [
+        ".ai",
+        ".eps",
+        ".psd",
+        ".psb",
+        ".su",
+        ".ppt",
+        ".pptx",
+    ]
+    image_suffix: ClassVar[list[str]] = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".bmp",
+        ".webp",
+    ]
     zip_suffix: ClassVar[list[str]] = [".zip", ".rar", ".7z"]
-    ad_suffix: ClassVar[list[str]] = [".txt", ".url", ".html", ".htm", ".doc", ".docx", ".pdf", ".psd_exiftool_tmp"]
+    ad_suffix: ClassVar[list[str]] = [
+        ".txt",
+        ".url",
+        ".html",
+        ".htm",
+        ".doc",
+        ".docx",
+        ".pdf",
+        ".psd_exiftool_tmp",
+    ]
 
     @staticmethod
     def fun_获取文件名中的数字(stem: str) -> int:

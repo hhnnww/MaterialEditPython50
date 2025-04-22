@@ -1,3 +1,5 @@
+"""文件重命名.py"""
+
 from PIL import Image
 
 from MaterialEdit.fun_图片编辑.fun_图片切换到圆角 import fun_图片切换到圆角
@@ -15,7 +17,18 @@ def layout_3列1大横竖错落(
     xq_width: int,
     xq_height: int,
     spacing: int,
-):
+) -> Image.Image:
+    """3列1大横竖错落布局"""
+    left_im: Image.Image = Image.new(
+        mode="RGBA",
+        size=(int((xq_width - (spacing * 4)) / 3), xq_height),
+        color=(255, 255, 255, 255),
+    )
+    right_im: Image.Image = Image.new(
+        mode="RGBA",
+        size=(int((xq_width - (spacing * 4)) / 3), xq_height),
+        color=(255, 255, 255, 255),
+    )
     small_width = int((xq_width - (spacing * 4)) / 3)
     small_height = int((xq_height - (spacing * 5)) / 4)
 
@@ -30,7 +43,6 @@ def layout_3列1大横竖错落(
 
     small_im_list = []
     for image in image_list[1:]:
-        print(f"制作首图：{image.path}")
         im = Image.open(image.path)
         if im.mode != "rgba":
             im = im.convert("RGBA")
@@ -98,8 +110,8 @@ def layout_3列1大横竖错落(
             break
 
     right_list = []
+
     for im in small_im_list[num:]:
-        print(num)
         right_list.append(im.copy())
         right_im_height = sum([im.height for im in right_list])
         if right_im_height > int((small_height * 4) * 0.8):
@@ -118,7 +130,7 @@ def layout_3列1大横竖错落(
         background_color=(255, 255, 255, 255),
     )
 
-    bg = fun_图片扩大粘贴(
+    return fun_图片扩大粘贴(
         im=bg,
         width=xq_width,
         height=xq_height,
@@ -126,5 +138,3 @@ def layout_3列1大横竖错落(
         top="center",
         background_color=(255, 255, 255, 255),
     )
-
-    return bg

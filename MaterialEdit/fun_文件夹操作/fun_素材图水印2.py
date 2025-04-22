@@ -27,10 +27,14 @@ def __单个文件处理(file: Path, logo: Image.Image) -> None:
 
         im.thumbnail((1200, 1200))
         random_number = randbelow(100) + 1
+        padding = 30
         if random_number % 2 == 1:  # Odd number
-            position = (50, im.height - logo.height - 50)
+            position = (padding, im.height - logo.height - padding)
         else:  # Even number
-            position = (im.width - logo.width - 50, im.height - logo.height - 50)
+            position = (
+                im.width - logo.width - padding,
+                im.height - logo.height - padding,
+            )
 
         im.paste(logo, position, logo)
 

@@ -25,7 +25,8 @@ class MaterialAction(RootFolder):
             path_list=[
                 material.path
                 for material in self.mateiral_path.all_material
-                if material.path.suffix.lower() in [".ai", ".eps"] and material.has_material_image is False
+                if material.path.suffix.lower() in [".ai", ".eps"]
+                and material.has_material_image is False
             ],
         )
 
@@ -35,7 +36,8 @@ class MaterialAction(RootFolder):
             path_list=[
                 material.path
                 for material in self.mateiral_path.all_material
-                if material.path.suffix.lower() in [".psd", ".psb"] and material.has_material_image is False
+                if material.path.suffix.lower() in [".psd", ".psb"]
+                and material.has_material_image is False
             ],
         )
 
@@ -47,7 +49,8 @@ class MaterialAction(RootFolder):
             [
                 infile
                 for infile in self.mateiral_path.all_material
-                if infile.path.suffix.lower() in [".ppt", ".pptx"] and infile.has_material_image is False
+                if infile.path.suffix.lower() in [".ppt", ".pptx"]
+                and infile.has_material_image is False
             ],
         ):
             MaterialType.log(f"打开没有预览图的PPT文件{material.path.as_posix()}")
@@ -72,7 +75,10 @@ class MaterialAction(RootFolder):
         # 复制到预览图
         for material in self.mateiral_path.all_material:
             for image in material.material_images:
-                image.fun_复制素材图到预览图(material_path=self.mateiral_path.path, preview_path=self.preview_path.path)
+                image.fun_复制素材图到预览图(
+                    material_path=self.mateiral_path.path,
+                    preview_path=self.preview_path.path,
+                )
 
     def fun_移动到根目录(self) -> None:
         """素材文件夹内所有文件移动到根目录."""
@@ -98,7 +104,7 @@ class MaterialAction(RootFolder):
 
         # 再改成店铺名
         for num, material in enumerate(self.mateiral_path.all_material):
-            new_stem = f"{shop_name}({num+start_num})"
+            new_stem = f"{shop_name}({num + start_num})"
             material.fun_修改素材源文件以及素材图和预览图名称(
                 new_stem=new_stem,
                 material_path=self.mateiral_path.path,
@@ -107,14 +113,22 @@ class MaterialAction(RootFolder):
 
     def fun_打开素材文件夹(self) -> None:
         """打开素材图."""
-        subprocess.Popen(args=["explorer.exe", self.mateiral_path.path.as_posix().replace("/", "\\")], shell=True)
+        subprocess.Popen(
+            args=[
+                "explorer.exe",
+                self.mateiral_path.path.as_posix().replace("/", "\\"),
+            ],
+            shell=True,
+        )
 
     def fun_EPS转AI文件(self) -> None:
         """EPS文件转成AI文件."""
         pythoncom.CoInitialize()
         app = Dispatch("Illustrator.Application")
         for material in [
-            material for material in self.mateiral_path.all_material if material.path.suffix.lower() in [".eps"]
+            material
+            for material in self.mateiral_path.all_material
+            if material.path.suffix.lower() in [".eps"]
         ]:
             doc = app.Open(material.path.as_posix())
             doc.SaveAs(material.path.with_suffix(".ai"))
@@ -132,7 +146,10 @@ class MaterialAction(RootFolder):
 
     def fun_子目录移动到根目录(self) -> None:
         """所有子目录移动到根."""
-        [subpath.fun_子目录文件移动到根目录() for subpath in self.mateiral_path.all_sub_path]
+        [
+            subpath.fun_子目录文件移动到根目录()
+            for subpath in self.mateiral_path.all_sub_path
+        ]
 
     def fun_子目录重命名(self, shop_name: str, start_num: int = 1) -> None:
         """所有子目录重命名."""
@@ -142,7 +159,7 @@ class MaterialAction(RootFolder):
             subpath.fun_子目录重命名(new_stem=new_stem)
 
         for num, subpath in enumerate(self.mateiral_path.all_sub_path):
-            new_stem = f"{shop_name}({num+start_num})"
+            new_stem = f"{shop_name}({num + start_num})"
             subpath.fun_子目录重命名(new_stem=new_stem)
 
     def fun_子目录AI文件重命名(self) -> None:
@@ -156,13 +173,19 @@ class MaterialAction(RootFolder):
     def fun_删除广告文件(self) -> None:
         """删除素材文件夹内的广告文件."""
         for infile in self.mateiral_path.path.rglob("*"):
-            if (infile.suffix.lower() in MaterialType.ad_suffix or infile.name in [".DS_Store"]) and infile.is_file():
+            if (
+                infile.suffix.lower() in MaterialType.ad_suffix
+                or infile.name in [".DS_Store"]
+            ) and infile.is_file():
                 infile.unlink()
 
     def fun_素材源文件素材图预览图移动到子目录(self) -> None:
         """素材源文件素材图预览图移动到子目录."""
         for material in self.mateiral_path.all_material:
-            material.fun_移动到子目录(material_path=self.mateiral_path.path, preview_path=self.preview_path.path)
+            material.fun_移动到子目录(
+                material_path=self.mateiral_path.path,
+                preview_path=self.preview_path.path,
+            )
 
     def fun_PSD导出预览图(self) -> None:
         """PSD导出预览图."""
@@ -170,7 +193,8 @@ class MaterialAction(RootFolder):
             path_list=[
                 material.path
                 for material in self.mateiral_path.all_material
-                if material.path.suffix.lower() in [".psd", ".psb"] and material.has_material_image is False
+                if material.path.suffix.lower() in [".psd", ".psb"]
+                and material.has_material_image is False
             ],
         )
 
@@ -179,7 +203,8 @@ class MaterialAction(RootFolder):
         [
             AiFile(material.path).main()
             for material in self.mateiral_path.all_material
-            if material.path.suffix.lower() in [".ai", ".eps"] and material.has_material_image is False
+            if material.path.suffix.lower() in [".ai", ".eps"]
+            and material.has_material_image is False
         ]
 
 
