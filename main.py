@@ -1,9 +1,7 @@
 """素材编辑程序."""
 
-import logging
 from pathlib import Path
 
-from colorama import Fore, Style
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -17,11 +15,6 @@ from router_打开百度网盘下载链接 import router as router_打开百度�
 
 Image.MAX_IMAGE_PIXELS = None
 app = FastAPI()
-
-logging.basicConfig(
-    level=logging.INFO,
-    format=f"{Fore.YELLOW}%(levelname)s{Style.RESET_ALL}:\t%(asctime)s - %(message)s",
-)
 
 
 origins = ["*"]

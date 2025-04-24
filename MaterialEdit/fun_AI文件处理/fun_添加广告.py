@@ -1,9 +1,18 @@
+"""add ad."""
+
+from __future__ import annotations
+
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from win32com.client import CDispatch
+if TYPE_CHECKING:
+    from win32com.client import CDispatch
 
 
-def fun_添加广告(doc: CDispatch, shop_name: str):
+def fun_添加广告(doc: CDispatch | None, shop_name: str) -> None:
+    """添加广告."""
+    if doc is None:
+        return
     ai_path = (
         Path(__file__).parent.parent
         / "fun_PS文件处理"

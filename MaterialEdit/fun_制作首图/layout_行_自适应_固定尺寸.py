@@ -8,7 +8,6 @@ from typing import Literal
 from PIL import Image
 
 from image_action.image_action import ImageAction
-from image_action.image_funs import Align
 from MaterialEdit.fun_制作首图.class_layout_init import LayoutInit
 
 
@@ -92,12 +91,8 @@ class Layout行自适应(LayoutInit):
 
         crop_left = math.floor((bg.width - self.xq_width) / 2)
         bg = bg.crop((crop_left, 0, self.xq_width + crop_left, bg.height))
-        bg = ImageAction.fun_图片扩大(
-            bg,
-            (self.xq_width, self.xq_height),
-            Align.CENTER,
-            Align.CENTER,
-        )
         self.fun_储存design_image(bg)
-
-        return bg
+        return bg.resize(
+            (self.xq_width, self.xq_height),
+            resample=Image.Resampling.LANCZOS,
+        )

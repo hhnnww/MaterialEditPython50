@@ -1,34 +1,35 @@
 """删除PPT内的备注和图片广告"""
 
-import logging
 from pathlib import Path
 
 from pptx import Presentation
 from python_pptx_text_replacer import TextReplacer
 from tqdm import tqdm
 
+from log import logger
+
 
 def __fun_替换本文(ppt_file: str) -> None:
-    """替换PPT内所有文字广告"""
+    """替换PPT里面的文本."""
     text_need_replace = ["唐峰", "芒果", "T500"]
 
     replacer = TextReplacer(
-        ppt_file,
+        presentation_file_name=ppt_file,
         slides="",
         tables=True,
         charts=True,
         textframes=True,
     )
     for text in text_need_replace:
-        replacer.replace_text([(text, "小夕")])
+        replacer.replace_text(replacements=[(text, "小夕")])
 
-    replacer.write_presentation_to_file(ppt_file)
+    replacer.write_presentation_to_file(presentation_output_file_name=ppt_file)
 
 
 def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: list[str]) -> None:
     """删除PPT里面的备注和广告图片."""
     msg = f"处理PPT:{ppt_file}"
-    logging.info(msg=msg)
+    logger.info(msg=msg)
     prs = Presentation(pptx=ppt_file)
 
     for slide in prs.slides:
@@ -42,7 +43,7 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
                         for ad_name in ad_pic_name_list:
                             if f'descr="{ad_name}"' in shape.element.xml:
                                 slide.shapes._spTree.remove(shape._element)  # noqa: SLF001
-                                logging.info(msg="删除广告图片")
+                                logger.info(msg="删除广告图片")
 
                     # 如果是视频
                     # 直接干掉
@@ -50,7 +51,7 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
                         slide.shapes._spTree.remove(shape._element)  # noqa: SLF001
 
         except Exception as e:  # noqa: BLE001
-            logging.info(e)
+            logger.info(e)
 
     prs.save(file=ppt_file)
 
@@ -81,4 +82,4 @@ def fun_处理所有PPT(material_path: str) -> None:
                     )
                     __fun_替换本文(ppt_file=in_file.as_posix())
                 except:  # noqa: E722
-                    logging.info(msg="error")
+                    logger.info(msg="error")

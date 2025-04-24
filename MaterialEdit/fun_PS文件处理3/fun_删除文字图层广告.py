@@ -1,21 +1,14 @@
 """删除psd文件中的图片名称"""
 
-import logging
 from pathlib import Path
 
 import yaml
 from tqdm import tqdm
 from win32com.client import CDispatch, Dispatch
 
+from log import logger
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.setting import IMAGE_SUFFIX
-
-# Configure logger
-logging.basicConfig(
-    level=logging.INFO,
-    format="\n%(asctime)s - %(message)s",
-)
-logger = logging.getLogger(__name__)
 
 
 class DeleteImageName:
@@ -110,15 +103,15 @@ class DeleteImageName:
             return
 
         replace_name_list = self.__replace_text_list.get("replace_name_list", [])
-        text = layer.TextItem.Contents.lower()
+        text: str = layer.TextItem.Contents
         replace_state = False
         for rep_name in replace_name_list:
             if rep_name[0] in text.lower():
-                text = text.replace(rep_name[0], rep_name[1])
+                text = text.lower().replace(rep_name[0], rep_name[1])
                 replace_state = True
 
         if replace_state is True:
-            layer.TextItem.Font = "IBMPlexSansSC"
+            layer.TextItem.Font = "IBMPlexSansSC-Light"
             layer.TextItem.Contents = text
             layer.Name = text
 

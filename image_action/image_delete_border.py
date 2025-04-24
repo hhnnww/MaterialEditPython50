@@ -4,6 +4,7 @@ from PIL import Image
 class ImageDeleteBorder:
     @staticmethod
     def fun_删除图片边框(im: Image.Image) -> Image.Image:
+        """删除图片边框"""
         # 获取左上右下四个像素点的颜色
         left_color = im.getpixel((0, im.height // 2))
         top_color = im.getpixel((im.width // 2, 0))

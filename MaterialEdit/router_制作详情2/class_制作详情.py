@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Literal
 from PIL import Image
 from tqdm import tqdm
 
+from image_action.image_action import ImageAction
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
@@ -86,7 +87,15 @@ class ClassMakeXQ2:
             if size > max_size:
                 continue
 
-            opim = Image.open(fp=image.as_posix())
+            opim = Image.open(fp=image.as_posix()).convert("RGBA")
+            max_radio = 8
+            if opim.height / opim.width > max_radio:
+                opim = ImageAction.fun_图片裁剪(
+                    im=opim,
+                    size=(1500, opim.width * max_radio),
+                    align="start",
+                )
+
             opim.thumbnail((1500, 99999), Image.Resampling.LANCZOS)
             obj_list.append(
                 ClassOneImage(

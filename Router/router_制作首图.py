@@ -37,13 +37,15 @@ from MaterialEdit.fun_制作首图.layout_122112 import Layout122112
 from MaterialEdit.fun_制作首图.layout_中间大四边小 import LayoutOneLargeOutSmall
 from MaterialEdit.fun_制作首图.layout_列自适应 import layout_列自适应
 from MaterialEdit.fun_制作首图.layout_圆角固定裁剪 import LayoutRadioCrop
-from MaterialEdit.fun_制作首图.layout_小元素排列 import Layout小元素排列
 from MaterialEdit.fun_制作首图.layout_横版1212 import Layout1212
 from MaterialEdit.fun_制作首图.layout_横版1221 import LayoutHorizontal1221
 from MaterialEdit.fun_制作首图.layout_竖横竖竖 import layout_竖横竖竖
 from MaterialEdit.fun_制作首图.layout_竖版1221 import Layout竖版1221
 from MaterialEdit.fun_制作首图.layout_背景图排版 import Layout背景图排版
 from MaterialEdit.fun_制作首图.layout_行_自适应_固定尺寸 import Layout行自适应
+from MaterialEdit.fun_制作首图.layout_透明元素排列 import (
+    LayoutTransparentElementsArrangement,
+)
 from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_auto_layout import (
     RandomAutoLayout,
 )
@@ -158,14 +160,6 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         )
 
     elif item.first_image_layout == "1-3":
-        # bg = fun_layout_1_n(
-        #     image_list=item.select_image_list,
-        #     xq_width=xq_width,
-        #     xq_height=xq_height,
-        #     spacing=item.spacing,
-        #     small_line_num=3,
-        # )
-
         bg = Layout13_2(
             image_list=item.select_image_list,
             xq_width=xq_width,
@@ -419,7 +413,7 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
         ).main(small_size="固定尺寸")
 
     elif item.first_image_layout == "小元素排列":
-        bg = Layout小元素排列(
+        bg = LayoutTransparentElementsArrangement(
             image_list=item.select_image_list,
             bg_color=bg_color,
             xq_width=xq_width,

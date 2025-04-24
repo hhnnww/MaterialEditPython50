@@ -27,11 +27,11 @@ def fun_单行文字转图片(
     构建字体对象
     """
     chinese_font_obj = ImageFont.truetype(
-        font=fun_获取字体(font_name=chinese_font_name, font_weight=font_weight),
+        font=fun_获取字体(font_name=chinese_font_name, font_weight=font_weight),  # type: ignore
         size=font_size,
     )
     english_font_obj = ImageFont.truetype(
-        font=fun_获取字体(font_name=english_font_name, font_weight=font_weight),
+        font=fun_获取字体(font_name=english_font_name, font_weight=font_weight),  # type: ignore
         size=en_size,
     )
 

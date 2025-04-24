@@ -12,7 +12,7 @@
       "console": "integratedTerminal"
     },
     {
-      "command": "uvicorn main:app --reload",
+      "command": "uv run uvicorn main:app --reload",
       "name": "fastapi",
       "request": "launch",
       "type": "node-terminal"

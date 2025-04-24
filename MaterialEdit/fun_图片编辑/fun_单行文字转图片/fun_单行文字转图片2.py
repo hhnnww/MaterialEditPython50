@@ -1,25 +1,31 @@
 from PIL import Image, ImageDraw, ImageFont
 
-from ...type import _COLOR, _FONT_WEIGHT
-from ..fun_删除图片边框.fun_删除图片边框 import fun_删除图片边框
-from .fun_判断是否是英文 import fun_是英文
-from .fun_获取字体 import fun_获取字体
-from .fun_计算一行文字的宽度和高度 import fun_计算一行文字的宽度和高度
-from .fun_计算单个文字的尺寸 import fun_计算单个文字的尺寸
+from MaterialEdit.fun_图片编辑.fun_删除图片边框.fun_删除图片边框 import fun_删除图片边框
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_判断是否是英文 import fun_是英文
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_获取字体 import fun_获取字体
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_计算一行文字的宽度和高度 import (
+    fun_计算一行文字的宽度和高度,
+)
+from MaterialEdit.fun_图片编辑.fun_单行文字转图片.fun_计算单个文字的尺寸 import (
+    fun_计算单个文字的尺寸,
+)
+from MaterialEdit.type import _COLOR, _FONT_WEIGHT
 
 
 def fun_单行文字转图片2(
-    text: str, size: int, fill: _COLOR, background: _COLOR, font_weight: _FONT_WEIGHT
+    text: str,
+    size: int,
+    fill: _COLOR,
+    background: _COLOR,
+    font_weight: _FONT_WEIGHT,
 ):
-    """
-    构建字体对象
-    """
+    """构建字体对象"""
     chinese_font_obj = ImageFont.truetype(
-        font=fun_获取字体(font_name="noto", font_weight=font_weight),
+        font=fun_获取字体(font_name="noto", font_weight=font_weight),  # type: ignore
         size=size,
     )
     english_font_obj = ImageFont.truetype(
-        font=fun_获取字体(font_name="sam", font_weight=font_weight),
+        font=fun_获取字体(font_name="sam", font_weight=font_weight),  # type: ignore
         size=int(size * 1.1),
     )
 

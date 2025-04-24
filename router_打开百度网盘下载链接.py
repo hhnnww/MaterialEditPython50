@@ -1,11 +1,12 @@
 """打开百度网盘下载链接."""
 
-import logging
 import re
 import subprocess
 
 from fastapi import APIRouter
 from pydantic import BaseModel
+
+from log import logger
 
 router = APIRouter(prefix="/open_baidu_link")
 
@@ -32,5 +33,5 @@ def open_baidu_link(item_in: ItemIn) -> None:
             re_link = f"{re_link}?pwd={tqm}"
 
         msg = f"打开链接: {re_link}"
-        logging.info(msg)
+        logger.info(msg)
         subprocess.Popen(args=["start", "msedge", re_link], shell=True)

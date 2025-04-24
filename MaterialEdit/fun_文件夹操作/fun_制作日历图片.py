@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Literal
 
 from PIL import Image
+from PIL.ImageFile import ImageFile
 from tqdm import tqdm
 
 from MaterialEdit.fun_图片编辑 import fun_图片扩大粘贴, fun_图片竖向拼接, fun_图片裁剪
@@ -36,7 +37,7 @@ class MakeCalenderPic:
         return "s"
 
     @staticmethod
-    def fun_获取文件夹所有图片(sub_path: Path) -> list[Image.Image]:
+    def fun_获取文件夹所有图片(sub_path: Path) -> list[ImageFile]:
         """获取文件夹所有图片."""
         png_file_list = [
             Image.open(obj.as_posix())
@@ -129,7 +130,7 @@ class MakeCalenderPic:
             png_path = in_path.parent / (in_path.name + ".png")
             if in_path.is_dir() and png_path.exists() is False:
                 png_list = self.fun_获取文件夹所有图片(in_path)
-                png_list = self.fun_图片列表编组(png_list)
+                png_list = self.fun_图片列表编组(png_list)  # type: ignore
                 pil = self.fun_制作日历图片(png_list)
 
                 pil.save(png_path.as_posix())

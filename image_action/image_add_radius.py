@@ -16,6 +16,9 @@ class ImageAddRadius:
         返回:
             Image.Image: 添加圆角效果后的图像对象。
         """
+        if radius == 0:
+            return im
+
         bg = ImageShape.fun_画一个圆角矩形(
             im.size,
             radius,

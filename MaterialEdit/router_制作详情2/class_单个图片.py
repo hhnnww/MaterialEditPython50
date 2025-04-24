@@ -11,7 +11,6 @@ from MaterialEdit.fun_图片编辑.fun_删除图片透明边框 import fun_删�
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
 from MaterialEdit.fun_图片编辑.fun_图片水印.fun_获取单个水印 import fun_获取单个水印
-from MaterialEdit.fun_图片编辑.fun_图片裁剪.fun_图片裁剪 import fun_图片裁剪
 from MaterialEdit.fun_图片编辑.fun_预览图水印.fun_单个预览图效果图水印 import (
     fun_单个预览图效果图水印,
 )
@@ -101,23 +100,11 @@ class ClassOneImage:
         ori_im = self.__fun_原始图片
         height = math.ceil(self.image_width / (ori_im.width / ori_im.height))
 
-        max_height = 999000
-        if height > max_height:
-            small_im = fun_图片裁剪(
-                im=ori_im,
-                width=self.image_width,
-                height=max_height,
-                position="start",
-            )
-
-        else:
-            small_im = ori_im.resize(
-                size=(self.image_width, height),
-                resample=Image.Resampling.LANCZOS,
-                reducing_gap=8,
-            )
-
-        return small_im
+        return ori_im.resize(
+            size=(self.image_width, height),
+            resample=Image.Resampling.LANCZOS,
+            reducing_gap=8,
+        )
 
     def __str__(self) -> str:
         """打印名."""

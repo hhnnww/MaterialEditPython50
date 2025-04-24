@@ -44,15 +44,17 @@ def fun_获取素材信息(root_path: str, used_image: int, image_sort: bool) ->
         preview_image_list = preview_image_list[:used_image]
 
     effect_image_path = root_path_structure.effect_path
-    effect_image_list = [
-        {"path": obj}
-        for obj in fun_遍历图片(
-            folder=effect_image_path,
-            image_sort=image_sort,
-            used_image_number=0,
-        )
-        if "_thumb" not in Path(obj).stem
-    ]
+    effect_image_list = []
+    for obj in fun_遍历图片(
+        folder=effect_image_path,
+        image_sort=image_sort,
+        used_image_number=0,
+    ):
+        if "_thumb" not in Path(obj).stem:
+            thumb_image = image_make_web_thumbnail(image_path=obj)
+            with Image.open(thumb_image) as im:
+                radio = round(im.width / im.height, 3)
+            effect_image_list.append({"path": obj, "radio": radio})
 
     all_file = material_file_list(material_path=root_path_structure.material_path)
 

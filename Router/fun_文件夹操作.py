@@ -1,7 +1,6 @@
 """素材文件夹操作"""
 
 import contextlib
-import logging
 import shutil
 import subprocess
 from pathlib import Path
@@ -14,10 +13,12 @@ from tqdm import tqdm
 from win10toast import ToastNotifier
 from win32com.client import Dispatch
 
+from log import logger
 from MaterialEdit import AIFile, PSFile
 from MaterialEdit.fun_ppt_删除备注 import fun_处理所有PPT
 from MaterialEdit.fun_ppt导出图片 import PPT导出图片
 from MaterialEdit.fun_PS文件处理.fun_对比所有导出的图片 import fun_所有广告图片
+from MaterialEdit.fun_PS文件处理3.fun_删除文字图层广告 import DeleteImageName
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_蜘蛛水印.fun_蜘蛛水印 import fun_蜘蛛水印
 from MaterialEdit.fun_文件夹操作 import ImageCopyToPreview
@@ -62,6 +63,7 @@ from MaterialEdit.fun_文件夹操作.fun_移动AI文件和对应的图片到子
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印2 import fun_素材图水印2
+from MaterialEdit.fun_文件夹操作.fun_透明图转白底 import fun_透明图转白底
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
@@ -87,7 +89,7 @@ class RequestMaterialPathActionModel(BaseModel):
 
 def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, str]:
     """操作素材文件夹函数."""
-    logging.info(item)
+    logger.info(item)
 
     material_structure = fun_文件夹初始化(root_path=item.root_path)
 
@@ -149,7 +151,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 check=False,
             )
             msg = "解压文件成功" if res.returncode == 0 else "解压文件失败"
-            logging.info("Process completed successfully.")
+            logger.info("Process completed successfully.")
 
             for infile in in_file_list:
                 msg = (
@@ -157,7 +159,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     if Path(infile).exists() is True
                     else f"文件不存在{infile}"
                 )
-                logging.info(msg)
+                logger.info(msg)
                 Path(infile).unlink()
 
         case "移动到根目录":
@@ -277,6 +279,14 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
             pythoncom.CoUninitialize()
 
+        case "PSD-图层名删除广告-导出图片-添加广告":
+            pythoncom.CoInitialize()
+            DeleteImageName(
+                material_path=Path(material_structure.material_path),
+                shop_name=item.shop_name,
+            ).main()
+            pythoncom.CoUninitialize()
+
         case "PSD-导出图片-添加广告":
             # 获取所有PSD
             all_file = []
@@ -304,7 +314,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         ).run_导出图片添加广告()
                     except Exception as e:
                         msg = f"错误的PSD文件:{in_file},{e}"
-                        logging.info(msg)
+                        logger.info(msg)
 
             pythoncom.CoUninitialize()
 
@@ -335,7 +345,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         ).run_导出图片添加广告()
                     except Exception as e:
                         msg = f"错误的PSD文件:{in_file},{e}"
-                        logging.info(msg)
+                        logger.info(msg)
                         in_file.unlink()
 
             pythoncom.CoUninitialize()
@@ -371,7 +381,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     min_size = 4096
                     if in_file.stat().st_size == min_size:
                         msg = f"{Fore.RED}错误的PSD文件{Style.RESET_ALL} {in_file}"
-                        logging.info(msg=msg)
+                        logger.info(msg=msg)
                         continue
 
                     with contextlib.suppress(Exception):
@@ -579,6 +589,9 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
         case "删除预览小图":
             fun_删除预览小图(preview_path=material_structure.preview_path)
+
+        case "透明转白底":
+            fun_透明图转白底(material_path=material_structure.material_path)
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",

@@ -1,13 +1,12 @@
 from pathlib import Path
-from typing import Optional
 
-from ...type import _FONT_NAME, _FONT_WEIGHT
+from MaterialEdit.type import _FONT_NAME, _FONT_WEIGHT
 
 
 def fun_获取字体(
     font_name: _FONT_NAME,
     font_weight: _FONT_WEIGHT,
-) -> Optional[str]:
+) -> str | None:
     font_root_path = Path(__file__).parent / "font"
     font_dict = {
         "misans": {

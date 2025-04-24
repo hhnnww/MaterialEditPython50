@@ -15,7 +15,7 @@ class Class_随机获取一个成语:
     @staticmethod
     def fun_成语文件() -> ChengyuOBJ:
         cy_path = Path(__file__).parent / "成语文件" / "data" / "idiom.json"
-        with open(cy_path.as_posix(), mode="r", encoding="utf-8") as chengyu:
+        with open(cy_path.as_posix(), encoding="utf-8") as chengyu:
             cy_json = json.loads(chengyu.read())
 
             cy = cy_json[randint(0, len(cy_json))]
@@ -23,7 +23,8 @@ class Class_随机获取一个成语:
                 cy = cy_json[randint(0, len(cy_json))]
 
             return ChengyuOBJ(
-                word=cy.get("word"), py=" ".join(lazy_pinyin(cy.get("word")))
+                word=cy.get("word"),
+                py=" ".join(lazy_pinyin(cy.get("word"))),
             )
 
 
