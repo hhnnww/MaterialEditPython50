@@ -4,8 +4,6 @@ from pathlib import Path
 
 from PIL import Image
 
-from MaterialEdit.fun_图片编辑.fun_蜘蛛水印2.fun_蜘蛛水印 import fun_蜘蛛水印2
-
 
 def fun_保存图片(
     im: Image.Image,
@@ -16,7 +14,7 @@ def fun_保存图片(
     """保存图片."""
     if im.mode != "RGB":
         im = im.convert("RGB")
-    im = fun_蜘蛛水印2(im, shop_name=shop_name)
+
     ma_path = Path.home() / "Desktop" / "UPLOAD"
 
     if ma_path.exists() is False:

@@ -6,7 +6,7 @@ from pathlib import Path
 from MaterialEdit.setting import IMAGE_SUFFIX, MATERIAL_SOURCE_SUFFIX
 
 
-def fun_文件重命名(
+def fun_文件重命名(  # noqa: C901, PLR0912
     folder: str,
     preview_path: str,
     shop_name: str,

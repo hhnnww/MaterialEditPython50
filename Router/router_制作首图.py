@@ -104,7 +104,7 @@ def fun_换算图片高度(first_image_style_name: str) -> int:
 
 
 @router.post("")
-def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:
+def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:  # noqa: C901, PLR0912, PLR0915
     """制作首图路由."""
     path_jiegou = fun_创建文件夹结构(root_path=item.root_path)
 

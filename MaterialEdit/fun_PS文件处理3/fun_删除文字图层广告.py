@@ -6,9 +6,9 @@ import yaml
 from tqdm import tqdm
 from win32com.client import CDispatch, Dispatch
 
-from log import logger
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.setting import IMAGE_SUFFIX
+from mylog import mylogger
 
 
 class DeleteImageName:
@@ -148,7 +148,7 @@ class DeleteImageName:
         """删除psd文件中的图片名称"""
         for psd_path in tqdm(self.all_psd, desc="处理psd文件", unit="个", ncols=100):
             msg = f"处理文件:{psd_path}"
-            logger.info(msg)
+            mylogger.info(msg)
             self.__fun_处理单个PSD文件(psd_path)
 
 

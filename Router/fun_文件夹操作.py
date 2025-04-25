@@ -13,7 +13,6 @@ from tqdm import tqdm
 from win10toast import ToastNotifier
 from win32com.client import Dispatch
 
-from log import logger
 from MaterialEdit import AIFile, PSFile
 from MaterialEdit.fun_ppt_删除备注 import fun_处理所有PPT
 from MaterialEdit.fun_ppt导出图片 import PPT导出图片
@@ -60,6 +59,7 @@ from MaterialEdit.fun_文件夹操作.fun_目录内放置广告 import fun_目�
 from MaterialEdit.fun_文件夹操作.fun_移动AI文件和对应的图片到子目录 import (
     MoveAIToSubPath,
 )
+from MaterialEdit.fun_文件夹操作.fun_移动PSD到子目录 import fun_移动PSD到子目录
 from MaterialEdit.fun_文件夹操作.fun_移动到效果图 import fun_移动到效果图
 from MaterialEdit.fun_文件夹操作.fun_移动到根目录 import fun_移动到根目录
 from MaterialEdit.fun_文件夹操作.fun_素材图水印2 import fun_素材图水印2
@@ -67,6 +67,7 @@ from MaterialEdit.fun_文件夹操作.fun_透明图转白底 import fun_透明�
 from MaterialEdit.fun_文件夹操作.fun_遍历指定文件 import rglob
 from MaterialEdit.fun_遍历图片 import fun_遍历图片
 from MaterialEdit.setting import HOME_UPDATE_FOLDER, OUT_PATH
+from mylog import mylogger
 
 toaster = ToastNotifier()
 
@@ -89,7 +90,7 @@ class RequestMaterialPathActionModel(BaseModel):
 
 def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, str]:
     """操作素材文件夹函数."""
-    logger.info(item)
+    mylogger.info(item)
 
     material_structure = fun_文件夹初始化(root_path=item.root_path)
 
@@ -151,7 +152,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 check=False,
             )
             msg = "解压文件成功" if res.returncode == 0 else "解压文件失败"
-            logger.info("Process completed successfully.")
+            mylogger.info("Process completed successfully.")
 
             for infile in in_file_list:
                 msg = (
@@ -159,7 +160,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     if Path(infile).exists() is True
                     else f"文件不存在{infile}"
                 )
-                logger.info(msg)
+                mylogger.info(msg)
                 Path(infile).unlink()
 
         case "移动到根目录":
@@ -314,7 +315,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         ).run_导出图片添加广告()
                     except Exception as e:
                         msg = f"错误的PSD文件:{in_file},{e}"
-                        logger.info(msg)
+                        mylogger.info(msg)
 
             pythoncom.CoUninitialize()
 
@@ -345,7 +346,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                         ).run_导出图片添加广告()
                     except Exception as e:
                         msg = f"错误的PSD文件:{in_file},{e}"
-                        logger.info(msg)
+                        mylogger.info(msg)
                         in_file.unlink()
 
             pythoncom.CoUninitialize()
@@ -381,7 +382,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                     min_size = 4096
                     if in_file.stat().st_size == min_size:
                         msg = f"{Fore.RED}错误的PSD文件{Style.RESET_ALL} {in_file}"
-                        logger.info(msg=msg)
+                        mylogger.info(msg=msg)
                         continue
 
                     with contextlib.suppress(Exception):
@@ -592,6 +593,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
 
         case "透明转白底":
             fun_透明图转白底(material_path=material_structure.material_path)
+
+        case "PSD文件移动到子目录":
+            fun_移动PSD到子目录(
+                material_path=material_structure.material_path,
+            )
 
     fun_通知(
         msg=f"素材ID:{Path(material_structure.material_path).name}\n{item.action}完成。",

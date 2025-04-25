@@ -6,7 +6,7 @@ import subprocess
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from log import logger
+from mylog import mylogger
 
 router = APIRouter(prefix="/open_baidu_link")
 
@@ -33,5 +33,5 @@ def open_baidu_link(item_in: ItemIn) -> None:
             re_link = f"{re_link}?pwd={tqm}"
 
         msg = f"打开链接: {re_link}"
-        logger.info(msg)
+        mylogger.info(msg)
         subprocess.Popen(args=["start", "msedge", re_link], shell=True)

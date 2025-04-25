@@ -6,7 +6,7 @@ from pptx import Presentation
 from python_pptx_text_replacer import TextReplacer
 from tqdm import tqdm
 
-from log import logger
+from mylog import mylogger
 
 
 def __fun_替换本文(ppt_file: str) -> None:
@@ -29,7 +29,7 @@ def __fun_替换本文(ppt_file: str) -> None:
 def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: list[str]) -> None:
     """删除PPT里面的备注和广告图片."""
     msg = f"处理PPT:{ppt_file}"
-    logger.info(msg=msg)
+    mylogger.info(msg=msg)
     prs = Presentation(pptx=ppt_file)
 
     for slide in prs.slides:
@@ -43,7 +43,7 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
                         for ad_name in ad_pic_name_list:
                             if f'descr="{ad_name}"' in shape.element.xml:
                                 slide.shapes._spTree.remove(shape._element)  # noqa: SLF001
-                                logger.info(msg="删除广告图片")
+                                mylogger.info(msg="删除广告图片")
 
                     # 如果是视频
                     # 直接干掉
@@ -51,7 +51,7 @@ def __fun_删除所有备注和广告图片(ppt_file: str, ad_pic_name_list: lis
                         slide.shapes._spTree.remove(shape._element)  # noqa: SLF001
 
         except Exception as e:  # noqa: BLE001
-            logger.info(e)
+            mylogger.info(e)
 
     prs.save(file=ppt_file)
 
@@ -82,4 +82,4 @@ def fun_处理所有PPT(material_path: str) -> None:
                     )
                     __fun_替换本文(ppt_file=in_file.as_posix())
                 except:  # noqa: E722
-                    logger.info(msg="error")
+                    mylogger.info(msg="error")

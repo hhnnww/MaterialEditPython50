@@ -1,0 +1,1 @@
+call uv run uvicorn main:app
