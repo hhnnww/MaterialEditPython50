@@ -85,12 +85,12 @@ class UpAllFolderToBaiduWangPan:
     def __fun_获取资源管理器的文件夹坐标() -> pyautogui.Point:
         """获取文件夹地址的坐标."""
         with Image.open((Path(__file__).parent / "img" / "name.png").as_posix()) as im:
-            return pyautogui.locateCenterOnScreen(image=im)  # type: ignore  # noqa: PGH003
+            return pyautogui.locateCenterOnScreen(image=im)  # type: ignore
 
     @staticmethod
     def __fun_获取网盘的坐标() -> pyautogui.Point:
         """获取网盘目标坐标."""
-        return pyautogui.Point(x=3000, y=400)
+        return pyautogui.Point(x=2500, y=370)
 
     def main(self) -> None:
         """开始上传."""

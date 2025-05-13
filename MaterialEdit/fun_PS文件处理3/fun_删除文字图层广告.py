@@ -131,18 +131,17 @@ class DeleteImageName:
             else:
                 self.__fun_文字图层处理(layer)
 
-        self.__fun_导出PSD文档为PNG(doc, png_path=psd_path.with_suffix(".png"))
+        self.__fun_导出PSD文档为PNG(doc, png_path=psd_path.with_suffix(".jpg"))
         self.__fun_导入广告(doc)
         doc.Save()
         doc.Close(2)
 
     def __fun_导出PSD文档为PNG(self, doc: CDispatch, png_path: Path) -> None:
         """导出png文件"""
-        export_option = Dispatch("Photoshop.ExportOptionsSaveForWeb")
-        export_option.Format = 13
-        export_option.PNG8 = False
-        export_option.Dither = 2
-        doc.Export(png_path.as_posix(), 2, export_option)
+        options = Dispatch("Photoshop.ExportOptionsSaveForWeb")
+        options.Format = 6
+        options.Quality = 60
+        doc.Export(png_path.as_posix(), 2, options)
 
     def main(self) -> None:
         """删除psd文件中的图片名称"""

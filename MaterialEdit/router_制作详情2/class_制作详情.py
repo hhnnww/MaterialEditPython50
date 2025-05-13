@@ -88,7 +88,7 @@ class ClassMakeXQ2:
                 continue
 
             opim = Image.open(fp=image.as_posix()).convert("RGBA")
-            max_radio = 8
+            max_radio = 15
             if opim.height / opim.width > max_radio:
                 opim = ImageAction.fun_图片裁剪(
                     im=opim,

@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-import logging
 import time
 from pathlib import Path
 from uuid import uuid1
 
-from colorama import Fore, Style
 from passlib.context import CryptContext
 from win32com.client import CDispatch, Dispatch
 
@@ -60,9 +58,6 @@ class PSFile:
         self.pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
         fun_清理注释(self.app)
-
-        msg = f"{Fore.GREEN}处理PSD{Style.RESET_ALL}:{ps_path}"
-        logging.info(msg=msg)
 
     @staticmethod
     def get_all_layer(in_object: CDispatch) -> list:
@@ -165,10 +160,6 @@ class PSFile:
                     img_1 = fun_打开图片(img_path=img_path.as_posix())
                     res = run_对比所有图片(img=img_1, ad_img_list=self.ad_pic_list)
                     if res is True:
-                        msg = (
-                            f"{Fore.GREEN}图层对比发现广告{Style.RESET_ALL},{item.item}"
-                        )
-                        logging.info(msg=msg)
                         item.item.Delete()
 
                     new_name = img_path.with_stem(stem=str(uuid1()))
@@ -203,6 +194,10 @@ class PSFile:
             first_layer = self.doc.ArtLayers[0]
             if first_layer.Name in ["SY"] or first_layer.Name[0] == "$":
                 first_layer.Visible = False
+        for layer in self.doc.Layers:
+            if layer.Name in ["Resources info (Hide me)"]:
+                layer.Visible = False
+
         save_path = Path(self.ps_path)
         com_psd导出png(ref_doc=self.doc, file=save_path, ad_layer_name="")
         self.doc.Close(2)
