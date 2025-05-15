@@ -41,6 +41,7 @@ from MaterialEdit.fun_文件夹操作.fun_删除素材文件夹所有图片 impo
 )
 from MaterialEdit.fun_文件夹操作.fun_删除预览小图 import fun_删除预览小图
 from MaterialEdit.fun_文件夹操作.fun_制作享设计大图 import fun_享设计制作预览图
+from MaterialEdit.fun_文件夹操作.fun_制作版权图片 import fun_制作版权图片
 from MaterialEdit.fun_文件夹操作.fun_图片添加白色背景 import fun_图片添加白色背景
 from MaterialEdit.fun_文件夹操作.fun_子目录psd重命名 import fun_子目录PSD重命名
 from MaterialEdit.fun_文件夹操作.fun_子目录图片重命名 import fun_子目录图片重命名
@@ -597,6 +598,11 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
         case "PSD文件移动到子目录":
             fun_移动PSD到子目录(
                 material_path=material_structure.material_path,
+            )
+        case "制作版权图片":
+            fun_制作版权图片(
+                preview_path=material_structure.preview_path,
+                design_path=material_structure.design_path,
             )
 
     fun_通知(

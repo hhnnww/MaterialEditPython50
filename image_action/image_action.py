@@ -1,5 +1,7 @@
 """image edit"""
 
+from PIL import Image
+
 from image_action.image_add_radius import ImageAddRadius
 from image_action.image_crop import ImageCrop
 from image_action.image_delete_border import ImageDeleteBorder
@@ -17,3 +19,7 @@ class ImageAction(
     ImageDeleteBorder,
 ):
     """A class for editing images, inheriting from ImageCrop."""
+
+    @staticmethod
+    def open_image(image_path: str) -> Image.Image:
+        return Image.open(image_path).convert("RGBA")

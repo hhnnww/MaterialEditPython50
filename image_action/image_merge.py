@@ -20,18 +20,18 @@
 
 from typing import Literal
 
-from PIL import Image
+from PIL import Image, ImageFile
 
 
 class ImageMerge:
     @staticmethod
     def fun_图片横向拼接(
-        image_list: list[Image.Image],
+        image_list: list[Image.Image] | list[ImageFile.ImageFile],
         spacing: int,
         align: Literal["start", "center", "end"],
     ) -> Image.Image:
         """图片横向拼接函数。"""
-        widths, heights = zip(*(img.size for img in image_list))
+        widths, heights = zip(*(img.size for img in image_list), strict=False)
         # 计算总宽度和最大高度
         total_width = sum(widths) + spacing * (len(image_list) - 1)
         max_height = max(heights)
@@ -57,7 +57,7 @@ class ImageMerge:
     ) -> Image.Image:
         """图片竖向拼接函数。"""
         # 计算总高度和最大宽度
-        widths, heights = zip(*(img.size for img in image_list))
+        widths, heights = zip(*(img.size for img in image_list), strict=False)
         total_height = sum(heights) + (spacing * (len(image_list) - 1))
         max_width = max(widths)
         merged_image = Image.new("RGBA", (max_width, total_height), (255, 255, 255, 0))
