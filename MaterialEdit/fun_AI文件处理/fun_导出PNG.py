@@ -13,17 +13,15 @@ def fun_导出PNG(doc: CDispatch | None, ai_path: Path) -> None:
     if doc is None:
         return
 
-    option = Dispatch("Illustrator.ExportForScreensOptionsPNG24")
+    option = Dispatch("Illustrator.ExportForScreensOptionsJPEG")
     option.ScaleType = 1
-    option.ScaleTypeValue = 2000
-    option.Transparency = False
-    option.Interlaced = True
+    option.ScaleTypeValue = 1500
 
     item_option = Dispatch("Illustrator.ExportForScreensItemToExport")
 
     doc.ExportForScreens(
         ExportFolder=ai_path.parent.as_posix(),
-        ExportFormat=7,
+        ExportFormat=1,
         Options=option,
         ItemToExport=item_option,
         FileNamePrefix="export_",

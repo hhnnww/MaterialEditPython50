@@ -1,4 +1,3 @@
-import time
 from pathlib import Path
 
 from win32com.client.dynamic import CDispatch
@@ -30,6 +29,3 @@ class AIFile:
         fun_同层级图片改名(ai_path=self.ai_path)
         fun_添加广告(self.doc, shop_name=self.shop_name)
         fun_另存为AI文件(self.doc, self.ai_path)
-        self.doc = None
-
-        time.sleep(5)
