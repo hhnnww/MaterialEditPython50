@@ -98,10 +98,6 @@ class DeleteImageName:
 
     def __fun_文字图层处理(self, layer: CDispatch) -> None:
         """获取文字图层"""
-        layer_visible = layer.Visible
-        if layer_visible is False:
-            return
-
         replace_name_list = self.__replace_text_list.get("replace_name_list", [])
         text: str = layer.TextItem.Contents
         replace_state = False
@@ -126,10 +122,11 @@ class DeleteImageName:
 
         text_layer_kind = 2
         for layer in self.fun_递归遍历当前PSD所有图层(doc):
-            if layer.Kind != text_layer_kind:
-                self.__fun_广告图层处理(layer)
-            else:
-                self.__fun_文字图层处理(layer)
+            if layer.Visible is True:
+                if layer.Kind != text_layer_kind:
+                    self.__fun_广告图层处理(layer)
+                else:
+                    self.__fun_文字图层处理(layer)
 
         self.__fun_导出PSD文档为PNG(doc, png_path=psd_path.with_suffix(".jpg"))
         self.__fun_导入广告(doc)
