@@ -54,6 +54,7 @@ from MaterialEdit.fun_制作首图.layout_错乱排列.class_random_layout impor
 )
 from MaterialEdit.fun_制作首图.style_黑鲸笔刷 import Style黑鲸笔刷
 from MaterialEdit.fun_制作首图.style_黑鲸高 import style_黑鲸高
+from MaterialEdit.router_制作详情2.fun_图片添加蜘蛛水印 import fun_详情图片添加蜘蛛水印
 from MaterialEdit.type import ALIGNITEM, ImageModel
 
 router = APIRouter(prefix="/MakeFirstImage")
@@ -536,6 +537,8 @@ def make_first_image(item: MakeFirstImageModel) -> dict[str, str]:  # noqa: C901
             xq_height=xq_height,
             design_path=path_jiegou.design_path,
         )
+
+    bg = fun_详情图片添加蜘蛛水印(im=bg)
 
     # ---------------- 样式 ----------------
 

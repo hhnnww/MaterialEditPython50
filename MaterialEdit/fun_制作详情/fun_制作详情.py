@@ -8,8 +8,11 @@ from tqdm import tqdm
 from MaterialEdit.fun_制作详情.fun_2_构建图片 import fun_构建图片
 from MaterialEdit.fun_制作详情.fun_3_图片编组 import fun_图片编组
 from MaterialEdit.fun_制作详情.fun_4_单行图片制作 import fun_单行图片制作
+from MaterialEdit.router_制作详情2.fun_图片添加蜘蛛水印 import fun_详情图片添加蜘蛛水印
+
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片竖向拼接 import fun_图片竖向拼接
+
 from MaterialEdit.setting import MATERIAL_SOURCE_SUFFIX
 from MaterialEdit.type import ALIGNITEM
 
@@ -65,6 +68,7 @@ def fun_制作详情(
     )
 
     im = im.crop((0, 0, xq_width, im.height))
+    im = fun_详情图片添加蜘蛛水印(im=im, shop_name=shop_name)
 
     return fun_图片扩大粘贴(
         background_color=(255, 255, 255, 255),

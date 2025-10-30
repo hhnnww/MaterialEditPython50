@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Literal
 from PIL import Image
 from tqdm import tqdm
 
+from MaterialEdit.router_制作详情2.fun_图片添加蜘蛛水印 import fun_详情图片添加蜘蛛水印
 from image_action.image_action import ImageAction
 from MaterialEdit.fun_图片编辑.fun_图片扩大粘贴 import fun_图片扩大粘贴
 from MaterialEdit.fun_图片编辑.fun_图片拼接.fun_图片横向拼接 import fun_图片横向拼接
@@ -188,7 +189,7 @@ class ClassMakeXQ2:
             align_item="center",
             background_color=self.background_color,
         )
-
+        bg = fun_详情图片添加蜘蛛水印(im=bg)
         return fun_图片扩大粘贴(
             im=bg,
             width=2060,
