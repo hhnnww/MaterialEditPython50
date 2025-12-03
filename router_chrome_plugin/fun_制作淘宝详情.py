@@ -51,6 +51,21 @@ class MakeTaobaoXQStr:
             "div.opt-body > div.cates > div > div",
             first=True,
         )
+        vip_free = (
+            '<div class="dm_module" data-id="11286177" data-title="会'
+            '员免费" id="ids-module-11286177"><p><a data-spm-anchor-id="a2126o'
+            '.11854294.0.0" href="https://item.taobao.com/item.htm?id=66974140'
+            '2774" target="_blank"><img data-spm-anchor-id="a2126o.11854294.0.'
+            'i4.39c14831lYQ9jY" src="https://img.alicdn.com/imgextra/i4/86232232'
+            '6/O1CN010fYimm1T3MGpxFKsf_!!862322326.png" /></a></p></div>'
+        )
+
+        read_more = (
+            '<div class="dm_module" data-id="11715980" data-title="查看更多'
+            '" id="ids-module-11715980"><p><img align="absmiddle" src="https://img.'
+            "alicdn.com/imgextra/i1/862322326/O1CN0186snmc1T3MGobZ9lu_!!862322326.p"
+            'ng" style="max-width:750px;" /></p></div>'
+        )
 
         if isinstance(sidebar_ele, Element):
             if "小夕素材" in sidebar_ele.text:

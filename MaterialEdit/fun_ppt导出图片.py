@@ -64,17 +64,19 @@ class PPT导出图片:
 
     def fun_ppt导出图片(self) -> None:
         """使用win32com导出所有图片"""
-        pythoncom.CoInitialize()
+
         ppt_app = Dispatch("PowerPoint.Application")
         ppt_app.DisplayAlerts = 0
 
         with contextlib.suppress(pywintypes.com_error):
             ppt = ppt_app.Presentations.Open(self.ppt_path.as_posix())
+
             ppt.SaveAs(self.ppt_dir, 17)
             if self.ppt_path.suffix.lower() == ".ppt":
                 ppt.SaveAs(self.ppt_path.with_suffix(".pptx"))
                 self.ppt_path.unlink()
             self.fun_图片合并()
+            ppt.Saved = True
             ppt.Close()
 
     def fun_图片合并(self) -> None:

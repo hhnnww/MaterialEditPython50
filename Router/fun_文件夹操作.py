@@ -399,6 +399,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
             fun_删除EPS文件(material_path=material_structure.material_path)
 
         case "PPT-导出图片":
+            pythoncom.CoInitialize()
             all_file = []
             all_file.extend(rglob(material_structure.material_path, [".ppt", ".pptx"]))
 
@@ -406,6 +407,7 @@ def fun_material_path_action(item: RequestMaterialPathActionModel) -> dict[str, 
                 png_path = in_file.with_suffix(".png")
                 if png_path.exists() is False:
                     PPT导出图片(ppt_path=in_file).main()
+            pythoncom.CoUninitialize()
 
         case "PPT-删除备注":
             fun_处理所有PPT(material_path=material_structure.material_path)
