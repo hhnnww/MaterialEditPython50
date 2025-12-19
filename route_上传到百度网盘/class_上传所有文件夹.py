@@ -90,7 +90,7 @@ class UpAllFolderToBaiduWangPan:
     @staticmethod
     def __fun_获取网盘的坐标() -> pyautogui.Point:
         """获取网盘目标坐标."""
-        return pyautogui.Point(x=2500, y=370)
+        return pyautogui.Point(x=2555, y=375)
 
     def main(self) -> None:
         """开始上传."""

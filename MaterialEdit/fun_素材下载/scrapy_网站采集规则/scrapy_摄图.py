@@ -28,7 +28,7 @@ def scrapy_摄图(single_url: str, cookie: str) -> Generator[MaterialModel, Any,
 
             find = obj.find("a img", first=True)
             if find is not None and isinstance(find, Element):
-                img = find.attrs.get("data-lazy-src")
+                img = find.attrs.get("data-original")
                 if img is None:
                     img = find.attrs.get("src", "")
 
