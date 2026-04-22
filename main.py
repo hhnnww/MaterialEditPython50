@@ -37,4 +37,6 @@ app.include_router(
 app.include_router(router=router_chrome_plugin)
 
 static_path = Path(__file__).parent / "static"
-app.mount(path="/static", app=StaticFiles(directory=static_path, html=True), name="static")
+app.mount(
+    path="/static", app=StaticFiles(directory=static_path, html=True), name="static"
+)

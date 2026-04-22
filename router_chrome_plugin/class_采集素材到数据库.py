@@ -13,6 +13,18 @@ from router_chrome_plugin.class_爬虫INIT import ScrapyBase
 
 
 class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
+    def fun_envato(self) -> Generator[MaterialModel]:
+        ma_list = self.html.find("div")
+
+        for ma in ma_list:
+            item_card = ma.attrs.get("data-cy")
+            if item_card is not None and item_card == "item-card":
+                link = "https://app.envato.com" + ma.find("a", first=True).attrs.get(
+                    "href"
+                )
+                img = ma.find("img", first=True).attrs.get("src")
+                yield MaterialModel(url=link, img=img, state=False)
+
     def fun_千库(self) -> Generator[MaterialModel]:
         """千库采集."""
         ma_list = self.html.find(
@@ -80,6 +92,8 @@ class MaterialScrapyAction(NewTbScrapy, OldTbScrapy, ScrapyBase):
             ma_list = self.fun_享设计()
         elif self.material_site == "freepik":
             ma_list = self.fun_freepik()
+        elif self.material_site == "envato":
+            ma_list = self.fun_envato()
 
         for obj in ma_list:
             fun_插入素材(

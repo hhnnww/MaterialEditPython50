@@ -7,7 +7,6 @@ from pydantic import BaseModel
 from tqdm import tqdm
 
 from MaterialEdit.fun_素材下载 import (
-    fun_envato_图片下载,
     fun_插入素材,
     fun_获取素材,
     fun_获取集合,
@@ -116,8 +115,8 @@ def get_material_down_link(
     collect = fun_获取集合(shop_name=shop_name, material_site=material_site)
     obj = collect.find_one({"_id": ObjectId(oid=material_id)})
 
-    if material_site == "envato":
-        fun_envato_图片下载(obj, down_path)  # type: ignore
+    # if material_site == "envato":
+    #     fun_envato_图片下载(obj, down_path)  # type: ignore
 
     collect.update_one(obj, {"$set": {"state": True}})  # type: ignore
     return RedirectResponse(url=obj.get("url"), status_code=301)  # type: ignore

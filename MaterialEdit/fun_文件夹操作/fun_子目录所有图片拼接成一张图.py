@@ -152,4 +152,4 @@ class MergeSubPathImages:
 
 
 if __name__ == "__main__":
-    MergeSubPathImages(material_path_str=r"F:\小夕素材\5000-5999\5547\5547").main()
+    MergeSubPathImages(material_path_str=r"F:\小夕素材\11000-11999\11726\11726").main()

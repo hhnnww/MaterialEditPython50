@@ -11,11 +11,10 @@ def scrapy_千库(single_url: str, cookie: str) -> Generator[MaterialModel]:
     html = fun_session(url=single_url, cookie=cookie)
 
     material_list = html.find(
-        ".fl",
+        ".center-box",
     )
 
-    for obj in material_list:  # type: ignore  # noqa: PGH003
-        center_box = obj.find(".center-box", first=True)
+    for center_box in material_list:  # type: ignore  # noqa: PGH003
         if center_box is not None:
             url = "https:" + center_box.find(
                 "a.img-box",

@@ -16,6 +16,7 @@ dependencies = [
     "peewee>=3.17.9",
     "photoshop-python-api>=0.24.0",
     "pillow>=11.2.1",
+    "pillow-avif-plugin>=1.5.5",
     "pyautogui>=0.9.54",
     "pygetwindow>=0.0.9",
     "pymongo>=4.12.0",
